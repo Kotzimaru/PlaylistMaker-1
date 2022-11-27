@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/some_id_settings"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    android:background="@drawable/some_id_setting"
+    android:orientation="vertical">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="24dp"
+
+        tools:ignore="UseCompoundDrawables">
+        <ImageView
+            android:id="@id/some_id_settings"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="15dp"
+            android:src="@drawable/ic_arrow_back"
+            tools:ignore="ContentDescription">
+        </ImageView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:textColor="@color/black"
+            android:textAppearance="@style/title"
+            android:text="@string/setting">
+
+
+        </TextView>
+
+
+
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_menu_height"
+        android:orientation="horizontal"
+        android:layout_gravity="start"
+
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dark_theme"
+            android:padding="4dp"
+            style="@style/setting_menu"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+
+            >
+
+        </TextView>
+
+        <Switch
+            android:id="@+id/switch_off"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="12dp"
+            android:visibility="visible"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_menu_height"
+        android:orientation="horizontal"
+        android:layout_gravity="start">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/share"
+            style="@style/setting_menu"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="16dp"
+            android:padding="4dp"
+            >
+        </TextView>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="16dp"
+            android:gravity="bottom"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_share"
+            android:visibility="visible"
+            android:contentDescription="TODO"
+            tools:ignore="ContentDescription">
+
+        </ImageView>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_menu_height"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:gravity="left"
+            style="@style/setting_menu"
+            android:layout_marginTop="12dp"
+            android:padding="4dp"
+            android:text="@string/support">
+
+        </TextView>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="12dp"
+            android:paddingTop="4dp"
+            android:src="@drawable/ic_support"
+            >
+            ></ImageView>
+
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/setting_menu_height"
+        android:layout_gravity="start"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            style="@style/setting_menu"
+            android:layout_marginTop="15dp"
+            android:text="@string/agreement"
+            android:visibility="visible">
+
+        </TextView>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="15dp"
+            android:paddingTop="4dp"
+            android:src="@drawable/ic_arrow_forward"
+            android:visibility="visible">
+
+        </ImageView>
+
+
+    </FrameLayout>
+
+
+</LinearLayout>
