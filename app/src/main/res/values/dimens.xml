@@ -5,6 +5,7 @@
     <dimen name="radius">16dp</dimen>
     <dimen name="marginBottom">28dp</dimen>
     <dimen name="size_dp_15">15dp</dimen>
-    <dimen name="text_size">32sp</dimen>
+    <dimen name="text_size_32">32sp</dimen>
+    <dimen name="text_size_22">22sp</dimen>
 
 </resources>

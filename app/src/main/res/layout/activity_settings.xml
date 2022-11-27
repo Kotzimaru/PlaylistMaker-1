@@ -14,7 +14,6 @@
         android:layout_margin="@dimen/size_dp_15"
         android:drawablePadding="@dimen/size_dp_15"
         android:text="@string/setting"
-        android:textAppearance="@style/title"
         android:textColor="@color/black"
         app:drawableStartCompat="@drawable/ic_arrow_back" />
 
