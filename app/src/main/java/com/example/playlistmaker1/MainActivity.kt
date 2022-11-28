@@ -25,9 +25,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(mediaDisplayIntent)}
 
 
-        /*settingsButton.setOnClickListener {
-            val mediaDisplayIntent = Intent(this, SettingsActivity::class.java)
-            startActivity(settingDisplayIntent)}*/
+        settingsButton.setOnClickListener {
+            val settingDisplayIntent = Intent(this, SettingsActivity::class.java)
+            startActivity(settingDisplayIntent)}
 
 
 

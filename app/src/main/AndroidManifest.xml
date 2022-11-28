@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.NoActionBar"
         tools:overrideLibrary="androidx.wear.tiles.material"
-        tools:targetApi="31"
+        tools:targetApi="33"
         >
 
         <activity
