@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="setting_menu_height">51dp</dimen>
+    <dimen name="bottom_height">220dp</dimen>
+    <dimen name="radius">16dp</dimen>
+    <dimen name="vertical_margin">32dp</dimen>
+    <dimen name="size_dp_15">15dp</dimen>
+    <dimen name="text_size">32sp</dimen>
+
+</resources>
