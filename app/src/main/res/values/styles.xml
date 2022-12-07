@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="ButtonStyle">
 
         <item name="android:textSize">@dimen/text_size_22</item>
@@ -18,9 +19,52 @@
 
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">#000000</item>
+        <item name="fontFamily">@font/ys_text_regular</item>
+        <item name="android:background">#FFFEFE</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/size_dp_15</item>
+        <item name="android:gravity">left</item>
 
     </style>
 
+
+    <style name="setting_text" parent="setting_menu">
+
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/ys_text_medium</item>
+
+    </style>
+
+    <style name="settings">
+
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/setting_menu_height</item>
+        <item name="android:layout_gravity">start</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:textColor">#090808</item>
+        <item name="android:background">#FFFEFE</item>
+
+    </style>
+
+    <style name="image">
+
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">right</item>
+        <item name="android:layout_margin">@dimen/size_dp_15</item>
+        <item name="tint">#AEAFB4</item>
+        <item name="android:background">#FFFEFE</item>
+
+    </style>
+
+    <style name="image_arrow_back" parent="image">
+
+        <item name="android:layout_gravity">right</item>
+        <item name="tint">@color/black</item>
+        <item name="android:background">#FFFEFE</item>
+
+    </style>
 
 
 </resources>
