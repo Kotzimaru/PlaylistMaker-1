@@ -12,5 +12,6 @@
     <string name="url_offer">https://yandex.ru/legal/practicum_offer/</string>
     <string name="theme_message">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="body_message">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="mail">kotzimaru@yandex.ru</string>
 
 </resources>

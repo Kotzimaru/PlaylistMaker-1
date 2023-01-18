@@ -22,7 +22,7 @@ class SettingsActivity : AppCompatActivity() {
 
             val intent = Intent(Intent.ACTION_SENDTO)
             intent.data = Uri.parse("mailto:")
-            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf("kotzimaru@yandex.ru"))
+            intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(R.string.mail))
             intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.theme_message))
             intent.putExtra(Intent.EXTRA_TEXT,getString(R.string.body_message))
             startActivity(Intent.createChooser(intent,"Send Email"))
