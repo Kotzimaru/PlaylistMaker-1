@@ -24,7 +24,7 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
 
         val inputEditText = findViewById<EditText>(R.id.inputEditText)
-        val clear = findViewById<ImageView>(R.id.clearButton)
+        val clearButton = findViewById<ImageView>(R.id.clearButton)
         val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -80,7 +80,7 @@ class SearchActivity : AppCompatActivity() {
                 override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
                 override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    visibleInvisibleClearButton(inputEditText, clear)
+                    visibleInvisibleClearButton(inputEditText, clearButton)
                     text = p0.toString();
                 }
 
@@ -89,13 +89,13 @@ class SearchActivity : AppCompatActivity() {
 
             inputEditText.addTextChangedListener(simpleTextWatcher)
 
-            clear.setOnClickListener {
+            clearButton.setOnClickListener {
                 inputEditText.text.clear()
                 this.currentFocus?.let { view ->
                     val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
                     imm?.hideSoftInputFromWindow(view.windowToken, 0)
                 }
-                visibleInvisibleClearButton(inputEditText, clear)
+                visibleInvisibleClearButton(inputEditText, clearButton)
             }
 
         }

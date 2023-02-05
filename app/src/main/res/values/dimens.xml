@@ -6,7 +6,7 @@
     <dimen name="radius_2">2dp</dimen>
     <dimen name="marginBottom">28dp</dimen>
     <dimen name="margin_4">4dp</dimen>
-    <dimen name="margin_5">5dp</dimen>
+    <dimen name="margin_8">8dp</dimen>
     <dimen name="margin_20">20dp</dimen>
     <dimen name="size_dp_15">15dp</dimen>
     <dimen name="text_size_32">32sp</dimen>

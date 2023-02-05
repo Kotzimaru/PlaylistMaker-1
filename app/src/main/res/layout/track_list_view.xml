@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingVertical="@dimen/margin_5"
+    android:paddingVertical="@dimen/margin_8"
     style="@style/settings">
 
     <ImageView
         style="@style/image"
         android:id="@+id/cover_icon"
         android:layout_gravity="center"
-        android:layout_margin="@dimen/margin_5"
+        android:layout_margin="@dimen/margin_8"
         android:src="@drawable/placeholder" />
 
     <LinearLayout
@@ -25,7 +25,7 @@
         <TextView
             android:id="@+id/track_name"
             style="@style/playlist2"
-            android:layout_marginTop="@dimen/margin_5"
+            android:layout_marginTop="@dimen/margin_8"
             tools:text="Smells Like Teen Spirit" />
 
         <LinearLayout
@@ -38,8 +38,8 @@
                 style="@style/playlist1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_5"
-                android:drawablePadding="@dimen/margin_5"
+                android:layout_marginEnd="@dimen/margin_8"
+                android:drawablePadding="@dimen/margin_8"
                 app:drawableEndCompat="@drawable/ellipse"
                 tools:text="Nirvana" />
 
