@@ -9,11 +9,12 @@
     style="@style/settings">
 
     <ImageView
-        style="@style/image"
+        style="@style/cover"
         android:id="@+id/cover_icon"
         android:layout_gravity="center"
         android:layout_margin="@dimen/margin_8"
-        android:src="@drawable/placeholder" />
+        android:src="@drawable/placeholder"
+        android:backgroundTint="@color/white"/>
 
     <LinearLayout
         android:layout_width="wrap_content"

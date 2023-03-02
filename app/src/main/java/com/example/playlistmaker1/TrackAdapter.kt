@@ -8,14 +8,21 @@ import android.widget.Adapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.NonDisposableHandle.parent
 
-class TrackAdapter(private val trackList: List<Track>) : RecyclerView.Adapter<TrackViewHolder>() {
+class TrackAdapter : RecyclerView.Adapter<TrackViewHolder>() {
+
+    var track = ArrayList<Track>()
+    fun deleteList(track: ArrayList<Track>, adapter: TrackAdapter ){
+        track.clear()
+        adapter.notifyDataSetChanged()
+
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = TrackViewHolder(parent)
 
-    override fun getItemCount(): Int = trackList.size
+    override fun getItemCount(): Int = track.size
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
-        holder.bind(trackList[position])
+        holder.bind(track[position])
 
     }
 

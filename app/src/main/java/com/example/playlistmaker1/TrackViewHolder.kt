@@ -25,7 +25,7 @@ class TrackViewHolder(parentView: ViewGroup) : RecyclerView.ViewHolder(
 
         trackName.text = track.trackName
         artistName.text = track.artistName
-        trackTime.text = track.trackTime
+        trackTime.text = track.trackTimeMillis
 
 
 
