@@ -52,7 +52,8 @@
             android:maxLines="1"
             android:paddingStart="@dimen/margin_20"
             android:paddingEnd="@dimen/margin_8"
-            android:singleLine="true" />
+            android:singleLine="true"
+            tools:ignore="TouchTargetSizeCheck" />
 
         <ImageView
             style="@style/ic_clear_style"
@@ -99,9 +100,11 @@
         android:visibility="invisible">
 
         <ImageView
-            style="@style/noSearchImage"/>
+            style="@style/noConnectImage" />
+
         <TextView
-            style="@style/noSearchText"/>
+            android:gravity="center"
+            style="@style/noConnectText"/>
 
         <Button
             android:id="@+id/refreshButton"
