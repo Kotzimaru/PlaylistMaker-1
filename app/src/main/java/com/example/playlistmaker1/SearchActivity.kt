@@ -79,6 +79,9 @@ class SearchActivity : AppCompatActivity() {
                 imm?.hideSoftInputFromWindow(view.windowToken, 0)
             }
             adapter.deleteList(track, adapter)
+            noConnectError.visibility = View.INVISIBLE
+            noSearchError.visibility = View.INVISIBLE
+            refreshButton.visibility = View.INVISIBLE
             visibleInvisibleClearButton(inputEditText, clearButton)
         }
 
@@ -134,6 +137,7 @@ class SearchActivity : AppCompatActivity() {
 
 
                         } else {
+                            adapter.deleteList(track, adapter)
                             noSearchError.visibility = View.VISIBLE
                             noConnectError.visibility = View.INVISIBLE
                             refreshButton.visibility = View.VISIBLE
@@ -141,6 +145,7 @@ class SearchActivity : AppCompatActivity() {
                         }
 
                     } else {
+                        adapter.deleteList(track, adapter)
                         noSearchError.visibility = View.INVISIBLE
                         noConnectError.visibility = View.VISIBLE
                         refreshButton.visibility = View.VISIBLE
