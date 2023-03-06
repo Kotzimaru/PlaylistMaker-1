@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="main_tint" format="reference" />
+    <attr name="statusBarColor" format="reference" />
+    <attr name="refreshButtonBackground" format="reference" />
+
 
 </resources>

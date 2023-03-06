@@ -106,15 +106,13 @@
             android:gravity="center"
             style="@style/noConnectText"/>
 
-        <Button
+        <ImageView
             android:id="@+id/refreshButton"
-            style="@style/refreshButton"
-            app:cornerRadius="@dimen/radius"
             android:layout_marginTop="@dimen/margin_8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-        </Button>
+            android:src="?attr/refreshButtonBackground"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
 
 
     </LinearLayout>

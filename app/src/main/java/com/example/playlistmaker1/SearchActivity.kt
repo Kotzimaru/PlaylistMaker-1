@@ -27,7 +27,7 @@ class SearchActivity : AppCompatActivity() {
     lateinit var inputEditText: EditText
     lateinit var clearButton: ImageView
     lateinit var recyclerView: RecyclerView
-    lateinit var refreshButton: Button
+    lateinit var refreshButton: ImageView
     lateinit var noConnectError: LinearLayout
     lateinit var noSearchError: LinearLayout
     private val appleBaseUrl = "https://itunes.apple.com"
@@ -62,10 +62,11 @@ class SearchActivity : AppCompatActivity() {
         }
 
         refreshButton.setOnClickListener{
-            searchTrack(noSearchError, noConnectError)
+            adapter.deleteList(track, adapter)
             noConnectError.visibility = View.INVISIBLE
             noSearchError.visibility = View.INVISIBLE
             refreshButton.visibility = View.INVISIBLE
+            searchTrack(noSearchError, noConnectError)
         }
 
         fun visibleInvisibleClearButton(inputEditText: EditText, clear: ImageView) {
@@ -155,6 +156,7 @@ class SearchActivity : AppCompatActivity() {
 
                 override fun onFailure(call: Call<AppleResponse>, t: Throwable) {
                     t.printStackTrace()
+                    adapter.deleteList(track, adapter)
                     noConnectError.visibility = View.VISIBLE
                     refreshButton.visibility = View.VISIBLE
                 }

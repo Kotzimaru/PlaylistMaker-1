@@ -31,7 +31,7 @@
     <style name="settings">
 
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/setting_menu_height</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_gravity">start</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:textColor">#F8F4F4</item>
@@ -132,17 +132,6 @@
 
     </style>
 
-    <style name="refreshButton">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_gravity">center</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:text">@string/refresh</item>
-        <item name="android:textColor">@color/edit</item>
-        <item name="backgroundTint">@color/black</item>
-    </style>
-
 
     <style name="main">
 
@@ -150,4 +139,3 @@
 
     </style>
 </resources>
-
