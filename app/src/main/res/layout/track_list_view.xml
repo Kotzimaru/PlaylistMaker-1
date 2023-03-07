@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingVertical="@dimen/margin_8"
+    style="@style/settings">
+
+    <ImageView
+        style="@style/image"
+        android:id="@+id/cover_icon"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/margin_8"
+        android:src="@drawable/placeholder" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        style="@style/settings"
+        >
+
+        <TextView
+            android:id="@+id/track_name"
+            style="@style/playlist2"
+            android:layout_marginTop="@dimen/margin_8"
+            tools:text="Smells Like Teen Spirit" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/settings">
+
+            <TextView
+                android:id="@+id/artist_name"
+                style="@style/playlist1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_8"
+                android:drawablePadding="@dimen/margin_8"
+                app:drawableEndCompat="@drawable/ellipse"
+                tools:text="Nirvana" />
+
+            <TextView
+                android:id="@+id/track_time"
+                style="@style/playlist1"
+                tools:text="5:01" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/settings">
+
+    <ImageView
+        style="@style/image_arrow_back"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_arrow_forward"
+        app:tint="@color/grey" />
+    </FrameLayout>
+
+</LinearLayout>

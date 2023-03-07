@@ -4,6 +4,8 @@ import android.content.Intent
 import  androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageView
+import com.bumptech.glide.Glide
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,8 +30,6 @@ class MainActivity : AppCompatActivity() {
         settingsButton.setOnClickListener {
             val settingsDisplayIntent = Intent(this, SettingsActivity::class.java)
             startActivity(settingsDisplayIntent)}
-
-
 
 
     }
