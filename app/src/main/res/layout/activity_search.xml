@@ -41,18 +41,19 @@
             style="@style/edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_4"
             android:background="@drawable/rounded_edittext"
             android:backgroundTint="@color/edit"
+            android:drawableStart="@drawable/ic_search_edit"
+            android:drawablePadding="@dimen/size_dp_15"
             android:hint="@string/search"
+            android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLines="1"
-            android:layout_margin="@dimen/margin_4"
-            android:drawableStart="@drawable/ic_search_edit"
             android:paddingStart="@dimen/margin_20"
             android:paddingEnd="@dimen/margin_8"
-            android:drawablePadding="@dimen/size_dp_15"
-
-            />
+            android:singleLine="true"
+            tools:ignore="TouchTargetSizeCheck" />
 
         <ImageView
             style="@style/ic_clear_style"
@@ -63,13 +64,62 @@
             tools:visibility="invisible" />
 
 
+
+
     </FrameLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+
+    <LinearLayout
+        android:id="@+id/noSearchError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/margin_20"
+        android:orientation="vertical"
+        android:visibility="invisible">
+
+        <ImageView
+            style="@style/noSearchImage"/>
+        <TextView
+            style="@style/noSearchText"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/noConnectError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/margin_20"
+        android:orientation="vertical"
+        android:visibility="invisible">
+
+        <ImageView
+            style="@style/noConnectImage" />
+
+        <TextView
+            android:gravity="center"
+            style="@style/noConnectText"/>
+
+        <ImageView
+            android:id="@+id/refreshButton"
+            android:layout_marginTop="@dimen/margin_8"
+            android:src="?attr/refreshButtonBackground"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
+
+
+    </LinearLayout>
+
+
+
+
 
 
 

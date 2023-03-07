@@ -5,12 +5,18 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import retrofit2.*
+import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity() {
 
@@ -18,54 +24,67 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         var text: String? = "";
     }
+    lateinit var inputEditText: EditText
+    lateinit var clearButton: ImageView
+    lateinit var recyclerView: RecyclerView
+    lateinit var refreshButton: ImageView
+    lateinit var noConnectError: LinearLayout
+    lateinit var noSearchError: LinearLayout
+    private val appleBaseUrl = "https://itunes.apple.com"
+
+    private val retrofit: Retrofit = Retrofit.Builder().baseUrl(appleBaseUrl)
+        .addConverterFactory(GsonConverterFactory.create()).build()
+
+    private val appleService = retrofit.create<AppleApi>()
+
+    private val track = ArrayList<Track>()
+    private val adapter = TrackAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        val inputEditText = findViewById<EditText>(R.id.inputEditText)
-        val clearButton = findViewById<ImageView>(R.id.clearButton)
-        val recyclerView = findViewById<RecyclerView>(R.id.recycler_view)
+        inputEditText = findViewById(R.id.inputEditText)
+        clearButton = findViewById(R.id.clearButton)
+        recyclerView = findViewById(R.id.recycler_view)
+        refreshButton = findViewById(R.id.refreshButton)
+        noSearchError = findViewById(R.id.noSearchError)
+        noConnectError = findViewById(R.id.noConnectError)
+
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val trackList = arrayListOf(
-            Track(
-                "Smells Like Teen Spirit",
-                "Nirvana",
-                "5:01",
-                "https://is5-ssl.mzstatic.com/image/thumb/Music115/v4/7b/58/c2/7b58c21a-2b51-2bb2-e59a-9bb9b96ad8c3/00602567924166.rgb.jpg/100x100bb.jpg"
-            ), Track(
-                "Billie Jean",
-                "Michael Jackson",
-                "4:35",
-                "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/3d/9d/38/3d9d3811-71f0-3a0e-1ada-3004e56ff852/827969428726.jpg/100x100bb.jpg"
-            ), Track(
-                "Stayin' Alive",
-                "Bee Gees",
-                "4:10",
-                "https://is4-ssl.mzstatic.com/image/thumb/Music115/v4/1f/80/1f/1f801fc1-8c0f-ea3e-d3e5-387c6619619e/16UMGIM86640.rgb.jpg/100x100bb.jpg"
-            ), Track(
-                "Whole Lotta Love",
-                "Led Zeppelin",
-                "5:33",
-                "https://is2-ssl.mzstatic.com/image/thumb/Music62/v4/7e/17/e3/7e17e33f-2efa-2a36-e916-7f808576cf6b/mzm.fyigqcbs.jpg/100x100bb.jpg"
-            ), Track(
-                "Sweet Child O'Mine",
-                "Guns N' Roses",
-                "5:03",
-                "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/100x100bb.jpg"
-            )
-        )
 
-        val trackAdapter = TrackAdapter(trackList)
-        recyclerView.adapter = trackAdapter
+        recyclerView.adapter = adapter
 
 
         findViewById<ImageView>(R.id.arrow_back).setOnClickListener {
             finish()
         }
 
+        refreshButton.setOnClickListener{
+            adapter.deleteList(track, adapter)
+            noConnectError.visibility = View.INVISIBLE
+            noSearchError.visibility = View.INVISIBLE
+            refreshButton.visibility = View.INVISIBLE
+            searchTrack(noSearchError, noConnectError)
+        }
 
+        fun visibleInvisibleClearButton(inputEditText: EditText, clear: ImageView) {
+            clear.isVisible = !inputEditText.text.isEmpty()
+        }
+
+        clearButton.setOnClickListener{
+            inputEditText.text.clear()
+            this.currentFocus?.let { view ->
+                val imm = getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
+                imm?.hideSoftInputFromWindow(view.windowToken, 0)
+            }
+            adapter.deleteList(track, adapter)
+            noConnectError.visibility = View.INVISIBLE
+            noSearchError.visibility = View.INVISIBLE
+            refreshButton.visibility = View.INVISIBLE
+            visibleInvisibleClearButton(inputEditText, clearButton)
+        }
 
         if (savedInstanceState != null) {
 
@@ -76,41 +95,76 @@ class SearchActivity : AppCompatActivity() {
         }
 
 
-            val simpleTextWatcher = object : TextWatcher {
-                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+        val simpleTextWatcher = object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
 
-                override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                    visibleInvisibleClearButton(inputEditText, clearButton)
-                    text = p0.toString();
-                }
-
-                override fun afterTextChanged(p0: Editable?) {}
-            }
-
-            inputEditText.addTextChangedListener(simpleTextWatcher)
-
-            clearButton.setOnClickListener {
-                inputEditText.text.clear()
-                this.currentFocus?.let { view ->
-                    val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-                    imm?.hideSoftInputFromWindow(view.windowToken, 0)
-                }
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 visibleInvisibleClearButton(inputEditText, clearButton)
+                text = p0.toString();
             }
 
+            override fun afterTextChanged(p0: Editable?) {}
         }
 
-        override fun onSaveInstanceState(outState: Bundle) {
-            super.onSaveInstanceState(outState)
-            outState.putString("textSearch", text)
-        }
+        inputEditText.addTextChangedListener(simpleTextWatcher)
 
-
-        private fun visibleInvisibleClearButton(inputEditText: EditText, clear: ImageView) {
-
-            clear.isVisible = !inputEditText.text.isEmpty()
-
+        inputEditText.setOnEditorActionListener{_, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                searchTrack(noSearchError, noConnectError)// ВЫПОЛНЯЙТЕ ПОИСКОВЫЙ ЗАПРОС ЗДЕСЬ
+                true
+            }
+            false
         }
 
     }
 
+
+
+    private fun searchTrack(noSearchError: LinearLayout, noConnectError: LinearLayout) {
+        appleService.search(inputEditText.text.toString())
+            .enqueue(object : Callback<AppleResponse> {
+                override fun onResponse(
+                    call: Call<AppleResponse>,
+                    response: Response<AppleResponse>
+                ) {
+                    if (response.isSuccessful) {
+
+                        if (response.body()?.results?.isNotEmpty() == true) {
+                            adapter.deleteList(track, adapter)
+                            track.addAll(response.body()?.results!!)
+                            recyclerView.visibility = View.VISIBLE
+                            adapter.track = track
+                            adapter.notifyDataSetChanged()
+
+
+                        } else {
+                            adapter.deleteList(track, adapter)
+                            noSearchError.visibility = View.VISIBLE
+                            noConnectError.visibility = View.INVISIBLE
+                            refreshButton.visibility = View.VISIBLE
+
+                        }
+
+                    } else {
+                        adapter.deleteList(track, adapter)
+                        noSearchError.visibility = View.INVISIBLE
+                        noConnectError.visibility = View.VISIBLE
+                        refreshButton.visibility = View.VISIBLE
+
+                    }
+                }
+
+                override fun onFailure(call: Call<AppleResponse>, t: Throwable) {
+                    t.printStackTrace()
+                    adapter.deleteList(track, adapter)
+                    noConnectError.visibility = View.VISIBLE
+                    refreshButton.visibility = View.VISIBLE
+                }
+            })
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("textSearch", text)
+    }
+}
