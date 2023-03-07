@@ -26,8 +26,8 @@ class MainActivity : AppCompatActivity() {
 
 
         settingsButton.setOnClickListener {
-            val settingDisplayIntent = Intent(this, SettingsActivity::class.java)
-            startActivity(settingDisplayIntent)}
+            val settingsDisplayIntent = Intent(this, SettingsActivity::class.java)
+            startActivity(settingsDisplayIntent)}
 
 
 
