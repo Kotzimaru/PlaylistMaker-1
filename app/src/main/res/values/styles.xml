@@ -162,4 +162,16 @@
 
     </style>
 
+    <style name="textHistory">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+    </style>
+
+
+    <style name="buttonHistory">
+
+        <item name="android:backgroundTint">@color/black</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
 </resources>

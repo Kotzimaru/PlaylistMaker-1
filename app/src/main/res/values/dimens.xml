@@ -2,7 +2,8 @@
 <resources>
     <dimen name="setting_menu_height">51dp</dimen>
     <dimen name="bottom_height">220dp</dimen>
-    <dimen name="radius">16dp</dimen>
+    <dimen name="radius_16">16dp</dimen>
+    <dimen name="radius_24">24dp</dimen>
     <dimen name="radius_2">2dp</dimen>
     <dimen name="marginBottom">28dp</dimen>
     <dimen name="margin_4">4dp</dimen>
@@ -12,6 +13,7 @@
     <dimen name="size_dp_15">15dp</dimen>
     <dimen name="text_size_32">32sp</dimen>
     <dimen name="text_size_22">22sp</dimen>
+    <dimen name="text_size_19">19sp</dimen>
     <dimen name="text_size_11">11sp</dimen>
     <dimen name="text_size_16">16sp</dimen>
 

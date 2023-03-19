@@ -11,9 +11,9 @@ import kotlinx.coroutines.NonDisposableHandle.parent
 class TrackAdapter : RecyclerView.Adapter<TrackViewHolder>() {
 
     var track = ArrayList<Track>()
-    fun deleteList(track: ArrayList<Track>, adapter: TrackAdapter ){
+    var history: SearchHistory? = null
+    fun deleteList(track: ArrayList<Track>, adapter: TrackAdapter){
         track.clear()
-        adapter.notifyDataSetChanged()
 
     }
 
@@ -22,9 +22,10 @@ class TrackAdapter : RecyclerView.Adapter<TrackViewHolder>() {
     override fun getItemCount(): Int = track.size
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
-        holder.bind(track[position])
+        holder.bind(track[position], history!!)
 
     }
 
 }
+
 
