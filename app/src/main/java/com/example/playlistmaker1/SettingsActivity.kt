@@ -42,6 +42,7 @@ class SettingsActivity : AppCompatActivity() {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_offer)))
             startActivity(intent)
         }
+        themeSwitcher.isChecked = (applicationContext as App).darkTheme
 
     }
 }

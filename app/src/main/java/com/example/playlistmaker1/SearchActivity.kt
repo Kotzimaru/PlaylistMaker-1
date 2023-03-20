@@ -33,8 +33,8 @@ class SearchActivity : AppCompatActivity() {
     lateinit var clearHistory: Button
     lateinit var textHistory: TextView
     var sharedPreferencesCopy: SharedPreferences? = null
-    val searchHistory: SearchHistory by lazy{
-        SearchHistory(sharedPreferencesCopy!!)
+    private val searchHistory: SearchHistory by lazy{
+            SearchHistory(sharedPreferencesCopy!!)
     }
     private lateinit var noConnectError: LinearLayout
     lateinit var noSearchError: LinearLayout
@@ -47,6 +47,7 @@ class SearchActivity : AppCompatActivity() {
 
     private val track = ArrayList<Track>()
     private val adapter = TrackAdapter()
+
     //private val adapterHistory = TrackAdapter()
 
     @SuppressLint("NotifyDataSetChanged")
@@ -70,11 +71,7 @@ class SearchActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
         showHistory()
-        //recyclerViewHistory.layoutManager = LinearLayoutManager(this)
-        //recyclerViewHistory.adapter = adapterHistory
-
-        //отображения крестика
-
+        visibleInvisibleClearButton(inputEditText, clearIconButton)
 
         if (savedInstanceState != null) {
 
@@ -105,6 +102,7 @@ class SearchActivity : AppCompatActivity() {
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 searchTrack(noConnectError, noSearchError)
+                clearHistory.visibility = View.INVISIBLE
                 true
             }
             false
@@ -122,14 +120,11 @@ class SearchActivity : AppCompatActivity() {
         //фокус на поле ввода
         inputEditText.setOnFocusChangeListener { _, hasFocus ->
             adapter.track = ArrayList()
+            showHistory()
             adapter.notifyDataSetChanged()
-            textHistory.visibility = if (hasFocus) View.INVISIBLE else View.VISIBLE
-            clearHistory.visibility = if (hasFocus) View.INVISIBLE else View.VISIBLE
+            textHistory.visibility = if (hasFocus) View.VISIBLE else View.INVISIBLE
+            clearHistory.visibility = if (hasFocus) View.VISIBLE else View.INVISIBLE
         }
-
-        //сохраняем в историю
-
-
         adapter.history = searchHistory
 
 
@@ -153,9 +148,9 @@ class SearchActivity : AppCompatActivity() {
             inputEditText.text.clear()
             noSearchError.visibility = View.INVISIBLE
             noConnectError.visibility = View.INVISIBLE
-            adapter.track = ArrayList()
+            showHistory()
             adapter.notifyDataSetChanged()
-            recyclerView.adapter = adapter
+            //recyclerView.adapter = adapter
             this.currentFocus?.let { view ->
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
                 imm?.hideSoftInputFromWindow(view.windowToken, 0)
