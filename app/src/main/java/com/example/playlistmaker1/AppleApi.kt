@@ -10,5 +10,3 @@ interface AppleApi {
     @GET("/search?entity=song")
     fun search(@Query("term") text: String): Call<AppleResponse>
 }
-
-class SearchResponse(val results: ArrayList<Track>)

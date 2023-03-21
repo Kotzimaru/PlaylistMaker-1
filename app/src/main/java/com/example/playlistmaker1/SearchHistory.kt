@@ -11,12 +11,12 @@ class SearchHistory (sharedPreferences: SharedPreferences) {
         sharedPrefs = sharedPreferences
     }
 
-    fun get(): Array<Track>{
+    fun get(): Array<TrackDTO>{
         val saveJson = sharedPrefs.getString(KEY_LIST_TRACKS, "[ ]")
-        return Gson().fromJson(saveJson, Array<Track>::class.java)
+        return Gson().fromJson(saveJson, Array<TrackDTO>::class.java)
     }
 
-    fun add(track: Track) {
+    fun add(track: TrackDTO) {
         val listObjects = get().filter { it.trackId != track.trackId }.toMutableList()
         if ( listObjects.size >= 10 ) {
             listObjects.removeLast()

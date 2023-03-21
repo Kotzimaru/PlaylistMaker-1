@@ -3,12 +3,14 @@
     <dimen name="setting_menu_height">51dp</dimen>
     <dimen name="bottom_height">220dp</dimen>
     <dimen name="radius_16">16dp</dimen>
+    <dimen name="radius_8">8dp</dimen>
     <dimen name="radius_24">24dp</dimen>
     <dimen name="radius_2">2dp</dimen>
     <dimen name="marginBottom">28dp</dimen>
     <dimen name="margin_4">4dp</dimen>
     <dimen name="margin_8">8dp</dimen>
     <dimen name="margin_12">12dp</dimen>
+    <dimen name="margin_16">16dp</dimen>
     <dimen name="margin_20">20dp</dimen>
     <dimen name="size_dp_15">15dp</dimen>
     <dimen name="text_size_32">32sp</dimen>
