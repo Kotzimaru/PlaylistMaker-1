@@ -7,7 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
+import com.google.android.material.switchmaterial.SwitchMaterial
 
+
+const val PRACTICUM_EXAMPLE_PREFERENCES = "practicum_example_preferences"
 class SettingsActivity : AppCompatActivity() {
     @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,11 +31,18 @@ class SettingsActivity : AppCompatActivity() {
             startActivity(Intent.createChooser(intent,"Send Email"))
         }
 
+        val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
+
+        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+            (applicationContext as App).switchTheme(checked)
+        }
+
 
         findViewById<ImageView>(R.id.offer).setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_offer)))
             startActivity(intent)
         }
+        themeSwitcher.isChecked = (applicationContext as App).darkTheme
 
     }
 }

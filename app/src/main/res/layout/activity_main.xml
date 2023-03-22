@@ -23,7 +23,7 @@
         android:id="@+id/search_button"
         android:text="@string/search"
         android:backgroundTint="@color/white"
-        app:cornerRadius="@dimen/radius"
+        app:cornerRadius="@dimen/radius_16"
         app:icon="@drawable/ic_search"
         app:iconGravity="textStart"
         app:iconTint="@color/black"
@@ -36,7 +36,7 @@
         android:backgroundTint="@color/white"
         app:icon="@drawable/ic_media"
         app:iconTint="@color/black"
-        app:cornerRadius="@dimen/radius"
+        app:cornerRadius="@dimen/radius_16"
         />
 
     <Button
@@ -47,6 +47,6 @@
         app:icon="@drawable/ic_settings"
         app:iconTint="@color/black"
         android:layout_marginBottom="@dimen/size_dp_15"
-        app:cornerRadius="@dimen/radius"
+        app:cornerRadius="@dimen/radius_16"
         />
 </LinearLayout>
