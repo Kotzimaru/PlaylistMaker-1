@@ -13,7 +13,7 @@ import java.util.*
 
 class PlayerActivity : AppCompatActivity() {
 
-    private lateinit var backButton: androidx.appcompat.widget.Toolbar
+    private lateinit var backButton: ImageView
     private lateinit var coverImage: ImageView
     private lateinit var trackName: TextView
     private lateinit var artistName: TextView
@@ -33,11 +33,10 @@ class PlayerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_player)
 
         viewSetting()
-        settingListeners()
     }
 
     private fun viewSetting() {
-        backButton = findViewById(R.id.back_icon)
+        backButton = findViewById(R.id.arrow_back)
         coverImage = findViewById(R.id.cover)
         trackName = findViewById(R.id.track_name)
         artistName = findViewById(R.id.artist_name)
@@ -67,14 +66,13 @@ class PlayerActivity : AppCompatActivity() {
         genre.text = track.primaryGenreName
         country.text = track.country
 
-    }
 
-    private fun settingListeners() {
-
-        backButton.setNavigationOnClickListener {
+        findViewById<ImageView>(R.id.arrow_back).setOnClickListener {
             finish()
         }
     }
+
+
 
     companion object {
         const val TRACK_DTO = "track_dto"
