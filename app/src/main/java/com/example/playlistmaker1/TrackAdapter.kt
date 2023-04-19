@@ -1,23 +1,20 @@
 package com.example.playlistmaker1
 
-import android.text.Layout
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.NonDisposableHandle.parent
 
-class TrackAdapter : RecyclerView.Adapter<TrackViewHolder>() {
+class TrackAdapter() : RecyclerView.Adapter<TrackViewHolder>() {
 
-    var track = ArrayList<Track>()
+    lateinit var view: AppCompatActivity
+    var track = ArrayList<TrackDTO>()
     var history: SearchHistory? = null
-    fun deleteList(track: ArrayList<Track>, adapter: TrackAdapter){
+    fun deleteList(track: ArrayList<TrackDTO>, adapter: TrackAdapter){
         track.clear()
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = TrackViewHolder(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = TrackViewHolder(parent, view)
 
     override fun getItemCount(): Int = track.size
 
@@ -25,6 +22,7 @@ class TrackAdapter : RecyclerView.Adapter<TrackViewHolder>() {
         holder.bind(track[position], history!!)
 
     }
+
 
 }
 

@@ -18,5 +18,11 @@
     <string name="clearHistory">Очистить историю</string>
     <string name="storySearch">Вы искали</string>
     <string name="something_went_wrong">Проблемы со связью\n\nЗагрузка не удалась. Проверьте\nподключение к интернету</string>
+    <string name="duration">Длительность</string>
+    <string name="album">Альбом</string>
+    <string name="year">Год</string>
+    <string name="genre">Жанр</string>
+    <string name="country">Страна</string>
+    <string name="excerpt_duration">5:31</string>
 
 </resources>

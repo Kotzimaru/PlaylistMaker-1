@@ -3,7 +3,6 @@ package com.example.playlistmaker1
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,6 +10,7 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,7 +28,6 @@ class SearchActivity : AppCompatActivity() {
     lateinit var inputEditText: EditText
     lateinit var clearIconButton: ImageView
     lateinit var recyclerView: RecyclerView
-    //lateinit var recyclerViewHistory: RecyclerView
     lateinit var refreshButton: ImageView
     lateinit var clearHistory: Button
     lateinit var textHistory: TextView
@@ -45,10 +44,9 @@ class SearchActivity : AppCompatActivity() {
 
     private val appleService = retrofit.create<AppleApi>()
 
-    private val track = ArrayList<Track>()
+    private val track = ArrayList<TrackDTO>()
     private val adapter = TrackAdapter()
 
-    //private val adapterHistory = TrackAdapter()
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +55,8 @@ class SearchActivity : AppCompatActivity() {
 
         sharedPreferencesCopy = getSharedPreferences(SearchHistory.KEY_LIST_TRACKS, MODE_PRIVATE)
 
+
+        adapter.view = this
 
         inputEditText = findViewById(R.id.inputEditText)
         clearIconButton = findViewById(R.id.clearIconButton)
@@ -93,6 +93,11 @@ class SearchActivity : AppCompatActivity() {
         }
 
 
+        /*val intent = Intent(this, PlayerActivity::class.java).apply {
+            putExtra("track_dto", Gson().toJson(track))
+        }
+        startActivity(intent)*/
+
         // кнопка назад
         findViewById<ImageView>(R.id.arrow_back).setOnClickListener {
             finish()
@@ -115,6 +120,8 @@ class SearchActivity : AppCompatActivity() {
             refreshButton.visibility = View.INVISIBLE
             searchTrack(noSearchError, noConnectError)
         }
+
+
 
 
         //фокус на поле ввода
@@ -224,4 +231,5 @@ class SearchActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
         outState.putString("textSearch", text)
     }
+
 }

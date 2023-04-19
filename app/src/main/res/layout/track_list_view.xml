@@ -52,7 +52,7 @@
             <TextView
                 android:id="@+id/track_time"
                 style="@style/playlist1"
-                tools:text="5:01" />
+                tools:text="@string/excerpt_duration" />
 
         </LinearLayout>
     </LinearLayout>

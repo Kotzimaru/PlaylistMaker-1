@@ -20,6 +20,9 @@
         tools:overrideLibrary="androidx.wear.tiles.material"
         tools:targetApi="33"
         >
+        <activity
+            android:name=".PlayerActivity"
+            android:exported="false" />
 
         <activity
             android:name=".MediaActivity"
