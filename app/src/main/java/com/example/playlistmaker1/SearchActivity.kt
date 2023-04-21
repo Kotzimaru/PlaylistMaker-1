@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -23,6 +25,8 @@ class SearchActivity : AppCompatActivity() {
 
     companion object {
         var text: String? = ""
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 
     lateinit var inputEditText: EditText
@@ -30,7 +34,8 @@ class SearchActivity : AppCompatActivity() {
     lateinit var recyclerView: RecyclerView
     lateinit var refreshButton: ImageView
     lateinit var clearHistory: Button
-    lateinit var textHistory: TextView
+    private lateinit var textHistory: TextView
+    lateinit var progressBar: ProgressBar
     var sharedPreferencesCopy: SharedPreferences? = null
     private val searchHistory: SearchHistory by lazy{
             SearchHistory(sharedPreferencesCopy!!)
@@ -46,7 +51,9 @@ class SearchActivity : AppCompatActivity() {
 
     private val track = ArrayList<TrackDTO>()
     private val adapter = TrackAdapter()
-
+    private var isClickAllowed = true
+    private val handler = Handler(Looper.getMainLooper())
+    private val searchRunnable = Runnable { searchTrack(noSearchError, noConnectError)}
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,12 +68,13 @@ class SearchActivity : AppCompatActivity() {
         inputEditText = findViewById(R.id.inputEditText)
         clearIconButton = findViewById(R.id.clearIconButton)
         recyclerView = findViewById(R.id.recycler_view)
-        //recyclerViewHistory = findViewById(R.id.recycler_view_history)
         refreshButton = findViewById(R.id.refreshButton)
         noSearchError = findViewById(R.id.noSearchError)
         clearHistory = findViewById(R.id.clearHistory)
         textHistory = findViewById(R.id.textHistory)
         noConnectError = findViewById(R.id.noConnectError)
+        progressBar = findViewById(R.id.progressBar)
+
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
@@ -143,6 +151,11 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 visibleInvisibleClearButton(inputEditText, clearIconButton)
                 text = p0.toString()
+
+                searchDebounce()
+                /*if (text == "") {
+                    adapter.deleteList(track, adapter)
+                }*/
             }
 
             override fun afterTextChanged(p0: Editable?) {}
@@ -181,15 +194,23 @@ class SearchActivity : AppCompatActivity() {
 
     //поиск треков API
     private fun searchTrack(noSearchError: LinearLayout, noConnectError: LinearLayout) {
+        if (inputEditText.text.isNotEmpty()) {
+            progressBar.visibility = View.VISIBLE
+        }
+
         appleService.search(inputEditText.text.toString())
             .enqueue(object : Callback<AppleResponse> {
+
                 override fun onResponse(
                     call: Call<AppleResponse>,
                     response: Response<AppleResponse>
                 ) {
+                    progressBar.visibility = View.GONE
+
                     if (response.isSuccessful) {
 
                         if (response.body()?.results?.isNotEmpty() == true) {
+                            //progressBar.visibility = View.INVISIBLE
                             adapter.deleteList(track, adapter)
                             track.addAll(response.body()?.results!!)
                             recyclerView.visibility = View.VISIBLE
@@ -216,6 +237,7 @@ class SearchActivity : AppCompatActivity() {
 
                 override fun onFailure(call: Call<AppleResponse>, t: Throwable) {
                     t.printStackTrace()
+                    progressBar.visibility = View.GONE
                     adapter.deleteList(track, adapter)
                     noConnectError.visibility = View.VISIBLE
                     refreshButton.visibility = View.VISIBLE
@@ -231,5 +253,30 @@ class SearchActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
         outState.putString("textSearch", text)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        handler.removeCallbacks(searchRunnable)
+    }
+
+    private fun clickDebounce(): Boolean {
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
+    }
+
+    private fun searchDebounce() {
+        handler.removeCallbacks(searchRunnable)
+        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
+
+    /*private fun hideKeyboard() {
+        val inputMethodManager =
+            getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        inputMethodManager?.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+    }*/
 
 }

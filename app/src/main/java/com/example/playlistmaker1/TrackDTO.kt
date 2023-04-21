@@ -6,6 +6,7 @@ data class TrackDTO(
     val artistName: String,
     val trackTimeMillis: Int,
     val artworkUrl100: String,
+    val previewUrl: String,
     val collectionName: String,
     val country: String,
     val primaryGenreName: String,
