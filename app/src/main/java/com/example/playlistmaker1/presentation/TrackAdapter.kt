@@ -1,8 +1,10 @@
-package com.example.playlistmaker1
+package com.example.playlistmaker1.presentation
 
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker1.domain.entities.SearchHistory
+import com.example.playlistmaker1.data.dto.TrackDTO
 
 class TrackAdapter() : RecyclerView.Adapter<TrackViewHolder>() {
 

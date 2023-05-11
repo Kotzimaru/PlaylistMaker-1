@@ -1,4 +1,4 @@
-package com.example.playlistmaker1
+package com.example.playlistmaker1.ui
 
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -11,6 +11,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.playlistmaker1.R
+import com.example.playlistmaker1.data.dto.TrackDTO
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.*

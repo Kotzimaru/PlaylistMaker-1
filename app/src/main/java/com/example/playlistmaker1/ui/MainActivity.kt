@@ -1,11 +1,10 @@
-package com.example.playlistmaker1
+package com.example.playlistmaker1.ui
 
 import android.content.Intent
 import  androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import android.widget.ImageView
-import com.bumptech.glide.Glide
+import com.example.playlistmaker1.R
 
 class MainActivity : AppCompatActivity() {
 

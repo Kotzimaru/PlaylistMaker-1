@@ -1,4 +1,4 @@
-package com.example.playlistmaker1
+package com.example.playlistmaker1.presentation
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -9,6 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.playlistmaker1.R
+import com.example.playlistmaker1.domain.entities.SearchHistory
+import com.example.playlistmaker1.data.dto.TrackDTO
+import com.example.playlistmaker1.ui.PlayerActivity
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.*

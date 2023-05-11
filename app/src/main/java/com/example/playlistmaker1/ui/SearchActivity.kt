@@ -1,4 +1,4 @@
-package com.example.playlistmaker1
+package com.example.playlistmaker1.ui
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -16,7 +16,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker1.SearchHistory.Companion.KEY_LIST_TRACKS
+import com.example.playlistmaker1.R
+import com.example.playlistmaker1.data.dto.AppleResponse
+import com.example.playlistmaker1.data.dto.TrackDTO
+import com.example.playlistmaker1.domain.api.AppleApi
+import com.example.playlistmaker1.domain.entities.SearchHistory
+import com.example.playlistmaker1.domain.entities.SearchHistory.Companion.KEY_LIST_TRACKS
+import com.example.playlistmaker1.presentation.TrackAdapter
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 

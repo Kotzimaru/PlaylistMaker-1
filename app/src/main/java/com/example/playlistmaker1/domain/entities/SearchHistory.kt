@@ -1,6 +1,7 @@
-package com.example.playlistmaker1
+package com.example.playlistmaker1.domain.entities
 
 import android.content.SharedPreferences
+import com.example.playlistmaker1.data.dto.TrackDTO
 import com.google.gson.Gson
 
 class SearchHistory (sharedPreferences: SharedPreferences) {
