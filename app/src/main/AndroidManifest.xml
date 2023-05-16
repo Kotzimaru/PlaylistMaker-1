@@ -21,18 +21,18 @@
         tools:targetApi="33"
         >
         <activity
-            android:name=".ui.PlayerActivity"
+            android:name=".presentation.ui.PlayerActivity"
             android:exported="false" />
 
         <activity
-            android:name=".ui.MediaActivity"
+            android:name=".presentation.ui.MediaActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.SearchActivity"
+            android:name=".presentation.ui.SearchActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -46,7 +46,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".presentation.ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
