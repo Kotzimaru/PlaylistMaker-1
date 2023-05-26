@@ -17,6 +17,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker1.SearchHistory.Companion.KEY_LIST_TRACKS
+import com.example.playlistmaker1.player.domain.TrackDTO
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 

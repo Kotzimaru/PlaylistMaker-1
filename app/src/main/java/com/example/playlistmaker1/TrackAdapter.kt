@@ -3,6 +3,7 @@ package com.example.playlistmaker1
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker1.player.domain.TrackDTO
 
 class TrackAdapter() : RecyclerView.Adapter<TrackViewHolder>() {
 

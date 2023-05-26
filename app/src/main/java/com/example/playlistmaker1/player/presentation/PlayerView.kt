@@ -4,4 +4,5 @@ interface PlayerView {
     fun setImage(image: Int)
     fun setCurrentTime(time: String)
     fun goBack()
+
 }

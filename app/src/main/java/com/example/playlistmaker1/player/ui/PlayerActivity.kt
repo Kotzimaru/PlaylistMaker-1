@@ -1,10 +1,6 @@
 package com.example.playlistmaker1.player.ui
 
-import android.media.MediaPlayer
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.view.animation.AnimationUtils
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -12,14 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker1.R
-import com.example.playlistmaker1.SearchActivity
-import com.example.playlistmaker1.TrackDTO
-import com.example.playlistmaker1.player.data.PlayerState
+import com.example.playlistmaker1.player.domain.TrackDTO
+import com.example.playlistmaker1.player.domain.PlayerState
 import com.example.playlistmaker1.player.presentation.PlayerPresenter
 import com.example.playlistmaker1.player.presentation.PlayerView
 import com.google.gson.Gson
-import java.text.SimpleDateFormat
-import java.util.*
 
 class PlayerActivity : AppCompatActivity(), PlayerView {
 

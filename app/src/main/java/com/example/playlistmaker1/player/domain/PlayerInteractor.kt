@@ -1,12 +1,11 @@
 package com.example.playlistmaker1.player.domain
 
-import com.example.playlistmaker1.TrackDTO
 import com.example.playlistmaker1.player.data.MediaPlayerListener
-import com.example.playlistmaker1.player.data.PlayerRepository
+import com.example.playlistmaker1.player.data.PlayerRepositoryImpl
 
 class PlayerInteractor(private val playerStateListener: PlayerStateListener) : MediaPlayerListener {
 
-    private val playerRepository = PlayerRepository(this)
+    private val playerRepository: PlayerRepository = PlayerRepositoryImpl(this)
 
     fun start() {
         playerRepository.start()

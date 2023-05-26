@@ -3,15 +3,12 @@ package com.example.playlistmaker1.player.presentation
 import android.os.Handler
 import android.os.Looper
 import com.example.playlistmaker1.R
-import com.example.playlistmaker1.TrackDTO
-import com.example.playlistmaker1.player.data.PlayerState
-import com.example.playlistmaker1.player.data.PlayerState.Companion.CURRENT_TIME_ZERO
-import com.example.playlistmaker1.player.data.PlayerState.Companion.RELOAD_PROGRESS
-import com.example.playlistmaker1.player.data.PlayerState.Companion.STATE_PAUSED
-import com.example.playlistmaker1.player.data.PlayerState.Companion.STATE_PLAYING
-import com.example.playlistmaker1.player.data.PlayerState.Companion.STATE_PREPARED
-import com.example.playlistmaker1.player.domain.PlayerInteractor
-import com.example.playlistmaker1.player.domain.PlayerStateListener
+import com.example.playlistmaker1.player.domain.*
+import com.example.playlistmaker1.player.domain.PlayerState.Companion.CURRENT_TIME_ZERO
+import com.example.playlistmaker1.player.domain.PlayerState.Companion.RELOAD_PROGRESS
+import com.example.playlistmaker1.player.domain.PlayerState.Companion.STATE_PAUSED
+import com.example.playlistmaker1.player.domain.PlayerState.Companion.STATE_PLAYING
+import com.example.playlistmaker1.player.domain.PlayerState.Companion.STATE_PREPARED
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -21,7 +18,7 @@ private const val pause = R.drawable.button_pause
 
 class PlayerPresenter(private val view: PlayerView) : PlayerStateListener {
 
-    private val interactor = PlayerInteractor(this)
+     private val interactor = PlayerInteractor(this)
 
     val mainHandler: Handler = Handler(Looper.getMainLooper())
     private var playerState = PlayerState.STATE_DEFAULT
