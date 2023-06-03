@@ -3,6 +3,8 @@ package com.example.playlistmaker1.player.presentation
 import android.os.Handler
 import android.os.Looper
 import com.example.playlistmaker1.R
+import com.example.playlistmaker1.player.creator.Creator
+import com.example.playlistmaker1.player.data.PlayerStateListener
 import com.example.playlistmaker1.player.domain.*
 import com.example.playlistmaker1.player.domain.PlayerState.Companion.CURRENT_TIME_ZERO
 import com.example.playlistmaker1.player.domain.PlayerState.Companion.RELOAD_PROGRESS
@@ -18,7 +20,7 @@ private const val pause = R.drawable.button_pause
 
 class PlayerPresenter(private val view: PlayerView) : PlayerStateListener {
 
-     private val interactor = PlayerInteractor(this)
+    private val interactor = Creator.getPlayerInteractor(this)
 
     val mainHandler: Handler = Handler(Looper.getMainLooper())
     private var playerState = PlayerState.STATE_DEFAULT
@@ -43,6 +45,7 @@ class PlayerPresenter(private val view: PlayerView) : PlayerStateListener {
 
     fun preparePlayer(track: TrackDTO) {
         interactor.preparePlayer(track)
+        //playerState = STATE_PREPARED
     }
 
     private fun playbackControl() {

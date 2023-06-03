@@ -1,11 +1,6 @@
 package com.example.playlistmaker1.player.domain
 
-import com.example.playlistmaker1.player.data.MediaPlayerListener
-import com.example.playlistmaker1.player.data.PlayerRepositoryImpl
-
-class PlayerInteractor(private val playerStateListener: PlayerStateListener) : MediaPlayerListener {
-
-    private val playerRepository: PlayerRepository = PlayerRepositoryImpl(this)
+class PlayerInteractor(private val playerRepository: PlayerRepository) {
 
     fun start() {
         playerRepository.start()
@@ -29,22 +24,6 @@ class PlayerInteractor(private val playerStateListener: PlayerStateListener) : M
 
     fun releasePlayer() {
         playerRepository.releasePlayer()
-    }
-
-    override fun setStatePrepared() {
-        playerStateListener.setStatePrepared()
-    }
-
-    override fun removeHandlersCallbacks() {
-        playerStateListener.removeHandlersCallbacks()
-    }
-
-    override fun setImagePlay() {
-        playerStateListener.setImagePlay()
-    }
-
-    override fun setCurrentTimeZero() {
-        playerStateListener.setCurrentTimeZero()
     }
 
 }

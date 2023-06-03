@@ -1,6 +1,6 @@
 package com.example.playlistmaker1.player.data
 
-interface MediaPlayerListener {
+interface PlayerStateListener {
     fun setStatePrepared()
     fun removeHandlersCallbacks()
     fun setImagePlay()
