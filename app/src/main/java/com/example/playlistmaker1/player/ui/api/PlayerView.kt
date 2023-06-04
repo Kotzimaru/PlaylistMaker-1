@@ -1,4 +1,4 @@
-package com.example.playlistmaker1.player.presentation
+package com.example.playlistmaker1.player.ui.api
 
 interface PlayerView {
     fun setImage(image: Int)

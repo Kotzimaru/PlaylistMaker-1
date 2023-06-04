@@ -4,13 +4,14 @@ import android.os.Handler
 import android.os.Looper
 import com.example.playlistmaker1.R
 import com.example.playlistmaker1.player.creator.Creator
-import com.example.playlistmaker1.player.data.PlayerStateListener
 import com.example.playlistmaker1.player.domain.*
 import com.example.playlistmaker1.player.domain.PlayerState.Companion.CURRENT_TIME_ZERO
 import com.example.playlistmaker1.player.domain.PlayerState.Companion.RELOAD_PROGRESS
 import com.example.playlistmaker1.player.domain.PlayerState.Companion.STATE_PAUSED
 import com.example.playlistmaker1.player.domain.PlayerState.Companion.STATE_PLAYING
 import com.example.playlistmaker1.player.domain.PlayerState.Companion.STATE_PREPARED
+import com.example.playlistmaker1.player.presentation.api.PlayerPresenterInt
+import com.example.playlistmaker1.player.ui.api.PlayerView
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -18,7 +19,7 @@ import java.util.*
 private const val play = R.drawable.button_play
 private const val pause = R.drawable.button_pause
 
-class PlayerPresenter(private val view: PlayerView) : PlayerStateListener {
+class PlayerPresenter(private val view: PlayerView) : PlayerPresenterInt {
 
     private val interactor = Creator.getPlayerInteractor(this)
 
@@ -43,7 +44,7 @@ class PlayerPresenter(private val view: PlayerView) : PlayerStateListener {
         currentTimeControl()
     }
 
-    fun preparePlayer(track: TrackDTO) {
+    override fun preparePlayer(track: TrackDTO) {
         interactor.preparePlayer(track)
         //playerState = STATE_PREPARED
     }
@@ -71,7 +72,7 @@ class PlayerPresenter(private val view: PlayerView) : PlayerStateListener {
         playerState = STATE_PAUSED
     }
 
-    fun onCompletionListener() {
+    override fun onCompletionListener() {
         interactor.onCompletionListener()
     }
 
@@ -93,7 +94,7 @@ class PlayerPresenter(private val view: PlayerView) : PlayerStateListener {
         view.goBack()
     }
 
-    fun clearPlayer() {
+    override fun clearPlayer() {
         interactor.releasePlayer()
         mainHandler.removeCallbacks(runThread)
     }

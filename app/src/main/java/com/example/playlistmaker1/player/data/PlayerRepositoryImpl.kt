@@ -1,46 +1,46 @@
 package com.example.playlistmaker1.player.data
 
 import android.media.MediaPlayer
-import com.example.playlistmaker1.player.domain.PlayerRepository
+import com.example.playlistmaker1.player.domain.api.PlayerRepository
 import com.example.playlistmaker1.player.domain.TrackDTO
 
-class PlayerRepositoryImpl(private val playerStateListener: PlayerStateListener) : PlayerRepository {
+class PlayerRepositoryImpl(private val playerRepository: PlayerRepository) {
 
     private val mediaPlayer = MediaPlayer()
 
-    override fun start() {
+    fun start() {
         mediaPlayer.start()
     }
 
-    override fun pause() {
+    fun pause() {
         mediaPlayer.pause()
     }
 
-    override fun getCurrentTime(): Int {
+    fun getCurrentTime(): Int {
         return mediaPlayer.currentPosition
     }
 
-    override fun preparePlayer(track: TrackDTO) {
+    fun preparePlayer(track: TrackDTO) {
         mediaPlayer.setDataSource(track.previewUrl)
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener() {
-            playerStateListener.setStatePrepared()
+            playerRepository.setStatePrepared()
         }
         mediaPlayer.setOnCompletionListener {
-            playerStateListener.setStatePrepared()
+            playerRepository.setStatePrepared()
         }
     }
 
-    override fun onCompletionListener() {
+    fun onCompletionListener() {
         mediaPlayer.setOnCompletionListener {
-            playerStateListener.setStatePrepared()
-            playerStateListener.removeHandlersCallbacks()
-            playerStateListener.setImagePlay()
-            playerStateListener.setCurrentTimeZero()
+            playerRepository.setStatePrepared()
+            playerRepository.removeHandlersCallbacks()
+            playerRepository.setImagePlay()
+            playerRepository.setCurrentTimeZero()
         }
     }
 
-    override fun releasePlayer() {
+    fun releasePlayer() {
         mediaPlayer.release()
     }
 

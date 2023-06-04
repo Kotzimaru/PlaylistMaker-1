@@ -11,7 +11,7 @@ import com.example.playlistmaker1.R
 import com.example.playlistmaker1.player.domain.TrackDTO
 import com.example.playlistmaker1.player.domain.PlayerState
 import com.example.playlistmaker1.player.presentation.PlayerPresenter
-import com.example.playlistmaker1.player.presentation.PlayerView
+import com.example.playlistmaker1.player.ui.api.PlayerView
 import com.google.gson.Gson
 
 class PlayerActivity : AppCompatActivity(), PlayerView {

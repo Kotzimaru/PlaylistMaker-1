@@ -1,29 +1,53 @@
 package com.example.playlistmaker1.player.domain
 
-class PlayerInteractor(private val playerRepository: PlayerRepository) {
+import com.example.playlistmaker1.player.creator.Creator
+import com.example.playlistmaker1.player.domain.api.PlayerRepository
+import com.example.playlistmaker1.player.presentation.api.PlayerPresenterInt
 
-    fun start() {
-        playerRepository.start()
+
+class PlayerInteractor(private val playerPresenterInt: PlayerPresenterInt): PlayerRepository {
+
+    private val playerRepositoryImpl = Creator.getRepositoryImpl(this)
+
+
+    override fun start() {
+        playerRepositoryImpl.start()
     }
 
-    fun pause() {
-        playerRepository.pause()
+    override fun pause() {
+        playerRepositoryImpl.pause()
     }
 
-    fun getCurrentTime(): Int {
-        return playerRepository.getCurrentTime()
+    override fun getCurrentTime(): Int {
+        return playerRepositoryImpl.getCurrentTime()
     }
 
-    fun preparePlayer(track: TrackDTO) {
-        playerRepository.preparePlayer(track)
+    override fun preparePlayer(track: TrackDTO) {
+        playerRepositoryImpl.preparePlayer(track)
     }
 
-    fun onCompletionListener() {
-        playerRepository.onCompletionListener()
+    override fun onCompletionListener() {
+        playerRepositoryImpl.onCompletionListener()
     }
 
-    fun releasePlayer() {
-        playerRepository.releasePlayer()
+    override fun releasePlayer() {
+        playerRepositoryImpl.releasePlayer()
+    }
+    override fun setStatePrepared() {
+        playerPresenterInt.setStatePrepared()
     }
 
+    override fun removeHandlersCallbacks() {
+        playerPresenterInt.removeHandlersCallbacks()
+
+    }
+
+    override fun setImagePlay() {
+        playerPresenterInt.setImagePlay()
+    }
+
+    override fun setCurrentTimeZero() {
+        playerPresenterInt.setCurrentTimeZero()
+
+    }
 }
