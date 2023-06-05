@@ -4,46 +4,30 @@ import android.media.MediaPlayer
 import com.example.playlistmaker1.player.domain.api.PlayerRepository
 import com.example.playlistmaker1.player.domain.TrackDTO
 
-class PlayerRepositoryImpl(private val playerRepository: PlayerRepository) {
+class PlayerRepositoryImpl(var setOnPreparedListener: (()->Unit), var setOnCompletionListener: (()->Unit)): PlayerRepository {
 
     private val mediaPlayer = MediaPlayer()
 
-    fun start() {
+    override fun start() {
         mediaPlayer.start()
     }
-
-    fun pause() {
+    override fun pause() {
         mediaPlayer.pause()
     }
-
-    fun getCurrentTime(): Int {
+    override fun getCurrentTime(): Int {
         return mediaPlayer.currentPosition
     }
-
-    fun preparePlayer(track: TrackDTO) {
+    override fun preparePlayer(track: TrackDTO) {
         mediaPlayer.setDataSource(track.previewUrl)
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener() {
-            playerRepository.setStatePrepared()
+            setOnPreparedListener.invoke()
         }
         mediaPlayer.setOnCompletionListener {
-            playerRepository.setStatePrepared()
+            setOnCompletionListener.invoke()
         }
     }
-
-    fun onCompletionListener() {
-        mediaPlayer.setOnCompletionListener {
-            playerRepository.setStatePrepared()
-            playerRepository.removeHandlersCallbacks()
-            playerRepository.setImagePlay()
-            playerRepository.setCurrentTimeZero()
-        }
-    }
-
-    fun releasePlayer() {
+    override fun releasePlayer() {
         mediaPlayer.release()
     }
-
-
-
 }

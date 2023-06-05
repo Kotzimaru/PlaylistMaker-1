@@ -43,8 +43,6 @@ class PlayerActivity : AppCompatActivity(), PlayerView {
         initViews()
         fillViews(track)
         presenter.preparePlayer(track)
-        presenter.onCompletionListener()
-
         playButton.setOnClickListener {
             presenter.onClickPlayAndPause()
         }
@@ -61,6 +59,7 @@ class PlayerActivity : AppCompatActivity(), PlayerView {
             TrackDTO::class.java
         )
     }
+
 
     private fun initViews() {
         backButton = findViewById(R.id.arrow_back)

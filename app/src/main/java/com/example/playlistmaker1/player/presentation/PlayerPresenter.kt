@@ -10,7 +10,6 @@ import com.example.playlistmaker1.player.domain.PlayerState.Companion.RELOAD_PRO
 import com.example.playlistmaker1.player.domain.PlayerState.Companion.STATE_PAUSED
 import com.example.playlistmaker1.player.domain.PlayerState.Companion.STATE_PLAYING
 import com.example.playlistmaker1.player.domain.PlayerState.Companion.STATE_PREPARED
-import com.example.playlistmaker1.player.presentation.api.PlayerPresenterInt
 import com.example.playlistmaker1.player.ui.api.PlayerView
 import java.text.SimpleDateFormat
 import java.util.*
@@ -19,9 +18,19 @@ import java.util.*
 private const val play = R.drawable.button_play
 private const val pause = R.drawable.button_pause
 
-class PlayerPresenter(private val view: PlayerView) : PlayerPresenterInt {
+class PlayerPresenter(private val view: PlayerView) {
 
-    private val interactor = Creator.getPlayerInteractor(this)
+    private val interactor = Creator.getPlayerInteractor(
+        setOnPreparedListener = {
+        setStatePrepared()
+
+    }, setOnCompletionListener = {
+        setStatePrepared()
+        removeHandlersCallbacks()
+        setImagePlay()
+        setCurrentTimeZero()
+
+    })
 
     val mainHandler: Handler = Handler(Looper.getMainLooper())
     private var playerState = PlayerState.STATE_DEFAULT
@@ -44,9 +53,8 @@ class PlayerPresenter(private val view: PlayerView) : PlayerPresenterInt {
         currentTimeControl()
     }
 
-    override fun preparePlayer(track: TrackDTO) {
+    fun preparePlayer(track: TrackDTO) {
         interactor.preparePlayer(track)
-        //playerState = STATE_PREPARED
     }
 
     private fun playbackControl() {
@@ -60,7 +68,7 @@ class PlayerPresenter(private val view: PlayerView) : PlayerPresenterInt {
         }
     }
 
-    fun startPlayer() {
+    private fun startPlayer() {
         interactor.start()
         view.setImage(pause)
         playerState = STATE_PLAYING
@@ -70,10 +78,6 @@ class PlayerPresenter(private val view: PlayerView) : PlayerPresenterInt {
         interactor.pause()
         view.setImage(play)
         playerState = STATE_PAUSED
-    }
-
-    override fun onCompletionListener() {
-        interactor.onCompletionListener()
     }
 
     private fun currentTimeControl() {
@@ -94,7 +98,7 @@ class PlayerPresenter(private val view: PlayerView) : PlayerPresenterInt {
         view.goBack()
     }
 
-    override fun clearPlayer() {
+    fun clearPlayer() {
         interactor.releasePlayer()
         mainHandler.removeCallbacks(runThread)
     }
@@ -104,20 +108,20 @@ class PlayerPresenter(private val view: PlayerView) : PlayerPresenterInt {
     fun millisFormat(track: TrackDTO): String =
         SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
 
-    override fun setStatePrepared() {
+    private fun setStatePrepared() {
         view.setImage(play)
         playerState = STATE_PREPARED
     }
 
-    override fun removeHandlersCallbacks() {
+    private fun removeHandlersCallbacks() {
         mainHandler.removeCallbacks(runThread)
     }
 
-    override fun setImagePlay() {
+    private fun setImagePlay() {
         view.setImage(play)
     }
 
-    override fun setCurrentTimeZero() {
+    private fun setCurrentTimeZero() {
         view.setCurrentTime(CURRENT_TIME_ZERO)
     }
 }

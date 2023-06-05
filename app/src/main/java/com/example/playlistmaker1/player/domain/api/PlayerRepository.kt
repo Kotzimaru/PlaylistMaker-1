@@ -9,11 +9,7 @@ interface PlayerRepository {
     fun pause()
     fun getCurrentTime(): Int
     fun preparePlayer(track: TrackDTO)
-    fun onCompletionListener()
     fun releasePlayer()
-    fun setStatePrepared()
-    fun removeHandlersCallbacks()
-    fun setImagePlay()
-    fun setCurrentTimeZero()
+
 
 }

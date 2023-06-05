@@ -1,16 +1,12 @@
 package com.example.playlistmaker1.player.creator
 
 import com.example.playlistmaker1.player.data.PlayerRepositoryImpl
-import com.example.playlistmaker1.player.domain.PlayerInteractor
-import com.example.playlistmaker1.player.domain.api.PlayerRepository
-import com.example.playlistmaker1.player.presentation.PlayerPresenter
+import com.example.playlistmaker1.player.domain.PlayerInteractorImpl
+import com.example.playlistmaker1.player.presentation.api.PlayerInteractor
 
 object Creator {
 
-    fun getPlayerInteractor(playerPresenter: PlayerPresenter): PlayerInteractor {
-        return PlayerInteractor(playerPresenter)
-    }
-    fun getRepositoryImpl(playerRepository: PlayerRepository): PlayerRepositoryImpl{
-        return PlayerRepositoryImpl(playerRepository)
+    fun getPlayerInteractor(setOnPreparedListener: (()->Unit), setOnCompletionListener: (()->Unit)): PlayerInteractor {
+        return PlayerInteractorImpl(PlayerRepositoryImpl(setOnPreparedListener, setOnCompletionListener))
     }
 }
