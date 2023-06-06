@@ -7,6 +7,8 @@ import com.example.playlistmaker1.player.presentation.api.PlayerInteractor
 object Creator {
 
     fun getPlayerInteractor(setOnPreparedListener: (()->Unit), setOnCompletionListener: (()->Unit)): PlayerInteractor {
-        return PlayerInteractorImpl(PlayerRepositoryImpl(setOnPreparedListener, setOnCompletionListener))
+        val playerRepositoryImpl = PlayerRepositoryImpl()
+        playerRepositoryImpl.setListeners(setOnPreparedListener,setOnCompletionListener)
+        return PlayerInteractorImpl(playerRepositoryImpl)
     }
 }

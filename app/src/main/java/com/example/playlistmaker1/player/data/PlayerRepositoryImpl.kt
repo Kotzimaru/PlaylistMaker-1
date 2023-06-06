@@ -4,7 +4,7 @@ import android.media.MediaPlayer
 import com.example.playlistmaker1.player.domain.api.PlayerRepository
 import com.example.playlistmaker1.player.domain.TrackDTO
 
-class PlayerRepositoryImpl(var setOnPreparedListener: (()->Unit), var setOnCompletionListener: (()->Unit)): PlayerRepository {
+class PlayerRepositoryImpl(): PlayerRepository {
 
     private val mediaPlayer = MediaPlayer()
 
@@ -20,14 +20,21 @@ class PlayerRepositoryImpl(var setOnPreparedListener: (()->Unit), var setOnCompl
     override fun preparePlayer(track: TrackDTO) {
         mediaPlayer.setDataSource(track.previewUrl)
         mediaPlayer.prepareAsync()
+
+    }
+    override fun releasePlayer() {
+        mediaPlayer.release()
+    }
+
+    override fun setListeners(
+        setOnPreparedListener: () -> Unit,
+        setOnCompletionListener: () -> Unit
+    ) {
         mediaPlayer.setOnPreparedListener() {
             setOnPreparedListener.invoke()
         }
         mediaPlayer.setOnCompletionListener {
             setOnCompletionListener.invoke()
         }
-    }
-    override fun releasePlayer() {
-        mediaPlayer.release()
     }
 }

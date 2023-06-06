@@ -22,7 +22,6 @@ class PlayerInteractorImpl(private val playerRepository: PlayerRepository): Play
         playerRepository.preparePlayer(track)
     }
 
-
     override fun releasePlayer() {
         playerRepository.releasePlayer()
     }
