@@ -8,4 +8,5 @@ interface PlayerInteractor {
     fun start()
     fun pause()
     fun releasePlayer()
+    fun setListeners(setOnPreparedListener: (()->Unit), setOnCompletionListener: (()->Unit))
 }

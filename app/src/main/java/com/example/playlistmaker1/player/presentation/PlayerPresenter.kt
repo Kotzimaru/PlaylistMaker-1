@@ -20,17 +20,7 @@ private const val pause = R.drawable.button_pause
 
 class PlayerPresenter(private val view: PlayerView) {
 
-    private val interactor = Creator.getPlayerInteractor(
-        setOnPreparedListener = {
-        setStatePrepared()
-
-    }, setOnCompletionListener = {
-        setStatePrepared()
-        removeHandlersCallbacks()
-        setImagePlay()
-        setCurrentTimeZero()
-
-    })
+    private val interactor = Creator.getPlayerInteractor()
 
     val mainHandler: Handler = Handler(Looper.getMainLooper())
     private var playerState = PlayerState.STATE_DEFAULT
@@ -54,6 +44,17 @@ class PlayerPresenter(private val view: PlayerView) {
     }
 
     fun preparePlayer(track: TrackDTO) {
+        interactor.setListeners(
+            setOnPreparedListener = {
+            setStatePrepared()
+
+        }, setOnCompletionListener = {
+            setStatePrepared()
+            removeHandlersCallbacks()
+            setImagePlay()
+            setCurrentTimeZero()
+
+        })
         interactor.preparePlayer(track)
     }
 
