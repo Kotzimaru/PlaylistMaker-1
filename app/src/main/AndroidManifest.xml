@@ -21,7 +21,7 @@
         tools:targetApi="33"
         >
         <activity
-            android:name=".PlayerActivity"
+            android:name=".player.ui.PlayerActivity"
             android:exported="false" />
 
         <activity
