@@ -1,12 +1,13 @@
-package com.example.playlistmaker1
+package com.example.playlistmaker1.settings.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import com.example.playlistmaker1.App
+import com.example.playlistmaker1.R
 import com.google.android.material.switchmaterial.SwitchMaterial
 
 

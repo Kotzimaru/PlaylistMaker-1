@@ -5,16 +5,16 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.playlistmaker.domain.entities.FormatterTime
 import com.example.playlistmaker1.R
 import com.example.playlistmaker1.player.domain.TrackDTO
-import com.example.playlistmaker1.player.domain.PlayerState
-import com.example.playlistmaker1.player.presentation.PlayerPresenter
-import com.example.playlistmaker1.player.ui.api.PlayerView
-import com.google.gson.Gson
+import com.example.playlistmaker1.player.ui.viewmodels.PlayerViewModel
+import com.example.playlistmaker1.player.ui.viewmodels.PlayerViewModelFactory
 
-class PlayerActivity : AppCompatActivity(), PlayerView {
+class PlayerActivity : AppCompatActivity() {
 
     private lateinit var backButton: ImageView
     private lateinit var coverImage: ImageView
@@ -32,36 +32,17 @@ class PlayerActivity : AppCompatActivity(), PlayerView {
 
 
     private lateinit var track: TrackDTO
-    private lateinit var presenter: PlayerPresenter
-    private val gson = Gson()
+    private lateinit var viewModel: PlayerViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
 
-        initValues()
-        initViews()
-        fillViews(track)
-        presenter.preparePlayer(track)
-        playButton.setOnClickListener {
-            presenter.onClickPlayAndPause()
-        }
+        viewModel = ViewModelProvider(
+            this,
+            PlayerViewModelFactory(intent.getStringExtra("track"))
+        )[PlayerViewModel::class.java]
 
-        backButton.setOnClickListener {
-            presenter.backButtonClicked()
-        }
-    }
-
-    private fun initValues() {
-        presenter = PlayerPresenter(this)
-        track = gson.fromJson(
-            intent.getStringExtra(PlayerState.TRACK_DTO),
-            TrackDTO::class.java
-        )
-    }
-
-
-    private fun initViews() {
         backButton = findViewById(R.id.arrow_back)
         coverImage = findViewById(R.id.cover)
         trackName = findViewById(R.id.track_name)
@@ -75,43 +56,49 @@ class PlayerActivity : AppCompatActivity(), PlayerView {
         playButton = findViewById(R.id.play_button)
         likeButton = findViewById(R.id.like_button)
         excerptDuration = findViewById(R.id.excerpt_duration)
+
+        viewModel.getTrackData().observe(this) {
+            track = it
+
+            trackName.text = track.trackName
+            artistName.text = track.artistName
+            duration.text = FormatterTime.formatTime(track.trackTimeMillis)
+            albumName.text = track.collectionName
+            year.text = FormatterTime.formatTime(track.trackTimeMillis)
+            genre.text = track.primaryGenreName
+            country.text = track.country
+
+            Glide.with(applicationContext)
+                .load(track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg"))
+                .centerCrop()
+                .transform(RoundedCorners(resources.getDimensionPixelSize(R.dimen.radius_8)))
+                .placeholder(R.drawable.placeholder)
+                .into(coverImage)
+        }
+
+        viewModel.getTimerTextData().observe(this) {
+            excerptDuration.text = it
+        }
+
+        playButton.setOnClickListener { controlPlayer() }
+
+        findViewById<ImageView>(R.id.arrow_back).setOnClickListener { finish() }
+        preparePlayer()
     }
 
-    private fun fillViews(track: TrackDTO) {
-        trackName.text = track.trackName
-        artistName.text = track.artistName
-        duration.text = presenter.millisFormat(track)
-        albumName.text = track.collectionName
-        year.text = presenter.fixReleaseDate(track.releaseDate)
-        genre.text = track.primaryGenreName
-        country.text = track.country
-        Glide.with(applicationContext)
-            .load(track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg"))
-            .centerCrop()
-            .transform(RoundedCorners(resources.getDimensionPixelSize(R.dimen.radius_8)))
-            .placeholder(R.drawable.placeholder)
-            .into(coverImage)
+    private fun preparePlayer() {
+        viewModel.preparePlayer()
+    }
+
+    private fun controlPlayer() = viewModel.controlPlayer()
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.onDestroy()
     }
 
     override fun onPause() {
         super.onPause()
-        presenter.pausePlayer()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.clearPlayer()
-    }
-
-    override fun setImage(image: Int) {
-        playButton.setImageResource(image)
-    }
-
-    override fun setCurrentTime(time: String) {
-        excerptDuration.text = time
-    }
-
-    override fun goBack() {
-        finish()
+        viewModel.pausePlayer()
     }
 }
