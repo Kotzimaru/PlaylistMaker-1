@@ -2,7 +2,6 @@ package com.example.playlistmaker1.player.data
 
 import android.media.MediaPlayer
 import com.example.playlistmaker1.player.domain.api.PlayerRepository
-import com.example.playlistmaker1.player.domain.TrackDTO
 
 class PlayerRepositoryImpl(): PlayerRepository {
 
@@ -26,15 +25,11 @@ class PlayerRepositoryImpl(): PlayerRepository {
         mediaPlayer.release()
     }
 
-    override fun setListeners(
-        setOnPreparedListener: () -> Unit,
-        setOnCompletionListener: () -> Unit
-    ) {
-        mediaPlayer.setOnPreparedListener() {
-            setOnPreparedListener.invoke()
-        }
-        mediaPlayer.setOnCompletionListener {
-            setOnCompletionListener.invoke()
-        }
+    override fun setOnPreparedListener(listener: (Any) -> Unit) {
+        mediaPlayer.setOnPreparedListener(listener)
+    }
+
+    override fun setOnCompletionListener(listener: (Any) -> Unit) {
+        mediaPlayer.setOnCompletionListener(listener)
     }
 }

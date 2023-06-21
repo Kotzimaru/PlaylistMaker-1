@@ -1,4 +1,4 @@
-package com.example.playlistmaker1.player.domain
+package com.example.playlistmaker1.player.data
 
 data class TrackDTO(
     val trackId: String,
