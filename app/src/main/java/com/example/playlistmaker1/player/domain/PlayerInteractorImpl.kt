@@ -1,11 +1,14 @@
 package com.example.playlistmaker1.player.domain
 
+import com.example.playlistmaker1.player.creator.Creator
+import com.example.playlistmaker1.player.domain.api.PlayerRepository
+import com.example.playlistmaker1.player.presentation.api.PlayerInteractor
 
-/*
+
 class PlayerInteractorImpl(): PlayerInteractor {
 
 
-   //private val playerRepository = Creator.getRepositoryImpl()
+    private val playerRepository = Creator.getRepositoryImpl()
     override fun setListeners(
         setOnPreparedListener: () -> Unit,
         setOnCompletionListener: () -> Unit
@@ -33,4 +36,4 @@ class PlayerInteractorImpl(): PlayerInteractor {
         playerRepository.releasePlayer()
     }
 
-}*/
+}

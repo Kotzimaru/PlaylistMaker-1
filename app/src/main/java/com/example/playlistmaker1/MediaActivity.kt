@@ -1,8 +1,7 @@
-package com.example.playlistmaker1.media.ui
+package com.example.playlistmaker1
 
-import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.playlistmaker1.R
+import android.os.Bundle
 
 class MediaActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
