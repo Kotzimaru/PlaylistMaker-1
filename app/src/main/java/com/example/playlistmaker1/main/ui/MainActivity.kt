@@ -1,11 +1,13 @@
-package com.example.playlistmaker1
+package com.example.playlistmaker1.main.ui
 
 import android.content.Intent
-import  androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import android.widget.ImageView
-import com.bumptech.glide.Glide
+import androidx.appcompat.app.AppCompatActivity
+import com.example.playlistmaker1.R
+import com.example.playlistmaker1.media.ui.MediaActivity
+import com.example.playlistmaker1.search.ui.SearchActivity
+import com.example.playlistmaker1.settings.ui.SettingsActivity
 
 class MainActivity : AppCompatActivity() {
 
