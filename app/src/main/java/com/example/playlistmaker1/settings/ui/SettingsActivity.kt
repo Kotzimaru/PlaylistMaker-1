@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker1.R
-import com.example.playlistmaker1.settings.data.App
+import com.example.playlistmaker1.main.app.App
 import com.google.android.material.switchmaterial.SwitchMaterial
 
 

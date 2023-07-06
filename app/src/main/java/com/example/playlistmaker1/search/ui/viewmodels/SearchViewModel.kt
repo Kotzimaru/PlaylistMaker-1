@@ -1,17 +1,16 @@
 package com.example.playlistmaker1.search.ui.viewmodels
 
-import android.content.SharedPreferences
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.playlistmaker1.creator.Creator
 import com.example.playlistmaker1.player.data.TrackDTO
 import com.example.playlistmaker1.search.domain.Uploader
+import com.example.playlistmaker1.search.domain.api.SearchInteractor
 import com.example.playlistmaker1.search.domain.api.StateSearch
 
-class SearchViewModel(sharedPrefs: SharedPreferences) : ViewModel() {
-
-    private val interactor = Creator.getSearchInteractor(sharedPrefs)
+class SearchViewModel(
+    private val interactor: SearchInteractor
+    ) : ViewModel() {
 
     private var state = MutableLiveData<Pair<ArrayList<TrackDTO>?, StateSearch>>()
     private var trackList: ArrayList<TrackDTO>? = ArrayList()

@@ -1,13 +1,13 @@
 package com.example.playlistmaker1.search.domain
 
-import android.content.SharedPreferences
-import com.example.playlistmaker1.creator.Creator
 import com.example.playlistmaker1.player.data.TrackDTO
 import com.example.playlistmaker1.search.domain.api.SearchInteractor
+import com.example.playlistmaker1.search.domain.api.SearchRepository
 
-class SearchInteractorImpl(private val sharedPrefs: SharedPreferences): SearchInteractor {
+class SearchInteractorImpl(
+    private val searchRepository: SearchRepository
+    ): SearchInteractor {
 
-    private val searchRepository = Creator.getSearchRepositoryImpl(sharedPrefs)
 
 
     override fun getHistory(): ArrayList<TrackDTO> {

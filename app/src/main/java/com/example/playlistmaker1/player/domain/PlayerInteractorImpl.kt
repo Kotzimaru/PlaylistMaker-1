@@ -1,14 +1,14 @@
 package com.example.playlistmaker1.player.domain
 
-import com.example.playlistmaker1.creator.Creator
 import com.example.playlistmaker1.player.data.TrackDTO
 import com.example.playlistmaker1.player.domain.api.PlayerInteractor
+import com.example.playlistmaker1.player.domain.api.PlayerRepository
 
 
-class PlayerInteractorImpl(): PlayerInteractor {
+class PlayerInteractorImpl(
+    private val playerRepository: PlayerRepository
+): PlayerInteractor {
 
-
-    private val playerRepository = Creator.getRepositoryImpl()
 
     override fun start() {
         playerRepository.start()

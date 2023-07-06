@@ -15,7 +15,6 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker1.*
@@ -24,7 +23,8 @@ import com.example.playlistmaker1.search.data.network.SearchSerializator
 import com.example.playlistmaker1.search.domain.api.Serializator
 import com.example.playlistmaker1.search.domain.api.StateSearch
 import com.example.playlistmaker1.search.ui.viewmodels.SearchViewModel
-import com.example.playlistmaker1.search.ui.viewmodels.SearchViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import retrofit2.*
 
 class SearchActivity : AppCompatActivity() {
@@ -53,7 +53,10 @@ class SearchActivity : AppCompatActivity() {
     private var isClickAllowed = true
     private val handler = Handler(Looper.getMainLooper())
     private val serializatorTrack: Serializator = SearchSerializator()
-    private lateinit var viewModel: SearchViewModel
+
+    private val viewModel: SearchViewModel by viewModel {
+        parametersOf(getSharedPreferences("SearchActivity", MODE_PRIVATE),runnable)
+    }
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,10 +64,7 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
 
 
-        val sharedPrefs = getSharedPreferences("SearchActivity", MODE_PRIVATE)
-        viewModel = ViewModelProvider(
-            this, SearchViewModelFactory(sharedPrefs)
-        )[SearchViewModel::class.java]
+        //val sharedPrefs = getSharedPreferences("SearchActivity", MODE_PRIVATE)
 
         viewModel.getState().observe(this) {
 

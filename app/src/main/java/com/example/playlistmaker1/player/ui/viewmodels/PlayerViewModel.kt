@@ -6,22 +6,22 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.playlistmaker1.creator.Creator
 import com.example.playlistmaker1.player.data.TrackDTO
 import com.example.playlistmaker1.player.domain.PlayerState
 import com.example.playlistmaker1.player.domain.PlayerState.Companion.CURRENT_TIME_ZERO
 import com.example.playlistmaker1.player.domain.StateMusicPlayer
+import com.example.playlistmaker1.player.domain.api.PlayerInteractor
 import com.example.playlistmaker1.search.data.network.SearchSerializator
 import java.text.SimpleDateFormat
 import java.util.*
 
-class PlayerViewModel(val text: String?) : ViewModel() {
-
-    private val interactor = Creator.getPlayerInteractor()
+class PlayerViewModel(
+    val text: String?,
+    private val playerInteractor: PlayerInteractor,
+    private val toast: () -> Unit
+    ) : ViewModel() {
 
     private var mainHandler: Handler
-    //private var playerState = PlayerState.STATE_DEFAULT
-
 
 
     private var track = MutableLiveData<TrackDTO>()
@@ -41,7 +41,7 @@ class PlayerViewModel(val text: String?) : ViewModel() {
 
     private val runThread = object : Runnable {
         override fun run() {
-            currentTime.value = SimpleDateFormat("mm:ss", Locale.getDefault()).format(interactor.getCurrentTime())
+            currentTime.value = SimpleDateFormat("mm:ss", Locale.getDefault()).format(playerInteractor.getCurrentTime())
             mainHandler.postDelayed(
                 this,
                 PlayerState.RELOAD_PROGRESS
@@ -51,12 +51,12 @@ class PlayerViewModel(val text: String?) : ViewModel() {
 
 
     fun preparePlayer() {
-        track.value?.let { interactor.preparePlayer(it) }
-        interactor.setOnPreparedListener {
+        track.value?.let { playerInteractor.preparePlayer(it) }
+        playerInteractor.setOnPreparedListener {
             //track.postValue(SearchSerializator().jsonToTrack(text))
             state.value = StateMusicPlayer.PREPARED
         }
-        interactor.setOnCompletionListener {
+        playerInteractor.setOnCompletionListener {
             state.value = StateMusicPlayer.PREPARED
             //stopTimer()
             currentTime.value = CURRENT_TIME_ZERO
@@ -92,24 +92,28 @@ class PlayerViewModel(val text: String?) : ViewModel() {
             StateMusicPlayer.PAUSED, StateMusicPlayer.PREPARED, StateMusicPlayer.DEFAULT -> {
                 startPlayer()
             }
-            null -> TODO()
+            StateMusicPlayer.NO_CONTENT -> {
+                toast.invoke()
+            }
+
+            else -> {}
         }
     }
 
     fun pausePlayer() {
-        interactor.pause()
+        playerInteractor.pause()
         state.value = StateMusicPlayer.PAUSED
         mainHandler.removeCallbacks(runThread)
     }
 
     private fun startPlayer() {
-        interactor.start()
+        playerInteractor.start()
         state.value = StateMusicPlayer.PLAYING
         mainHandler.postDelayed({ runThread.run() }, PlayerState.RELOAD_PROGRESS)
     }
 
     override fun onCleared() {
-        interactor.releasePlayer()
+        playerInteractor.releasePlayer()
         mainHandler.removeCallbacks(runThread)
 
 
@@ -117,6 +121,6 @@ class PlayerViewModel(val text: String?) : ViewModel() {
     }
     fun onDestroy(){
         stopTimer()
-        interactor.releasePlayer()
+        playerInteractor.releasePlayer()
     }
 }

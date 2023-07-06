@@ -24,5 +24,7 @@
     <string name="genre">Жанр</string>
     <string name="country">Страна</string>
     <string name="excerpt_duration">5:31</string>
+    <string name="toast">Вы еще не включали музыку, воспользуйтесь командой Поиск</string>
+    <string name="warning">Для данного трека недоступно предпрослушивание</string>
 
 </resources>

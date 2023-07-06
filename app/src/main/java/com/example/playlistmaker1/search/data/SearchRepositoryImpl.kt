@@ -7,10 +7,14 @@ import com.example.playlistmaker1.search.data.network.SearchApi
 import com.example.playlistmaker1.search.data.network.SearchSerializator
 import com.example.playlistmaker1.search.domain.Uploader
 import com.example.playlistmaker1.search.domain.api.SearchRepository
-import retrofit2.*
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class SearchRepositoryImpl(private val sharedPrefs: SharedPreferences): SearchRepository {
+class SearchRepositoryImpl(
+    private val sharedPrefs: SharedPreferences,
+    private val retrofit: SearchApi
+    ): SearchRepository {
 
 
     companion object {
@@ -19,11 +23,6 @@ class SearchRepositoryImpl(private val sharedPrefs: SharedPreferences): SearchRe
         const val URL = "https://itunes.apple.com/"
 
     }
-
-
-
-    private val retrofit: SearchApi = Retrofit.Builder().baseUrl(URL)
-        .addConverterFactory(GsonConverterFactory.create()).build().create()
 
 
 

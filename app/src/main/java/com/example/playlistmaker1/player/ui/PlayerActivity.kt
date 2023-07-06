@@ -4,15 +4,16 @@ import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker1.R
 import com.example.playlistmaker1.player.data.TrackDTO
 import com.example.playlistmaker1.player.domain.StateMusicPlayer
 import com.example.playlistmaker1.player.ui.viewmodels.PlayerViewModel
-import com.example.playlistmaker1.player.ui.viewmodels.PlayerViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -34,8 +35,13 @@ class PlayerActivity : AppCompatActivity() {
 
     private lateinit var track: TrackDTO
     private lateinit var excerptDuration: TextView
+    private val toast = {
+        Toast.makeText(this, R.string.warning, Toast.LENGTH_SHORT).show()
+    }
 
-    private lateinit var viewModel: PlayerViewModel
+    private val viewModel: PlayerViewModel by viewModel{
+        parametersOf(intent.getStringExtra("track"), toast)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,10 +49,10 @@ class PlayerActivity : AppCompatActivity() {
         initViews()
 
 
-        viewModel = ViewModelProvider(
+        /*viewModel = ViewModelProvider(
             this,
             PlayerViewModelFactory(intent.getStringExtra("track"))
-        )[PlayerViewModel::class.java]
+        )[PlayerViewModel::class.java]*/
 
         viewModel.getTrackData().observe(this) {
             track = it
