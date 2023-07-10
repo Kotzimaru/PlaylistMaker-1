@@ -9,11 +9,11 @@ import com.example.playlistmaker1.player.data.TrackDTO
 class TrackAdapter() : RecyclerView.Adapter<TrackViewHolder>() {
 
     var track = ArrayList<TrackDTO>()
-    //var history: SearchHistoryImpl? = null
     var itemClickListener: ((Int, TrackDTO) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.track_list_view, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.track_list_view, parent, false)
         return TrackViewHolder(view)
     }
 
@@ -21,7 +21,7 @@ class TrackAdapter() : RecyclerView.Adapter<TrackViewHolder>() {
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         holder.bind(track[position])
-        holder.itemView.setOnClickListener{itemClickListener?.invoke(position,track[position])}
+        holder.itemView.setOnClickListener { itemClickListener?.invoke(position, track[position]) }
 
     }
 

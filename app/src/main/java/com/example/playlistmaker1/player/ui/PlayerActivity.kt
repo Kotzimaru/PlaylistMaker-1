@@ -39,8 +39,8 @@ class PlayerActivity : AppCompatActivity() {
         Toast.makeText(this, R.string.warning, Toast.LENGTH_SHORT).show()
     }
 
-    private val viewModel: PlayerViewModel by viewModel{
-        parametersOf(intent.getStringExtra("track"), toast)
+    private val viewModel: PlayerViewModel by viewModel {
+        parametersOf(intent.getStringExtra("track"))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,18 +48,13 @@ class PlayerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_player)
         initViews()
 
-
-        /*viewModel = ViewModelProvider(
-            this,
-            PlayerViewModelFactory(intent.getStringExtra("track"))
-        )[PlayerViewModel::class.java]*/
-
         viewModel.getTrackData().observe(this) {
             track = it
 
             trackName.text = track.trackName
             artistName.text = track.artistName
-            duration.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
+            duration.text =
+                SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
             albumName.text = track.collectionName
             year.text = viewModel.fixReleaseDate(track.releaseDate)
             genre.text = track.primaryGenreName
@@ -88,14 +83,15 @@ class PlayerActivity : AppCompatActivity() {
 
         viewModel.getStateData().observe(this) { it ->
 
-                if (it == StateMusicPlayer.PLAYING) {
-                    playButton.setImageResource(R.drawable.button_pause)
-                } else {
-                    playButton.setImageResource(R.drawable.button_play)
-                }
+            if (it == StateMusicPlayer.PLAYING) {
+                playButton.setImageResource(R.drawable.button_pause)
+            } else {
+                playButton.setImageResource(R.drawable.button_play)
             }
+        }
 
     }
+
     private fun preparePlayer() {
         viewModel.preparePlayer()
     }
@@ -116,17 +112,16 @@ class PlayerActivity : AppCompatActivity() {
         excerptDuration = findViewById(R.id.excerpt_duration)
     }
 
-   private fun playbackControl() = viewModel.playbackControl()
+    private fun playbackControl() = viewModel.playbackControl()
 
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.onDestroy()
+    }
 
-override fun onDestroy() {
-    super.onDestroy()
-    viewModel.onDestroy()
-}
-
-override fun onPause() {
-    super.onPause()
-    viewModel.pausePlayer()
-}
+    override fun onPause() {
+        super.onPause()
+        viewModel.pausePlayer()
+    }
 }

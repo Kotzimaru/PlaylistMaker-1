@@ -11,7 +11,7 @@ class SearchSerializator : Serializator {
         return Gson().toJson(track)
     }
 
-    override fun jsonToTrack(textJSON: String?) : TrackDTO {
+    override fun jsonToTrack(textJSON: String?): TrackDTO {
         return Gson().fromJson(textJSON, object : TypeToken<TrackDTO?>() {}.type)
     }
 

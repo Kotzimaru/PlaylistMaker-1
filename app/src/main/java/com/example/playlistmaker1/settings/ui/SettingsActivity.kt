@@ -12,6 +12,7 @@ import com.google.android.material.switchmaterial.SwitchMaterial
 
 
 const val PRACTICUM_EXAMPLE_PREFERENCES = "practicum_example_preferences"
+
 class SettingsActivity : AppCompatActivity() {
     @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,14 +23,21 @@ class SettingsActivity : AppCompatActivity() {
             finish()
         }
 
-        findViewById<ImageView>(R.id.support).setOnClickListener{
+        findViewById<ImageView>(R.id.share).setOnClickListener {
+            val intent = Intent(Intent.ACTION_SEND)
+            intent.type = "text/plain"
+            intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.site))
+            startActivity(intent)
+        }
+
+        findViewById<ImageView>(R.id.support).setOnClickListener {
 
             val intent = Intent(Intent.ACTION_SENDTO)
             intent.data = Uri.parse("mailto:")
             intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(R.string.mail))
             intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.theme_message))
-            intent.putExtra(Intent.EXTRA_TEXT,getString(R.string.body_message))
-            startActivity(Intent.createChooser(intent,"Send Email"))
+            intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.body_message))
+            startActivity(Intent.createChooser(intent, "Send Email"))
         }
 
         val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)

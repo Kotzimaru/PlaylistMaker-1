@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -19,64 +17,46 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker1.*
 import com.example.playlistmaker1.player.ui.PlayerActivity
-import com.example.playlistmaker1.search.data.network.SearchSerializator
-import com.example.playlistmaker1.search.domain.api.Serializator
 import com.example.playlistmaker1.search.domain.api.StateSearch
 import com.example.playlistmaker1.search.ui.viewmodels.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.koin.core.parameter.parametersOf
 import retrofit2.*
 
 class SearchActivity : AppCompatActivity() {
 
-    companion object {
 
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
-    }
-
-    private var text: String = ""
-    private var trackAdapter = TrackAdapter()
+    lateinit var textHistory: TextView
     lateinit var inputEditText: EditText
     lateinit var clearIconButton: ImageView
     lateinit var recyclerView: RecyclerView
     lateinit var refreshButton: ImageView
     lateinit var clearHistory: Button
-    private lateinit var textHistory: TextView
-    lateinit var progressBar: ProgressBar
-    private lateinit var noConnectError: LinearLayout
     lateinit var noSearchError: LinearLayout
-    private val runnable = Runnable {
-        progressBar.isGone = false
-        viewModel.uploadTracks(text)
-    }
-    private var isClickAllowed = true
-    private val handler = Handler(Looper.getMainLooper())
-    private val serializatorTrack: Serializator = SearchSerializator()
+    lateinit var noConnectError: LinearLayout
+    lateinit var progressBar: ProgressBar
 
-    private val viewModel: SearchViewModel by viewModel {
-        parametersOf(getSharedPreferences("SearchActivity", MODE_PRIVATE),runnable)
-    }
+    private var text: String = ""
+    private var isClick = true
+    private var trackAdapter = TrackAdapter()
+
+    private val viewModel: SearchViewModel by viewModel()
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-
-        //val sharedPrefs = getSharedPreferences("SearchActivity", MODE_PRIVATE)
-
         viewModel.getState().observe(this) {
 
             if (it.second == StateSearch.SHOW_UPLOAD_TRACKS) {
                 progressBar.isGone = true
-                recyclerView.visibility = View.VISIBLE
                 noSearchError.isGone = true
                 noConnectError.isGone = true
                 clearHistory.isGone = true
                 textHistory.isGone = true
                 trackAdapter.track = it.first!!
                 trackAdapter.notifyDataSetChanged()
+                recyclerView.isGone = false
             } else if (it.second == StateSearch.EMPTY_UPLOAD_TRACKS) {
                 noSearchError.visibility = View.VISIBLE
                 noConnectError.isGone = true
@@ -94,6 +74,8 @@ class SearchActivity : AppCompatActivity() {
             } else if (it.second == StateSearch.EMPTY_HISTORY) {
                 clearHistory.isGone = true
                 textHistory.isGone = true
+            }else if (it.second == StateSearch.SEARCH){
+                progressBar.isGone = false
             }
 
         }
@@ -128,7 +110,7 @@ class SearchActivity : AppCompatActivity() {
             // Переход на экран плеера
             if (track != null) {
                 val intentMedia = Intent(this, PlayerActivity::class.java)
-                intentMedia.putExtra("track", serializatorTrack.trackToJSON(track))
+                intentMedia.putExtra("track", viewModel.trackToJSON(track))
                 startActivity(intentMedia)
             }
         }
@@ -137,6 +119,8 @@ class SearchActivity : AppCompatActivity() {
 
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
+                progressBar.isGone = false
+                recyclerView.isGone = true
                 viewModel.uploadTracks(text)
                 progressBar.visibility = View.VISIBLE
             }
@@ -209,16 +193,16 @@ class SearchActivity : AppCompatActivity() {
         clear.isVisible = search.text.isNotEmpty()
     }
 
+
     private fun searchDebounse() {
-        handler.removeCallbacks(runnable)
-        handler.postDelayed(runnable, SEARCH_DEBOUNCE_DELAY)
+        viewModel.searchDebounse(text)
     }
 
     private fun clickDebounse(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        val current = isClick
+        if (isClick) {
+            isClick = false
+            isClick = viewModel.clickDebounse()
         }
         return current
     }

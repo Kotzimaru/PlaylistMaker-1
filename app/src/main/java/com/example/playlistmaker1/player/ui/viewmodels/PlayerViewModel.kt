@@ -2,7 +2,6 @@ package com.example.playlistmaker1.player.ui.viewmodels
 
 
 import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,11 +17,8 @@ import java.util.*
 class PlayerViewModel(
     val text: String?,
     private val playerInteractor: PlayerInteractor,
-    private val toast: () -> Unit
-    ) : ViewModel() {
-
-    private var mainHandler: Handler
-
+    private val mainHandler: Handler,
+) : ViewModel() {
 
     private var track = MutableLiveData<TrackDTO>()
     private var currentTime = MutableLiveData<String>()
@@ -36,12 +32,14 @@ class PlayerViewModel(
         track.value = SearchSerializator().jsonToTrack(text)
         currentTime.value = CURRENT_TIME_ZERO
         state.value = StateMusicPlayer.DEFAULT
-        mainHandler = Handler(Looper.myLooper()!!)
     }
 
     private val runThread = object : Runnable {
         override fun run() {
-            currentTime.value = SimpleDateFormat("mm:ss", Locale.getDefault()).format(playerInteractor.getCurrentTime())
+            currentTime.value = SimpleDateFormat(
+                "mm:ss",
+                Locale.getDefault()
+            ).format(playerInteractor.getCurrentTime())
             mainHandler.postDelayed(
                 this,
                 PlayerState.RELOAD_PROGRESS
@@ -49,11 +47,9 @@ class PlayerViewModel(
         }
     }
 
-
     fun preparePlayer() {
         track.value?.let { playerInteractor.preparePlayer(it) }
         playerInteractor.setOnPreparedListener {
-            //track.postValue(SearchSerializator().jsonToTrack(text))
             state.value = StateMusicPlayer.PREPARED
         }
         playerInteractor.setOnCompletionListener {
@@ -64,22 +60,6 @@ class PlayerViewModel(
     }
 
     private fun stopTimer() = mainHandler.removeCallbacks { runThread }
-
-
-    /*private fun currentTimeControl() {
-        when (state.value) {
-            StateMusicPlayer.PLAYING -> {
-                mainHandler.postDelayed(
-                    runThread,
-                    PlayerState.RELOAD_PROGRESS
-                )
-            }
-            StateMusicPlayer.PAUSED -> {
-                mainHandler.removeCallbacks(runThread)
-            }
-            else -> {}
-        }
-    }*/
 
     fun fixReleaseDate(string: String): String = string.removeRange(4 until string.length)
 
@@ -92,10 +72,6 @@ class PlayerViewModel(
             StateMusicPlayer.PAUSED, StateMusicPlayer.PREPARED, StateMusicPlayer.DEFAULT -> {
                 startPlayer()
             }
-            StateMusicPlayer.NO_CONTENT -> {
-                toast.invoke()
-            }
-
             else -> {}
         }
     }
@@ -117,9 +93,9 @@ class PlayerViewModel(
         mainHandler.removeCallbacks(runThread)
 
 
-
     }
-    fun onDestroy(){
+
+    fun onDestroy() {
         stopTimer()
         playerInteractor.releasePlayer()
     }

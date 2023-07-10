@@ -7,7 +7,7 @@ import com.example.playlistmaker1.player.domain.api.PlayerRepository
 
 class PlayerInteractorImpl(
     private val playerRepository: PlayerRepository
-): PlayerInteractor {
+) : PlayerInteractor {
 
 
     override fun start() {
@@ -29,11 +29,13 @@ class PlayerInteractorImpl(
     override fun releasePlayer() {
         playerRepository.releasePlayer()
     }
-    override fun setOnPreparedListener(listener: (Any) -> Unit){
+
+    override fun setOnPreparedListener(listener: (Any) -> Unit) {
         playerRepository.setOnPreparedListener(listener)
 
     }
-    override fun setOnCompletionListener(listener: (Any) -> Unit){
+
+    override fun setOnCompletionListener(listener: (Any) -> Unit) {
         playerRepository.setOnCompletionListener(listener)
     }
 
