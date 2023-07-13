@@ -12,6 +12,9 @@
         <item name="refreshButtonBackground">@drawable/refresh_button_dark</item>
         <!-- Status bar color. -->
         <item name="statusBarColor">@color/white</item>
+        <item name="searchHintColor">@color/grey</item>
+        <item name="searchBackgroundTint">@color/edit</item>
+        <item name="clear_history">@color/black</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>

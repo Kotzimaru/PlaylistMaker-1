@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.example.playlistmaker1.R
 import com.example.playlistmaker1.main.app.App
@@ -19,7 +20,7 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
-        findViewById<ImageView>(R.id.arrow_back).setOnClickListener {
+        findViewById<LinearLayout>(R.id.arrow_back).setOnClickListener {
             finish()
         }
 

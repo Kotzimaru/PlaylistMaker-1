@@ -21,6 +21,7 @@ class SearchViewModel(
     private var historyList: ArrayList<TrackDTO> = ArrayList()
 
     private var textSearch: String = ""
+    private var isClickAllowed = true
 
     val searchRunnable = Runnable {
         state.value = Pair(ArrayList(), StateSearch.SEARCH)
@@ -33,6 +34,11 @@ class SearchViewModel(
     fun getState(): LiveData<Pair<ArrayList<TrackDTO>?, StateSearch>> = state
 
     fun uploadTracks(text: String) {
+        if (text.isEmpty()) {
+            if (state.value?.equals(StateSearch.SHOW_HISTORY) == true) {
+                state.value = getDefaultState()
+            }
+        } else {
             interactor.uploadTracks(text, object : Uploader {
                 override fun getTracks(tracks: ArrayList<TrackDTO>?) {
                     if (tracks == null) {
@@ -49,6 +55,7 @@ class SearchViewModel(
                 }
             })
         }
+    }
 
     fun getHistory() {
 
@@ -61,13 +68,9 @@ class SearchViewModel(
         }
     }
 
+
     fun setHistory() {
         interactor.setHistory(historyList)
-        state.value = if (historyList.isEmpty()) {
-            Pair(historyList, StateSearch.EMPTY_HISTORY)
-        } else {
-            Pair(historyList, StateSearch.SHOW_HISTORY)
-        }
     }
 
     fun trackToJSON(track: TrackDTO): String? = interactor.trackToJSON(track)
@@ -75,6 +78,7 @@ class SearchViewModel(
     fun clear() {
         historyList = interactor.clear()
     }
+
     private fun getDefaultState(): Pair<ArrayList<TrackDTO>?, StateSearch> {
         return Pair(ArrayList(), StateSearch.DEFAULT)
     }
@@ -85,7 +89,6 @@ class SearchViewModel(
     }
 
     fun searchDebounse(text: String) {
-        //handler.removeCallbacksAndMessages(Any())
         textSearch = text
         handler.removeCallbacks(searchRunnable)
         handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
@@ -93,9 +96,12 @@ class SearchViewModel(
 
 
     fun clickDebounse(): Boolean {
-        var isClick = false
-        handler.postDelayed({ isClick = true }, CLICK_DEBOUNCE_DELAY)
-        return isClick
+        val current = isClickAllowed
+        if (isClickAllowed) {
+            isClickAllowed = false
+            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+        }
+        return current
     }
 
 

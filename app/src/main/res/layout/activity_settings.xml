@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     style="@style/settings"
@@ -11,23 +9,29 @@
 
     <LinearLayout
         style="@style/settings"
-        android:orientation="horizontal"
-        android:layout_marginBottom="24dp">
+        android:layout_marginBottom="@dimen/margin_8"
+        android:orientation="horizontal">
 
-        <ImageView
+        <LinearLayout
             android:id="@+id/arrow_back"
-            style="@style/image_arrow_back"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_arrow_back">
-        </ImageView>
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="@dimen/margin_4">
 
+            <ImageView
+                style="@style/image_arrow_back"
+                android:layout_margin="@dimen/margin_12"
+                android:src="@drawable/ic_arrow_back" />
+
+        </LinearLayout>
         <TextView
-            style="@style/setting_text"
-            android:text="@string/setting">
+            style="@style/search_text"
+            android:text="@string/search">
 
         </TextView>
 
     </LinearLayout>
+
 
     <FrameLayout
         style="@style/settings"
@@ -70,6 +74,7 @@
         <ImageView
             android:id="@+id/share"
             style="@style/image"
+            android:layout_gravity="right"
             android:layout_margin="16dp"
             android:src="@drawable/ic_share">
 
@@ -90,6 +95,7 @@
         <ImageView
             android:id="@+id/support"
             style="@style/image"
+            android:layout_gravity="right"
             android:layout_margin="14dp"
             android:src="@drawable/ic_support">
         </ImageView>
@@ -111,6 +117,7 @@
         <ImageView
             android:id="@+id/offer"
             style="@style/image"
+            android:layout_gravity="right"
             android:layout_margin="16dp"
             android:src="@drawable/ic_arrow_forward">
 

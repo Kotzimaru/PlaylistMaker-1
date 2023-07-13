@@ -19,9 +19,9 @@ class PlayerRepositoryImpl(private val mediaPlayer: MediaPlayer) : PlayerReposit
     }
 
     override fun preparePlayer(track: TrackDTO) {
-        mediaPlayer.setDataSource(track.previewUrl)
-        mediaPlayer.prepareAsync()
-
+                mediaPlayer.reset()
+                mediaPlayer.setDataSource(track.previewUrl)
+                mediaPlayer.prepareAsync()
     }
 
     override fun releasePlayer() {

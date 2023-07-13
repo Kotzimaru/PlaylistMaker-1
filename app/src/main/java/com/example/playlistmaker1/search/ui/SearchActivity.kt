@@ -30,7 +30,7 @@ class SearchActivity : AppCompatActivity() {
     lateinit var clearIconButton: ImageView
     lateinit var recyclerView: RecyclerView
     lateinit var refreshButton: ImageView
-    lateinit var clearHistory: Button
+    lateinit var clearHistory: FrameLayout
     lateinit var noSearchError: LinearLayout
     lateinit var noConnectError: LinearLayout
     lateinit var progressBar: ProgressBar
@@ -45,6 +45,7 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
 
         viewModel.getState().observe(this) {
 
@@ -74,8 +75,11 @@ class SearchActivity : AppCompatActivity() {
             } else if (it.second == StateSearch.EMPTY_HISTORY) {
                 clearHistory.isGone = true
                 textHistory.isGone = true
-            }else if (it.second == StateSearch.SEARCH){
+            } else if (it.second == StateSearch.SEARCH) {
                 progressBar.isGone = false
+                recyclerView.isGone = true
+                clearHistory.isGone = true
+                textHistory.isGone = true
             }
 
         }
@@ -144,7 +148,9 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 visibleInvisibleClearButton(inputEditText, clearIconButton)
                 text = p0.toString()
-                searchDebounse()
+                if (text.isNotEmpty()) {
+                    searchDebounse()
+                }
             }
 
             override fun afterTextChanged(p0: Editable?) {}
@@ -170,7 +176,7 @@ class SearchActivity : AppCompatActivity() {
             inputEditText.text.clear()
             noSearchError.visibility = View.INVISIBLE
             noConnectError.visibility = View.INVISIBLE
-            trackAdapter.notifyDataSetChanged()
+            viewModel.getHistory()
             recyclerView.adapter = trackAdapter
             this.currentFocus?.let { view ->
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
@@ -179,7 +185,7 @@ class SearchActivity : AppCompatActivity() {
             visibleInvisibleClearButton(inputEditText, clearIconButton)
         }
 
-        findViewById<ImageView>(R.id.arrow_back).setOnClickListener {
+        findViewById<LinearLayout>(R.id.arrow_back).setOnClickListener {
             finish()
         }
     }
@@ -192,7 +198,6 @@ class SearchActivity : AppCompatActivity() {
     private fun visibleInvisibleClearButton(search: EditText, clear: ImageView) {
         clear.isVisible = search.text.isNotEmpty()
     }
-
 
     private fun searchDebounse() {
         viewModel.searchDebounse(text)

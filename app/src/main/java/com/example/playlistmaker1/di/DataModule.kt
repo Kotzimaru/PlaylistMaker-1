@@ -16,7 +16,7 @@ private const val HISTORY = "SearchActivity"
 
 val dataModule = module {
 
-    single {
+    factory {
         MediaPlayer()
     }
 

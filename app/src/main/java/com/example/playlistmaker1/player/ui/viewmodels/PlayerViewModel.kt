@@ -32,6 +32,7 @@ class PlayerViewModel(
         track.value = SearchSerializator().jsonToTrack(text)
         currentTime.value = CURRENT_TIME_ZERO
         state.value = StateMusicPlayer.DEFAULT
+
     }
 
     private val runThread = object : Runnable {
@@ -47,19 +48,24 @@ class PlayerViewModel(
         }
     }
 
+
     fun preparePlayer() {
         track.value?.let { playerInteractor.preparePlayer(it) }
         playerInteractor.setOnPreparedListener {
+            //track.postValue(SearchSerializator().jsonToTrack(text))
             state.value = StateMusicPlayer.PREPARED
         }
         playerInteractor.setOnCompletionListener {
+            mainHandler.removeCallbacks(runThread)
             state.value = StateMusicPlayer.PREPARED
-            //stopTimer()
-            currentTime.value = CURRENT_TIME_ZERO
+            stopTimer()
+
         }
     }
 
-    private fun stopTimer() = mainHandler.removeCallbacks { runThread }
+    private fun stopTimer() {
+        mainHandler.removeCallbacks ( runThread ).let { currentTime.value = CURRENT_TIME_ZERO }
+    }
 
     fun fixReleaseDate(string: String): String = string.removeRange(4 until string.length)
 

@@ -3,8 +3,8 @@ package com.example.playlistmaker1.player.ui
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -19,7 +19,7 @@ import java.util.*
 
 class PlayerActivity : AppCompatActivity() {
 
-    private lateinit var backButton: ImageView
+    private lateinit var backButton: LinearLayout
     private lateinit var coverImage: ImageView
     private lateinit var trackName: TextView
     private lateinit var artistName: TextView
@@ -31,13 +31,8 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var addButton: ImageButton
     private lateinit var playButton: ImageButton
     private lateinit var likeButton: ImageButton
-
-
     private lateinit var track: TrackDTO
     private lateinit var excerptDuration: TextView
-    private val toast = {
-        Toast.makeText(this, R.string.warning, Toast.LENGTH_SHORT).show()
-    }
 
     private val viewModel: PlayerViewModel by viewModel {
         parametersOf(intent.getStringExtra("track"))
@@ -47,6 +42,13 @@ class PlayerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
         initViews()
+
+        fun playbackControl() = viewModel.playbackControl()
+
+        playButton.setOnClickListener { playbackControl() }
+
+        backButton.setOnClickListener { finish() }
+        preparePlayer()
 
         viewModel.getTrackData().observe(this) {
             track = it
@@ -71,15 +73,6 @@ class PlayerActivity : AppCompatActivity() {
         viewModel.getTimerTextData().observe(this) {
             excerptDuration.text = it
         }
-
-        playButton.setOnClickListener { playbackControl() }
-
-        backButton.setOnClickListener { finish() }
-        preparePlayer()
-
-
-
-
 
         viewModel.getStateData().observe(this) { it ->
 
@@ -112,16 +105,4 @@ class PlayerActivity : AppCompatActivity() {
         excerptDuration = findViewById(R.id.excerpt_duration)
     }
 
-    private fun playbackControl() = viewModel.playbackControl()
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.onDestroy()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        viewModel.pausePlayer()
-    }
 }
