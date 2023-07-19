@@ -123,6 +123,8 @@ class SearchActivity : AppCompatActivity() {
 
         inputEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
+                textHistory.isGone = true
+                clearHistory.isGone = true
                 progressBar.isGone = false
                 recyclerView.isGone = true
                 viewModel.uploadTracks(text)
@@ -149,7 +151,13 @@ class SearchActivity : AppCompatActivity() {
                 visibleInvisibleClearButton(inputEditText, clearIconButton)
                 text = p0.toString()
                 if (text.isNotEmpty()) {
+                    noSearchError.isGone = true
+                    noConnectError.isGone = true
                     searchDebounse()
+                } else {
+                    clearHistory.visibility = View.VISIBLE
+                    textHistory.visibility = View.VISIBLE
+                    viewModel.getHistory()
                 }
             }
 

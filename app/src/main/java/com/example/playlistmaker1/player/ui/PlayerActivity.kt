@@ -105,4 +105,13 @@ class PlayerActivity : AppCompatActivity() {
         excerptDuration = findViewById(R.id.excerpt_duration)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.onDestroy()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.pausePlayer()
+    }
 }
