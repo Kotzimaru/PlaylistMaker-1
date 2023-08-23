@@ -104,7 +104,7 @@
     </style>
 
     <style name="noSearchText">
-
+        <item name="android:textSize">19sp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">@dimen/margin_8</item>

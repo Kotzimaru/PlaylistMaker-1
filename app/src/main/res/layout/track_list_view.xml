@@ -9,16 +9,16 @@
         android:id="@+id/cover_icon"
         style="@style/cover"
         android:layout_gravity="center"
-        android:backgroundTint="@color/white"
-        android:scaleType="centerCrop"
-        android:src="@drawable/placeholder"
         android:layout_marginStart="13dp"
         android:layout_marginTop="@dimen/margin_8"
         android:layout_marginBottom="@dimen/margin_8"
-        app:layout_constraintHorizontal_bias="0"
+        android:backgroundTint="@color/white"
+        android:scaleType="centerCrop"
+        android:src="@drawable/placeholder"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/linearLayout"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
@@ -26,8 +26,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="66dp"
-        android:layout_marginBottom="14dp"
         android:layout_marginTop="14dp"
+        android:layout_marginBottom="14dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,11 +37,10 @@
             android:id="@+id/track_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:ellipsize="end"
             android:fontFamily="@font/ys_display_regular"
             android:lines="1"
-            android:maxEms="15"
+            android:maxEms="13"
             android:textColor="?attr/blackWhiteColor"
             android:textSize="@dimen/text_size_16"
             tools:text="Smells Like Teen Spirit" />
@@ -63,7 +62,7 @@
                 android:textColor="?attr/greyWhiteColor"
                 android:textSize="@dimen/text_size_11"
                 app:drawableEndCompat="@drawable/ellipse"
-                android:drawableTintMode="src_atop"
+                app:drawableTintMode="src_atop"
                 tools:text="Nirvana" />
 
             <TextView

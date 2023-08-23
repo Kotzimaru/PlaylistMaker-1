@@ -110,6 +110,7 @@ class SearchActivity : AppCompatActivity() {
 
         trackAdapter.itemClickListener = { _, track ->
             viewModel.removeTrack(track)
+            trackAdapter.notifyDataSetChanged()
 
             // Переход на экран плеера
             if (track != null) {

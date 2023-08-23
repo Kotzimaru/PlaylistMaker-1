@@ -175,7 +175,8 @@
         <ImageView
             style="@style/noSearchImage"/>
         <TextView
-            style="@style/noSearchText"/>
+            style="@style/noSearchText"
+            android:fontFamily="@font/ys_display_medium"/>
 
     </LinearLayout>
 
@@ -183,7 +184,8 @@
         android:id="@+id/noConnectError"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_marginTop="120dp"
+
         android:orientation="vertical"
         android:visibility="invisible">
 
@@ -192,10 +194,11 @@
 
         <TextView
             android:gravity="center"
-            style="@style/noConnectText"/>
+            style="@style/noConnectText"
+            android:fontFamily="@font/ys_display_medium"/>
         <ImageView
             android:id="@+id/refreshButton"
-            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginTop="24dp"
             android:src="?attr/refreshButtonBackground"
             android:layout_gravity="center"
             android:layout_height="wrap_content"

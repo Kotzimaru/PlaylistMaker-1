@@ -27,6 +27,7 @@ class SearchViewModel(
         state.value = Pair(ArrayList(), StateSearch.SEARCH)
         uploadTracks(textSearch)
     }
+
     init {
         state.value = getDefaultState()
     }
