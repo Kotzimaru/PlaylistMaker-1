@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'org.jetbrains.kotlin.android.extensions'
+    id("kotlin-parcelize")
 }
 
 android {
@@ -16,6 +16,9 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildFeatures {
+        viewBinding true
     }
 
     buildTypes {
@@ -35,7 +38,6 @@ android {
 
 dependencies {
 
-    implementation "io.insert-koin:koin-android:3.3.0"
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.0'
     implementation 'com.google.android.material:material:1.8.0'
@@ -48,5 +50,9 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.10'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    implementation 'io.insert-koin:koin-android:3.3.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    def fragment_version = "1.5.5"
+    implementation "androidx.fragment:fragment-ktx:$fragment_version"
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
 }
