@@ -3,6 +3,15 @@
     <attr name="main_tint" format="reference" />
     <attr name="statusBarColor" format="reference" />
     <attr name="refreshButtonBackground" format="reference" />
+    <attr name="arrow" format="reference" />
+    <attr name="blackWhiteColor" format="reference" />
+    <attr name="whiteBlackColor" format="reference" />
+    <attr name="greyBlackColor" format="reference" />
+    <attr name="greyWhiteColor" format="reference" />
+    <attr name="searchBackgroundTint" format="reference" />
+    <attr name="searchMini" format="reference" />
+    <attr name="blackGreyColor" format="reference" />
+    <attr name="clear_history" format="reference" />
 
 
 </resources>

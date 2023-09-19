@@ -2,28 +2,22 @@ package com.example.playlistmaker1.search.data
 
 import android.content.SharedPreferences
 import com.example.playlistmaker1.player.data.TrackDTO
+import com.example.playlistmaker1.player.domain.PlayerState.Companion.KEY_LIST_TRACKS
 import com.example.playlistmaker1.search.data.network.AppleResponse
 import com.example.playlistmaker1.search.data.network.SearchApi
-import com.example.playlistmaker1.search.data.network.SearchSerializator
 import com.example.playlistmaker1.search.domain.Uploader
 import com.example.playlistmaker1.search.domain.api.SearchRepository
-import retrofit2.*
-import retrofit2.converter.gson.GsonConverterFactory
+import com.example.playlistmaker1.search.domain.api.Serializator
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class SearchRepositoryImpl(private val sharedPrefs: SharedPreferences): SearchRepository {
+class SearchRepositoryImpl(
+    private val sharedPrefs: SharedPreferences,
+    private val retrofit: SearchApi,
+    private val serializator: Serializator
+) : SearchRepository {
 
-
-    companion object {
-        val serializator = SearchSerializator()
-        const val KEY_LIST_TRACKS = "tracks_history"
-        const val URL = "https://itunes.apple.com/"
-
-    }
-
-
-
-    private val retrofit: SearchApi = Retrofit.Builder().baseUrl(URL)
-        .addConverterFactory(GsonConverterFactory.create()).build().create()
 
 
 
@@ -79,8 +73,7 @@ class SearchRepositoryImpl(private val sharedPrefs: SharedPreferences): SearchRe
             }
         })
     }
-
-
+    override fun trackToJSON(track: TrackDTO): String? = serializator.trackToJSON(track)
 
     override fun uploadTracks(text: String) {
         retrofit.search(text)

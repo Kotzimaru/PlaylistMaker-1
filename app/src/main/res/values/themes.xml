@@ -8,10 +8,19 @@
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">#1A1B22</item>
+        <item name="colorOnSecondary">@color/themes_dark</item>
         <item name="refreshButtonBackground">@drawable/refresh_button_dark</item>
         <!-- Status bar color. -->
         <item name="statusBarColor">@color/white</item>
+        <item name="searchBackgroundTint">@color/edit</item>
+        <item name="clear_history">@color/themes_dark</item>
+
+
+        <item name="blackWhiteColor">@color/themes_dark</item>
+        <item name="whiteBlackColor">@color/white</item>
+        <item name="greyBlackColor">@color/grey</item>
+        <item name="greyWhiteColor">@color/grey</item>
+        <item name="blackGreyColor">@color/grey</item>
         <!-- Customize your theme here. -->
     </style>
 </resources>

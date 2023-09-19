@@ -1,13 +1,20 @@
-package com.example.playlistmaker1.settings.data
+package com.example.playlistmaker1.main.app
 
 import android.app.Application
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.playlistmaker1.di.dataModule
+import com.example.playlistmaker1.di.interactorModule
+import com.example.playlistmaker1.di.repositoryModule
+import com.example.playlistmaker1.di.viewModelModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
 
 class App : Application() {
 
     var darkTheme = false
+
 
     fun isDarkMode(): Boolean {
         val darkModeFlag = applicationContext.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
@@ -19,6 +26,13 @@ class App : Application() {
         val sharedPrefs = getSharedPreferences(SAVE_THEME, MODE_PRIVATE)
         darkTheme = sharedPrefs.getBoolean(BOOL_KEY, isDarkMode())
         switchTheme(darkTheme)
+        startKoin{
+            androidContext(this@App)
+            modules(dataModule,
+                repositoryModule,
+                interactorModule,
+                viewModelModule)
+        }
     }
 
     fun switchTheme(darkThemeEnabled: Boolean) {

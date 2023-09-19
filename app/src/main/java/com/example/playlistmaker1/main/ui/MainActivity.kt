@@ -22,16 +22,19 @@ class MainActivity : AppCompatActivity() {
 
         searchButton.setOnClickListener {
             val searchDisplayIntent = Intent(this, SearchActivity::class.java)
-            startActivity(searchDisplayIntent)}
+            startActivity(searchDisplayIntent)
+        }
 
         mediaButton.setOnClickListener {
             val mediaDisplayIntent = Intent(this, MediaActivity::class.java)
-            startActivity(mediaDisplayIntent)}
+            startActivity(mediaDisplayIntent)
+        }
 
 
         settingsButton.setOnClickListener {
             val settingsDisplayIntent = Intent(this, SettingsActivity::class.java)
-            startActivity(settingsDisplayIntent)}
+            startActivity(settingsDisplayIntent)
+        }
 
 
     }

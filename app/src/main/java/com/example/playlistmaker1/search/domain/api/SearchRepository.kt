@@ -17,5 +17,7 @@ interface SearchRepository {
 
     fun searchTrack(text: String, uploader: Uploader)
 
+    fun trackToJSON(track: TrackDTO) : String?
+
 
 }

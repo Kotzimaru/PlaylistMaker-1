@@ -11,7 +11,4 @@ interface PlayerRepository {
     fun releasePlayer()
     fun setOnPreparedListener(listener: (Any) -> Unit)
     fun setOnCompletionListener(listener: (Any) -> Unit)
-
-
-
 }

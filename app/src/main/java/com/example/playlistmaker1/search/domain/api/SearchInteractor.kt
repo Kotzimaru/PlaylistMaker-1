@@ -15,5 +15,7 @@ interface SearchInteractor {
 
     fun clear(): ArrayList<TrackDTO> = ArrayList()
 
+    fun trackToJSON(track: TrackDTO) : String?
+
 
 }

@@ -3,24 +3,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/settings"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="?attr/statusBarColor">
 
 
     <LinearLayout
-        style="@style/settings"
-        android:orientation="horizontal"
-        android:layout_marginBottom="24dp">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <ImageView
+        <LinearLayout
             android:id="@+id/arrow_back"
-            style="@style/image_arrow_back"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_arrow_back">
-        </ImageView>
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="@dimen/margin_4"
+            tools:layout_editor_absoluteX="4dp"
+            tools:layout_editor_absoluteY="4dp"
+            tools:ignore="MissingConstraints">
 
+
+            <LinearLayout
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_margin="@dimen/margin_12">
+
+                <ImageView
+                    style="@style/image_arrow_back"
+                    android:layout_margin="@dimen/margin_4"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_arrow_back" />
+            </LinearLayout>
+
+    </LinearLayout>
         <TextView
-            style="@style/search_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:fontFamily="@font/ys_display_medium"
+            android:textSize="@dimen/text_size_22"
+            android:textColor="?attr/blackWhiteColor"
             android:text="@string/search">
 
         </TextView>
@@ -28,111 +49,118 @@
     </LinearLayout>
 
     <FrameLayout
-
-        style="@style/settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/margin_8"
-        android:orientation="horizontal">
+        android:layout_marginVertical="@dimen/margin_8"
+        android:layout_marginHorizontal="@dimen/margin_16"
+        android:paddingTop="@dimen/margin_4">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
 
         <EditText
             android:id="@+id/inputEditText"
             style="@style/edit_text"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_4"
+            android:layout_height="36dp"
             android:background="@drawable/rounded_edittext"
-            android:backgroundTint="@color/edit"
+            android:backgroundTint="?attr/searchBackgroundTint"
+            android:textColorHint="?attr/blackGreyColor"
             android:drawableStart="@drawable/ic_search_edit"
-            android:drawablePadding="@dimen/size_dp_15"
+            android:drawablePadding="8dp"
             android:hint="@string/search"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLines="1"
-            android:paddingStart="@dimen/margin_20"
+            android:paddingStart="@dimen/margin_16"
             android:paddingEnd="@dimen/margin_8"
             android:singleLine="true"
             tools:ignore="TouchTargetSizeCheck" />
 
         <ImageView
-            style="@style/ic_clear_style"
             android:id="@+id/clearIconButton"
+            style="@style/ic_clear_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:padding="@dimen/margin_12"
             android:src="@drawable/ic_clear"
-            tools:visibility="invisible" />
-
-
-
+            tools:visibility="visible" />
 
     </FrameLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    </FrameLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+    <TextView
+        android:id="@+id/textHistory"
+        style="@style/textHistory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_16"
+        android:text="@string/storySearch"
+        android:gravity="center_horizontal|top"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="18dp"
+        android:layout_marginBottom="@dimen/margin_12"
+        android:visibility="invisible"/>
 
-        <TextView
-            android:id="@+id/textHistory"
-            style="@style/textHistory"
-            android:layout_width="wrap_content"
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="140dp"
+        android:indeterminateTint="@color/blue"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/recycler_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/recycler_view" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginVertical="8dp"
-            android:text="@string/storySearch"
-            android:textSize="@dimen/text_size_19"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toTopOf="@+id/recycler_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.401" />
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
+            <FrameLayout
+                android:id="@+id/clearHistory"
+                android:layout_width="148dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center"
+                android:layout_marginVertical="@dimen/margin_20"
+                android:background="@drawable/clear_history_button"
+                android:backgroundTint="?attr/clear_history"
+                android:visibility="invisible">
 
-        <Button
-            android:id="@+id/clearHistory"
-            style="@style/buttonHistory"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginVertical="@dimen/margin_8"
-            android:text="@string/clearHistory"
-            android:visibility="invisible"
-            app:cornerRadius="@dimen/radius_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recycler_view"
-            app:layout_constraintVertical_bias="0.0" />
+                <TextView
+                    style="@style/buttonHistory"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/clearHistory">
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminateTint="@color/blue"
-            android:layout_gravity="center"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/recycler_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/recycler_view" />
+                </TextView>
 
+            </FrameLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
+    </LinearLayout>
 
 
 
@@ -140,14 +168,15 @@
         android:id="@+id/noSearchError"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/margin_20"
         android:orientation="vertical"
+        android:layout_marginTop="150dp"
         android:visibility="invisible">
 
         <ImageView
             style="@style/noSearchImage"/>
         <TextView
-            style="@style/noSearchText"/>
+            style="@style/noSearchText"
+            android:fontFamily="@font/ys_display_medium"/>
 
     </LinearLayout>
 
@@ -155,7 +184,8 @@
         android:id="@+id/noConnectError"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/margin_20"
+        android:layout_marginTop="120dp"
+
         android:orientation="vertical"
         android:visibility="invisible">
 
@@ -164,22 +194,16 @@
 
         <TextView
             android:gravity="center"
-            style="@style/noConnectText"/>
-
+            style="@style/noConnectText"
+            android:fontFamily="@font/ys_display_medium"/>
         <ImageView
             android:id="@+id/refreshButton"
-            android:layout_marginTop="@dimen/margin_8"
+            android:layout_marginTop="24dp"
             android:src="?attr/refreshButtonBackground"
             android:layout_gravity="center"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content" />
-
-
     </LinearLayout>
-
-
-
-
 
 
 

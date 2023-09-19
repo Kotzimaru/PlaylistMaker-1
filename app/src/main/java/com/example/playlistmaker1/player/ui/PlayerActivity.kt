@@ -3,22 +3,23 @@ package com.example.playlistmaker1.player.ui
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker1.R
 import com.example.playlistmaker1.player.data.TrackDTO
 import com.example.playlistmaker1.player.domain.StateMusicPlayer
 import com.example.playlistmaker1.player.ui.viewmodels.PlayerViewModel
-import com.example.playlistmaker1.player.ui.viewmodels.PlayerViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.*
 
 class PlayerActivity : AppCompatActivity() {
 
-    private lateinit var backButton: ImageView
+    private lateinit var backButton: LinearLayout
     private lateinit var coverImage: ImageView
     private lateinit var trackName: TextView
     private lateinit var artistName: TextView
@@ -30,30 +31,32 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var addButton: ImageButton
     private lateinit var playButton: ImageButton
     private lateinit var likeButton: ImageButton
-
-
     private lateinit var track: TrackDTO
     private lateinit var excerptDuration: TextView
 
-    private lateinit var viewModel: PlayerViewModel
+    private val viewModel: PlayerViewModel by viewModel {
+        parametersOf(intent.getStringExtra("track"))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
         initViews()
 
+        fun playbackControl() = viewModel.playbackControl()
 
-        viewModel = ViewModelProvider(
-            this,
-            PlayerViewModelFactory(intent.getStringExtra("track"))
-        )[PlayerViewModel::class.java]
+        playButton.setOnClickListener { playbackControl() }
+
+        backButton.setOnClickListener { finish() }
+        preparePlayer()
 
         viewModel.getTrackData().observe(this) {
             track = it
 
             trackName.text = track.trackName
             artistName.text = track.artistName
-            duration.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
+            duration.text =
+                SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
             albumName.text = track.collectionName
             year.text = viewModel.fixReleaseDate(track.releaseDate)
             genre.text = track.primaryGenreName
@@ -71,25 +74,17 @@ class PlayerActivity : AppCompatActivity() {
             excerptDuration.text = it
         }
 
-        playButton.setOnClickListener { playbackControl() }
-
-        backButton.setOnClickListener { finish() }
-        preparePlayer()
-
-
-
-
-
         viewModel.getStateData().observe(this) { it ->
 
-                if (it == StateMusicPlayer.PLAYING) {
-                    playButton.setImageResource(R.drawable.button_pause)
-                } else {
-                    playButton.setImageResource(R.drawable.button_play)
-                }
+            if (it == StateMusicPlayer.PLAYING) {
+                playButton.setImageResource(R.drawable.button_pause)
+            } else {
+                playButton.setImageResource(R.drawable.button_play)
             }
+        }
 
     }
+
     private fun preparePlayer() {
         viewModel.preparePlayer()
     }
@@ -110,17 +105,13 @@ class PlayerActivity : AppCompatActivity() {
         excerptDuration = findViewById(R.id.excerpt_duration)
     }
 
-   private fun playbackControl() = viewModel.playbackControl()
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.onDestroy()
+    }
 
-
-
-override fun onDestroy() {
-    super.onDestroy()
-    viewModel.onDestroy()
-}
-
-override fun onPause() {
-    super.onPause()
-    viewModel.pausePlayer()
-}
+    override fun onPause() {
+        super.onPause()
+        viewModel.pausePlayer()
+    }
 }

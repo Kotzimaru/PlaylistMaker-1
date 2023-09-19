@@ -1,17 +1,16 @@
 package com.example.playlistmaker1.search.domain
 
-import android.content.SharedPreferences
-import com.example.playlistmaker1.creator.Creator
 import com.example.playlistmaker1.player.data.TrackDTO
 import com.example.playlistmaker1.search.domain.api.SearchInteractor
+import com.example.playlistmaker1.search.domain.api.SearchRepository
 
-class SearchInteractorImpl(private val sharedPrefs: SharedPreferences): SearchInteractor {
-
-    private val searchRepository = Creator.getSearchRepositoryImpl(sharedPrefs)
+class SearchInteractorImpl(
+    private val searchRepository: SearchRepository,
+) : SearchInteractor {
 
 
     override fun getHistory(): ArrayList<TrackDTO> {
-         return searchRepository.getHistory()
+        return searchRepository.getHistory()
     }
 
     override fun setHistory(track: ArrayList<TrackDTO>) {
@@ -27,5 +26,7 @@ class SearchInteractorImpl(private val sharedPrefs: SharedPreferences): SearchIn
     override fun removeTrack(trackList: ArrayList<TrackDTO>, track: TrackDTO): ArrayList<TrackDTO> {
         return searchRepository.removeTrack(trackList, track)
     }
+
+    override fun trackToJSON(track: TrackDTO): String? = searchRepository.trackToJSON(track)
 
 }
