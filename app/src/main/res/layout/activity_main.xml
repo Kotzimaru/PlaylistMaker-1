@@ -1,52 +1,33 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    style="@style/main"
-    android:paddingHorizontal="@dimen/size_dp_15">
+    tools:context=".main.ui.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/container_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/navigation_graph"
+
+        app:layout_constraintBottom_toTopOf="@id/bottomNavigationView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="0dp"
+        android:elevation="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/title"
-        android:textSize="@dimen/text_size_22"
-        android:padding="@dimen/size_dp_15"
-        android:textColor="@color/white"
-        android:gravity="top"
-        />
+        android:backgroundTint="?attr/blackWhiteBar"
 
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_menu"/>
 
-    <Button
-        style="@style/ButtonStyle"
-        android:id="@+id/search_button"
-        android:text="@string/search"
-        android:backgroundTint="@color/white"
-        app:cornerRadius="@dimen/radius_16"
-        app:icon="@drawable/ic_search"
-        app:iconGravity="textStart"
-        app:iconTint="@color/black"
-        />
-
-    <Button
-        style="@style/ButtonStyle"
-        android:id="@+id/media_button"
-        android:text="@string/media"
-        android:backgroundTint="@color/white"
-        app:icon="@drawable/ic_media"
-        app:iconTint="@color/black"
-        app:cornerRadius="@dimen/radius_16"
-        />
-
-    <Button
-        style="@style/ButtonStyle"
-        android:id="@+id/settings_button"
-        android:text="@string/setting"
-        android:backgroundTint="@color/white"
-        app:icon="@drawable/ic_settings"
-        app:iconTint="@color/black"
-        android:layout_marginBottom="@dimen/size_dp_15"
-        app:cornerRadius="@dimen/radius_16"
-        />
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

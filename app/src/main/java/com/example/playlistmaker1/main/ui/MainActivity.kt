@@ -1,13 +1,12 @@
 package com.example.playlistmaker1.main.ui
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.example.playlistmaker1.R
-import com.example.playlistmaker1.media.ui.MediaActivity
-import com.example.playlistmaker1.search.ui.SearchActivity
-import com.example.playlistmaker1.settings.ui.SettingsActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,28 +14,25 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.container_view) as NavHostFragment
+        val navController = navHostFragment.navController
 
-        val searchButton = findViewById<Button>(R.id.search_button)
-        val mediaButton = findViewById<Button>(R.id.media_button)
-        val settingsButton = findViewById<Button>(R.id.settings_button)
+        val bottomNavBar = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavBar.setupWithNavController(navController)
 
-        searchButton.setOnClickListener {
-            val searchDisplayIntent = Intent(this, SearchActivity::class.java)
-            startActivity(searchDisplayIntent)
+        bottomNavBar.setBackgroundColor(R.attr.blackWhiteBar)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.playerFragment -> {
+                    bottomNavBar.visibility = View.GONE
+                }
+                else -> {
+                    bottomNavBar.visibility = View.VISIBLE
+                }
+            }
         }
-
-        mediaButton.setOnClickListener {
-            val mediaDisplayIntent = Intent(this, MediaActivity::class.java)
-            startActivity(mediaDisplayIntent)
-        }
-
-
-        settingsButton.setOnClickListener {
-            val settingsDisplayIntent = Intent(this, SettingsActivity::class.java)
-            startActivity(settingsDisplayIntent)
-        }
-
-
     }
 }
 

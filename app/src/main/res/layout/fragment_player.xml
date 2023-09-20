@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?attr/statusBarColor"
-    tools:context=".player.ui.PlayerActivity">
+    tools:context=".player.ui.PlayerFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -18,7 +18,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
-        android:id="@+id/arrow_back"
+        android:id="@+id/back"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_margin="@dimen/margin_4"

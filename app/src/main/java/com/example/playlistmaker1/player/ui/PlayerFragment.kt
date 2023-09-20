@@ -1,23 +1,29 @@
 package com.example.playlistmaker1.player.ui
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker1.R
+import com.example.playlistmaker1.databinding.FragmentPlayerBinding
 import com.example.playlistmaker1.player.data.TrackDTO
 import com.example.playlistmaker1.player.domain.StateMusicPlayer
 import com.example.playlistmaker1.player.ui.viewmodels.PlayerViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
-class PlayerActivity : AppCompatActivity() {
+class PlayerFragment : Fragment() {
 
     private lateinit var backButton: LinearLayout
     private lateinit var coverImage: ImageView
@@ -33,24 +39,58 @@ class PlayerActivity : AppCompatActivity() {
     private lateinit var likeButton: ImageButton
     private lateinit var track: TrackDTO
     private lateinit var excerptDuration: TextView
+    private lateinit var binding: FragmentPlayerBinding
 
-    private val viewModel: PlayerViewModel by viewModel {
-        parametersOf(intent.getStringExtra("track"))
+    companion object {
+        const val TRACK = "track"
+
+        fun createArgs(track: String?): Bundle {
+            return bundleOf(TRACK to track)
+        }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_player)
-        initViews()
+    private val viewModel: PlayerViewModel by viewModel {
+        parametersOf(requireArguments().getString(TRACK))
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+
+        binding = FragmentPlayerBinding.inflate(inflater, container, false)
+        return binding.root
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        backButton = binding.back
+        coverImage = binding.cover
+        trackName = binding.trackName
+        artistName = binding.artistName
+        duration = binding.changeableDuration
+        albumName = binding.changeableAlbum
+        year = binding.changeableYear
+        genre = binding.changeableGenre
+        country = binding.changeableCountry
+        addButton = binding.addButton
+        playButton = binding.playButton
+        likeButton = binding.likeButton
+        excerptDuration = binding.excerptDuration
+
+        preparePlayer()
 
         fun playbackControl() = viewModel.playbackControl()
 
         playButton.setOnClickListener { playbackControl() }
 
-        backButton.setOnClickListener { finish() }
-        preparePlayer()
-
-        viewModel.getTrackData().observe(this) {
+        binding.back.setOnClickListener {
+            findNavController().popBackStack()
+        }
+        //получение трека
+        viewModel.getTrackData().observe(viewLifecycleOwner) {
             track = it
 
             trackName.text = track.trackName
@@ -62,7 +102,7 @@ class PlayerActivity : AppCompatActivity() {
             genre.text = track.primaryGenreName
             country.text = track.country
 
-            Glide.with(applicationContext)
+            Glide.with(requireContext())
                 .load(track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg"))
                 .centerCrop()
                 .transform(RoundedCorners(resources.getDimensionPixelSize(R.dimen.radius_8)))
@@ -70,11 +110,11 @@ class PlayerActivity : AppCompatActivity() {
                 .into(coverImage)
         }
 
-        viewModel.getTimerTextData().observe(this) {
+        viewModel.getTimerTextData().observe(viewLifecycleOwner) {
             excerptDuration.text = it
         }
-
-        viewModel.getStateData().observe(this) { it ->
+        //получение состояния
+        viewModel.getStateData().observe(viewLifecycleOwner) { it ->
 
             if (it == StateMusicPlayer.PLAYING) {
                 playButton.setImageResource(R.drawable.button_pause)
@@ -84,34 +124,7 @@ class PlayerActivity : AppCompatActivity() {
         }
 
     }
-
     private fun preparePlayer() {
         viewModel.preparePlayer()
-    }
-
-    fun initViews() {
-        backButton = findViewById(R.id.arrow_back)
-        coverImage = findViewById(R.id.cover)
-        trackName = findViewById(R.id.track_name)
-        artistName = findViewById(R.id.artist_name)
-        duration = findViewById(R.id.changeable_duration)
-        albumName = findViewById(R.id.changeable_album)
-        year = findViewById(R.id.changeable_year)
-        genre = findViewById(R.id.changeable_genre)
-        country = findViewById(R.id.changeable_country)
-        addButton = findViewById(R.id.add_button)
-        playButton = findViewById(R.id.play_button)
-        likeButton = findViewById(R.id.like_button)
-        excerptDuration = findViewById(R.id.excerpt_duration)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.onDestroy()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        viewModel.pausePlayer()
     }
 }

@@ -2,6 +2,7 @@ package com.example.playlistmaker1.di
 
 import android.os.Handler
 import android.os.Looper
+import com.example.playlistmaker1.media.ui.viewmodels.EmptyMediaFragmentModel
 import com.example.playlistmaker1.player.ui.viewmodels.PlayerViewModel
 import com.example.playlistmaker1.search.ui.viewmodels.SearchViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -15,6 +16,10 @@ val viewModelModule = module {
     }
     viewModel { (text: String?) ->
         PlayerViewModel(text, get(), get())
+    }
+
+    viewModel {
+        EmptyMediaFragmentModel()
     }
 
     single {
