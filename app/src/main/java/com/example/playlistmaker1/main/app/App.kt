@@ -13,7 +13,8 @@ import org.koin.core.context.startKoin
 
 class App : Application() {
 
-    var darkTheme = false
+
+        var darkTheme = false
 
 
     fun isDarkMode(): Boolean {
@@ -53,4 +54,4 @@ class App : Application() {
         const val BOOL_KEY = "key_for_bool"
     }
 
-}
+    }

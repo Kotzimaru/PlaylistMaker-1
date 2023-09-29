@@ -9,10 +9,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.example.playlistmaker1.R
 import com.example.playlistmaker1.databinding.FragmentSettingsBinding
-import com.example.playlistmaker1.main.app.App
 
 class SettingsFragment : Fragment() {
 
@@ -29,6 +29,7 @@ class SettingsFragment : Fragment() {
         return binding?.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -56,12 +57,23 @@ class SettingsFragment : Fragment() {
         }
 
         val themeSwitcher = _binding!!.themeSwitcher
+        themeSwitcher.isChecked = resources.configuration.isNightModeActive
+
+        themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked){
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+        }
+
+        /*val themeSwitcher = _binding!!.themeSwitcher
 
         themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
             (requireActivity().applicationContext as App).switchTheme(checked)
         }
 
-        themeSwitcher.isChecked = (requireActivity().applicationContext as App).darkTheme
+        themeSwitcher.isChecked = (requireActivity().applicationContext as App).darkTheme*/
 
 
         /*val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)

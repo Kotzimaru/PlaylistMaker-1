@@ -127,4 +127,14 @@ class PlayerFragment : Fragment() {
     private fun preparePlayer() {
         viewModel.preparePlayer()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.onDestroy()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.pausePlayer()
+    }
 }
