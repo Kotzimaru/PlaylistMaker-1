@@ -13,11 +13,14 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.example.playlistmaker1.R
 import com.example.playlistmaker1.databinding.FragmentSettingsBinding
+import com.example.playlistmaker1.settings.ui.viewmodels.SettingsViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SettingsFragment : Fragment() {
 
     private var _binding : FragmentSettingsBinding? = null
     private val binding get() = _binding
+    private val viemModel: SettingsViewModel by viewModel()
     @SuppressLint("UseSwitchCompatOrMaterialCode")
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreateView(
@@ -67,6 +70,18 @@ class SettingsFragment : Fragment() {
             }
         }
 
+        _binding!!.themeSwitcher.isChecked = resources.configuration.isNightModeActive
+
+        _binding!!.themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked){
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+
+            viemModel.saveDarkThemeValue(isChecked)
+        }
+
         /*val themeSwitcher = _binding!!.themeSwitcher
 
         themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
@@ -84,9 +99,15 @@ class SettingsFragment : Fragment() {
         themeSwitcher.isChecked = (applicationContext as App).darkTheme*/
 
     }
-    override fun onDestroy() {
+    @RequiresApi(Build.VERSION_CODES.R)
+    override fun onResume() {
+        super.onResume()
+        _binding!!.themeSwitcher.isChecked = resources.configuration.isNightModeActive
+    }
+
+    /*override fun onDestroy() {
         super.onDestroy()
         _binding = null
-    }
+    }*/
 
 }

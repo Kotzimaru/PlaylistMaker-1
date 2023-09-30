@@ -4,8 +4,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.playlistmaker1.media.ui.viewmodels.EmptyMediaFragment
-import com.example.playlistmaker1.media.ui.viewmodels.StateMediatekaFragment
+import com.example.playlistmaker1.media.ui.viewmodels.FavoriteFragment
+import com.example.playlistmaker1.media.ui.viewmodels.PlaylistsFragment
 
 class MediaViewPagerAdapter (fragmentManager: FragmentManager, lifecycle: Lifecycle)
     : FragmentStateAdapter(fragmentManager, lifecycle) {
@@ -16,9 +16,8 @@ class MediaViewPagerAdapter (fragmentManager: FragmentManager, lifecycle: Lifecy
 
     override fun createFragment(position: Int): Fragment {
         return when(position) {
-            0 -> EmptyMediaFragment.newInstance(StateMediatekaFragment.FAVORITE)
-            1 -> EmptyMediaFragment.newInstance(StateMediatekaFragment.PLAYLISTS)
-            else -> EmptyMediaFragment.newInstance(StateMediatekaFragment.DEFAULT)
+            0 -> FavoriteFragment.newInstance()
+            else -> PlaylistsFragment.newInstance()
         }
     }
 }
