@@ -21,6 +21,12 @@
         <item name="greyBlackColor">@color/grey</item>
         <item name="greyWhiteColor">@color/grey</item>
         <item name="blackGreyColor">@color/grey</item>
+        <item name="blackWhiteBar">@color/white</item>
         <!-- Customize your theme here. -->
+        <item name="menuSearch">@drawable/light_mode_search_mini</item>
+        <item name="menuMedia">@drawable/light_mode_mediateka_mini</item>
+        <item name="menuSettings">@drawable/light_mode_settings_mini</item>
+        <item name="noInternet">@drawable/internetlightmode</item>
+        <item name="noSearch">@drawable/searchlightmode</item>
     </style>
 </resources>

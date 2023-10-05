@@ -1,28 +1,29 @@
 package com.example.playlistmaker1.search.ui
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker1.*
-import com.example.playlistmaker1.player.ui.PlayerActivity
+import com.example.playlistmaker1.databinding.FragmentSearchBinding
+import com.example.playlistmaker1.player.ui.PlayerFragment
 import com.example.playlistmaker1.search.domain.api.StateSearch
 import com.example.playlistmaker1.search.ui.viewmodels.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import retrofit2.*
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : Fragment() {
 
 
     lateinit var textHistory: TextView
@@ -34,7 +35,7 @@ class SearchActivity : AppCompatActivity() {
     lateinit var noSearchError: LinearLayout
     lateinit var noConnectError: LinearLayout
     lateinit var progressBar: ProgressBar
-
+    private lateinit var binding: FragmentSearchBinding
     private var text: String = ""
     private var isClick = true
     private var trackAdapter = TrackAdapter()
@@ -42,12 +43,19 @@ class SearchActivity : AppCompatActivity() {
     private val viewModel: SearchViewModel by viewModel()
 
     @SuppressLint("NotifyDataSetChanged")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
 
-        viewModel.getState().observe(this) {
+        viewModel.getState().observe(viewLifecycleOwner) {
 
             if (it.second == StateSearch.SHOW_UPLOAD_TRACKS) {
                 progressBar.isGone = true
@@ -84,17 +92,17 @@ class SearchActivity : AppCompatActivity() {
 
         }
 
-        noSearchError = findViewById(R.id.noSearchError)
-        noConnectError = findViewById(R.id.noConnectError)
-        inputEditText = findViewById(R.id.inputEditText)
-        clearIconButton = findViewById(R.id.clearIconButton)
-        recyclerView = findViewById(R.id.recycler_view)
-        refreshButton = findViewById(R.id.refreshButton)
-        clearHistory = findViewById(R.id.clearHistory)
-        textHistory = findViewById(R.id.textHistory)
-        progressBar = findViewById(R.id.progressBar)
+        noSearchError = binding.root.findViewById(R.id.noSearchError)
+        noConnectError = binding.root.findViewById(R.id.noConnectError)
+        inputEditText = binding.root.findViewById(R.id.inputEditText)
+        clearIconButton = binding.root.findViewById(R.id.clearIconButton)
+        recyclerView = binding.root.findViewById(R.id.recycler_view)
+        refreshButton = binding.root.findViewById(R.id.refreshButton)
+        clearHistory = binding.root.findViewById(R.id.clearHistory)
+        textHistory = binding.root.findViewById(R.id.textHistory)
+        progressBar = binding.root.findViewById(R.id.progressBar)
 
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = trackAdapter
 
         visibleInvisibleClearButton(inputEditText, clearIconButton)
@@ -113,11 +121,10 @@ class SearchActivity : AppCompatActivity() {
             trackAdapter.notifyDataSetChanged()
 
             // Переход на экран плеера
-            if (track != null) {
-                val intentMedia = Intent(this, PlayerActivity::class.java)
-                intentMedia.putExtra("track", viewModel.trackToJSON(track))
-                startActivity(intentMedia)
-            }
+            findNavController().navigate(
+                R.id.action_searchFragment_to_playerFragment,
+                PlayerFragment.createArgs(viewModel.trackToJSON(track))
+            )
         }
 
         refreshButton.setOnClickListener { viewModel.uploadTracks(text) }
@@ -173,10 +180,10 @@ class SearchActivity : AppCompatActivity() {
             trackAdapter.track = ArrayList()
             trackAdapter.notifyDataSetChanged()
             recyclerView.adapter = trackAdapter
-            this.currentFocus?.let { view ->
+/*            this.currentFocus?.let { view ->
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
                 imm?.hideSoftInputFromWindow(view.windowToken, 0)
-            }
+            }*/
             visibleInvisibleClearButton(inputEditText, clearIconButton)
         }
 
@@ -187,16 +194,13 @@ class SearchActivity : AppCompatActivity() {
             noConnectError.visibility = View.INVISIBLE
             viewModel.getHistory()
             recyclerView.adapter = trackAdapter
-            this.currentFocus?.let { view ->
+/*            this.currentFocus?.let { view ->
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
                 imm?.hideSoftInputFromWindow(view.windowToken, 0)
-            }
+            }*/
             visibleInvisibleClearButton(inputEditText, clearIconButton)
         }
 
-        findViewById<LinearLayout>(R.id.arrow_back).setOnClickListener {
-            finish()
-        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
