@@ -1,84 +1,56 @@
 package com.example.playlistmaker1.search.data
 
-import android.content.SharedPreferences
+import TracksStorage
 import com.example.playlistmaker1.player.data.TrackDTO
-import com.example.playlistmaker1.player.domain.PlayerState.Companion.KEY_LIST_TRACKS
-import com.example.playlistmaker1.search.data.network.AppleResponse
-import com.example.playlistmaker1.search.data.network.SearchApi
-import com.example.playlistmaker1.search.domain.Uploader
+import com.example.playlistmaker1.search.data.network.NetworkClient
+import com.example.playlistmaker1.search.data.network.SearchResponse
+import com.example.playlistmaker1.search.domain.FetchResult
+import com.example.playlistmaker1.search.domain.NetworkError
 import com.example.playlistmaker1.search.domain.api.SearchRepository
-import com.example.playlistmaker1.search.domain.api.Serializator
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+
 
 class SearchRepositoryImpl(
-    private val sharedPrefs: SharedPreferences,
-    private val retrofit: SearchApi,
-    private val serializator: Serializator
+    private val tracksStorage: TracksStorage,
+    private val converter: TrackModelConverter,
+    private val networkClient: NetworkClient,
 ) : SearchRepository {
 
 
 
 
-    override fun getHistory(): ArrayList<TrackDTO> {
-        val stringHistory = sharedPrefs.getString(KEY_LIST_TRACKS, "")
+    override fun loadTracks(query: String): Flow<FetchResult> = flow {
 
-        if (stringHistory?.isEmpty() == true) return ArrayList()
+        val response = networkClient.doRequest(query)
 
-        return serializator.jsonToTracks(stringHistory)
-    }
+        when (response.resultCode) {
 
-
-    override fun setHistory(trackList: ArrayList<TrackDTO>?) {
-        sharedPrefs.edit()?.putString(
-            KEY_LIST_TRACKS, serializator.tracksToJson(
-                trackList,
-            )
-        )
-            ?.apply()
-    }
-
-    override fun removeTrack(trackList: ArrayList<TrackDTO>, track: TrackDTO): ArrayList<TrackDTO> {
-
-        trackList.remove(track)
-        trackList.add(0, track)
-
-        if (trackList.size!! > 10) {
-            trackList.removeLast()
-        }
-        setHistory(trackList)
-        return trackList
-    }
-
-    override fun searchTrack(text: String, uploader: Uploader) {
-
-        retrofit.search(text).enqueue(object : Callback<AppleResponse> {
-
-            override fun onFailure(call: Call<AppleResponse>, t: Throwable) {
-                uploader.getTracks(null)
-            }
-
-            override fun onResponse(
-                call: Call<AppleResponse>,
-                response: Response<AppleResponse>
-            ) {
-
-                if (response.isSuccessful) {
-                    val trackJSON = response.body()?.results
-                    if (trackJSON != null) {
-                        uploader.getTracks(trackJSON as ArrayList<TrackDTO>?)
-                    }
+            in 100..399 -> {
+                val resultList = (response as SearchResponse).results
+                if (resultList.isEmpty()) {
+                    emit(FetchResult.Error(NetworkError.SEARCH_ERROR))
+                } else {
+                    val trackList = resultList.filter { it.previewUrl != null }
+                    emit(FetchResult.Success(converter.mapDtoToModel(trackList)))
                 }
             }
-        })
+
+            in 400..499 -> {
+                emit(FetchResult.Error(NetworkError.SEARCH_ERROR))
+            }
+
+            else -> {
+                emit(FetchResult.Error(NetworkError.CONNECTION_ERROR))
+            }
+        }
     }
-    override fun trackToJSON(track: TrackDTO): String? = serializator.trackToJSON(track)
 
-    override fun uploadTracks(text: String) {
-        retrofit.search(text)
+    override fun readHistory(): List<TrackDTO> {
+        return converter.mapDtoToModel(tracksStorage.readHistory())
     }
 
-
-    override fun clear(): ArrayList<TrackDTO> = ArrayList()
+    override fun saveHistory(trackList: ArrayList<TrackDTO>) {
+        tracksStorage.saveHistory(converter.mapModelToDto(trackList))
+    }
 }

@@ -1,38 +1,68 @@
 package com.example.playlistmaker1.player.data
 
 import android.media.MediaPlayer
+import com.example.playlistmaker1.player.domain.PlayerState
 import com.example.playlistmaker1.player.domain.api.PlayerRepository
+import com.example.playlistmaker1.search.data.network.InternetConnectionValidator
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.withContext
 
-class PlayerRepositoryImpl(private val mediaPlayer: MediaPlayer) : PlayerRepository {
+class PlayerRepositoryImpl(
+    private val player: MediaPlayer,
+    private val validator: InternetConnectionValidator
+) : PlayerRepository {
 
 
-    override fun start() {
-        mediaPlayer.start()
+    override var playerState = PlayerState.NOT_PREPARED
+
+    override fun getCurrentPosition(): Int {
+        return player.currentPosition
     }
 
-    override fun pause() {
-        mediaPlayer.pause()
+    override fun startPlayer() {
+        player.start()
+        playerState = PlayerState.PLAYING
     }
 
-    override fun getCurrentTime(): Int {
-        return mediaPlayer.currentPosition
+    override fun pausePlayer() {
+        if (playerState == PlayerState.PLAYING) {
+            player.pause()
+            playerState = PlayerState.PAUSED
+        }
     }
 
-    override fun preparePlayer(track: TrackDTO) {
-                mediaPlayer.reset()
-                mediaPlayer.setDataSource(track.previewUrl)
-                mediaPlayer.prepareAsync()
+    override fun stopPlayer() {
+        player.apply {
+            stop()
+            reset()
+            setOnCompletionListener(null)
+        }
+        playerState = PlayerState.NOT_PREPARED
     }
 
-    override fun releasePlayer() {
-        mediaPlayer.release()
+    override fun preparePlayer(url: String): Flow<PlayerState> = flow {
+        emit(prepare(url))
     }
 
-    override fun setOnPreparedListener(listener: (Any) -> Unit) {
-        mediaPlayer.setOnPreparedListener(listener)
-    }
+    private suspend fun prepare(url: String): PlayerState {
 
-    override fun setOnCompletionListener(listener: (Any) -> Unit) {
-        mediaPlayer.setOnCompletionListener(listener)
+        if (!validator.isConnected()) {
+            playerState = PlayerState.NOT_CONNECTED
+        } else {
+            withContext(Dispatchers.IO) {
+                player.apply {
+                    reset()
+                    setDataSource(url)
+                    prepare()
+                    setOnCompletionListener {
+                        playerState = PlayerState.READY
+                    }
+                }
+                playerState = PlayerState.READY
+            }
+        }
+        return playerState
     }
 }

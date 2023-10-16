@@ -1,13 +1,14 @@
 package com.example.playlistmaker1.player.domain.api
 
 import com.example.playlistmaker1.player.data.TrackDTO
+import com.example.playlistmaker1.player.domain.PlayerState
+import kotlinx.coroutines.flow.Flow
 
 interface PlayerInteractor {
-    fun preparePlayer(track: TrackDTO)
-    fun getCurrentTime(): Int
-    fun start()
-    fun pause()
-    fun releasePlayer()
-    fun setOnPreparedListener(listener: (Any) -> Unit)
-    fun setOnCompletionListener(listener: (Any) -> Unit)
+    fun startPlaying()
+    fun pausePlaying()
+    fun stopPlaying()
+    fun getPlayerPosition(): Int
+    fun getPlayerState(): PlayerState
+    fun preparePlayer(url: String): Flow<PlayerState>
 }

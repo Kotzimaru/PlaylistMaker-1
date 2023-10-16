@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/statusBarColor"
+    android:background="?attr/general_background_color"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
@@ -24,7 +24,7 @@
             android:layout_marginTop="14dp"
             android:fontFamily="@font/ys_display_medium"
             android:text="@string/setting"
-            android:textColor="?attr/blackWhiteColor"
+            android:textColor="?attr/toolbar_text_color"
             android:textSize="@dimen/text_size_22">
 
         </TextView>
@@ -40,12 +40,12 @@
             >
 
             <TextView
-                style="@style/setting_menu"
-                android:text="@string/dark_theme"
-
-                >
-
-            </TextView>
+                style="@style/YSRegular16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/margin_16"
+                android:text="@string/dark_theme" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
                 android:id="@+id/themeSwitcher"
@@ -69,12 +69,13 @@
             android:layout_gravity="start">
 
             <TextView
-
-                style="@style/setting_menu"
+                style="@style/YSRegular16"
                 android:layout_width="wrap_content"
-                android:text="@string/share">
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/margin_16"
+                android:text="@string/share" />
 
-            </TextView>
             <FrameLayout
                 android:id="@+id/frameLayout"
                 android:layout_width="24dp"
@@ -91,7 +92,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_share"
-                    app:tint="?attr/greyWhiteColor">
+                    app:tint="?attr/general_icon_color">
 
                 </ImageView>
 
@@ -103,11 +104,12 @@
             android:layout_height="wrap_content">
 
             <TextView
-
-                style="@style/setting_menu"
-                android:text="@string/support">
-
-            </TextView>
+                style="@style/YSRegular16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/margin_16"
+                android:text="@string/support" />
 
             <FrameLayout
                 android:layout_width="24dp"
@@ -122,7 +124,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_support"
-                    app:tint="?attr/greyWhiteColor"/>
+                    app:tint="?attr/general_icon_color"/>
 
             </FrameLayout>
         </FrameLayout>
@@ -132,13 +134,12 @@
             android:layout_height="wrap_content">
 
             <TextView
-
-                style="@style/setting_menu"
-                android:layout_marginVertical="21dp"
-                android:layout_marginStart="16dp"
-                android:text="@string/agreement">
-
-            </TextView>
+                style="@style/YSRegular16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/margin_16"
+                android:text="@string/agreement" />
 
             <FrameLayout
                 android:layout_width="24dp"
@@ -156,7 +157,7 @@
                     android:layout_marginHorizontal="8dp"
                     android:layout_marginVertical="5dp"
                     android:src="@drawable/ic_arrow_forward"
-                    app:tint="?attr/greyWhiteColor"/>
+                    app:tint="?attr/general_icon_color"/>
 
 
             </FrameLayout>

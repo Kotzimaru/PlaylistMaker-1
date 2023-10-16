@@ -1,109 +1,118 @@
 package com.example.playlistmaker1.search.ui.viewmodels
 
-import android.os.Handler
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker1.player.data.TrackDTO
-import com.example.playlistmaker1.player.domain.PlayerState.Companion.CLICK_DEBOUNCE_DELAY
-import com.example.playlistmaker1.player.domain.PlayerState.Companion.SEARCH_DEBOUNCE_DELAY
-import com.example.playlistmaker1.search.domain.Uploader
+import com.example.playlistmaker1.core.utils.debounce
+import com.example.playlistmaker1.search.domain.FetchResult
 import com.example.playlistmaker1.search.domain.api.SearchInteractor
-import com.example.playlistmaker1.search.domain.api.StateSearch
+import com.example.playlistmaker1.search.ui.SearchContentState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class SearchViewModel(
     private val interactor: SearchInteractor,
-    private val handler: Handler
 ) : ViewModel() {
 
-    private var state = MutableLiveData<Pair<ArrayList<TrackDTO>?, StateSearch>>()
-    private var trackList: ArrayList<TrackDTO>? = ArrayList()
-    private var historyList: ArrayList<TrackDTO> = ArrayList()
+    private val contentStateLiveData = MutableLiveData<SearchContentState>()
+    private val clearIconStateLiveData = MutableLiveData<String>()
+    private val searchTextClearClickedLiveData = MutableLiveData(false)
 
-    private var textSearch: String = ""
-    private var isClickAllowed = true
+    private var latestStateContent = contentStateLiveData.value
+    private var latestSearchText: String? = null
 
-    val searchRunnable = Runnable {
-        state.value = Pair(ArrayList(), StateSearch.SEARCH)
-        uploadTracks(textSearch)
-    }
+    private var searchJob: Job? = null
+
+    private val onSearchDebounce = debounce<String>(delayMillis = SEARCH_DEBOUNCE_DELAY,
+        coroutineScope = viewModelScope,
+        useLastParam = true,
+        action = { query -> loadTrackList(query) })
 
     init {
-        state.value = getDefaultState()
+        contentStateLiveData.value = SearchContentState.HistoryContent(interactor.historyList)
+        latestStateContent = contentStateLiveData.value
     }
 
-    fun getState(): LiveData<Pair<ArrayList<TrackDTO>?, StateSearch>> = state
+    fun observeContentState(): LiveData<SearchContentState> = contentStateLiveData
+    fun observeClearIconState(): LiveData<String> = clearIconStateLiveData
+    fun observeSearchTextClearClicked(): LiveData<Boolean> = searchTextClearClickedLiveData
 
-    fun uploadTracks(text: String) {
-        if (text.isEmpty()) {
-            if (state.value?.equals(StateSearch.SHOW_HISTORY) == true) {
-                state.value = getDefaultState()
-            }
-        } else {
-            interactor.uploadTracks(text, object : Uploader {
-                override fun getTracks(tracks: ArrayList<TrackDTO>?) {
-                    if (tracks == null) {
-                        state.value = Pair(ArrayList(), StateSearch.NO_CONNECTION)
-                    } else {
-                        if (tracks.isEmpty()) {
-                            trackList = tracks
-                            state.value = Pair(trackList, StateSearch.EMPTY_UPLOAD_TRACKS)
-                        } else {
-                            trackList = tracks
-                            state.value = Pair(trackList, StateSearch.SHOW_UPLOAD_TRACKS)
-                        }
-                    }
+    fun onViewResume() {
+        contentStateLiveData.value = latestStateContent!!
+    }
+
+    fun onHistoryClearedClicked() {
+        interactor.historyListCleared()
+        contentStateLiveData.value = SearchContentState.HistoryContent(interactor.historyList)
+        latestStateContent = contentStateLiveData.value
+    }
+
+    fun searchFocusChanged(hasFocus: Boolean, text: String) {
+        if (hasFocus && text.isEmpty()) {
+            contentStateLiveData.value = SearchContentState.HistoryContent(interactor.historyList)
+            latestStateContent = contentStateLiveData.value
+        }
+    }
+
+    fun loadTrackList(query: String) {
+        if (query.isEmpty()) {
+            return
+        }
+        contentStateLiveData.value = SearchContentState.Loading
+
+        searchJob = viewModelScope.launch {
+            interactor
+                .getTracksOnQuery(query = query)
+                .collect { result ->
+                    processResult(result)
                 }
-            })
         }
     }
 
-    fun getHistory() {
+    fun searchTextClearClicked() {
+        onSearchDebounce("")
+        searchJob?.cancel()
+        searchTextClearClickedLiveData.value = true
+        contentStateLiveData.value = SearchContentState.HistoryContent(interactor.historyList)
+        latestStateContent = contentStateLiveData.value
+    }
 
-        historyList = interactor.getHistory()
+    fun onSearchTextChanged(query: String?) {
 
-        state.value = if (historyList.isEmpty()) {
-            Pair(historyList, StateSearch.EMPTY_HISTORY)
+        clearIconStateLiveData.value = query ?: ""
+
+        if (query.isNullOrEmpty()) {
+            contentStateLiveData.value = SearchContentState.HistoryContent(interactor.historyList)
+            latestStateContent = contentStateLiveData.value
         } else {
-            Pair(historyList, StateSearch.SHOW_HISTORY)
+
+            if (latestSearchText == query) return
+
+            latestSearchText = query
+            onSearchDebounce(query)
         }
     }
 
+    private fun processResult(result: FetchResult) {
+        when {
+            result.error != null -> {
+                contentStateLiveData.postValue(SearchContentState.Error(result.error))
+            }
 
-    fun setHistory() {
-        interactor.setHistory(historyList)
-    }
-
-    fun trackToJSON(track: TrackDTO): String? = interactor.trackToJSON(track)
-
-    fun clear() {
-        historyList = interactor.clear()
-    }
-
-    private fun getDefaultState(): Pair<ArrayList<TrackDTO>?, StateSearch> {
-        return Pair(ArrayList(), StateSearch.DEFAULT)
-    }
-
-    fun removeTrack(track: TrackDTO) {
-        historyList = interactor.removeTrack(historyList, track)
-        setHistory()
-    }
-
-    fun searchDebounse(text: String) {
-        textSearch = text
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
-    }
-
-
-    fun clickDebounse(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
+            result.data != null -> {
+                contentStateLiveData.postValue(SearchContentState.SearchContent(result.data))
+                latestStateContent = SearchContentState.SearchContent(result.data)
+            }
         }
-        return current
     }
 
+    fun addTrackToHistoryList(track: TrackDTO) {
+        interactor.addTrackToHistoryList(track)
+    }
 
+    companion object {
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
+    }
 }
