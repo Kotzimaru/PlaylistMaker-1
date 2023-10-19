@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="main_tint" format="reference" />
-    <attr name="statusBarColor" format="reference" />
-    <attr name="refreshButtonBackground" format="reference" />
-    <attr name="arrow" format="reference" />
-    <attr name="blackWhiteColor" format="reference" />
-    <attr name="whiteBlackColor" format="reference" />
-    <attr name="blackWhiteBar" format="reference" />
-    <attr name="greyBlackColor" format="reference" />
-    <attr name="greyWhiteColor" format="reference" />
-    <attr name="searchBackgroundTint" format="reference" />
-    <attr name="searchMini" format="reference" />
-    <attr name="blackGreyColor" format="reference" />
-    <attr name="clear_history" format="reference" />
-    <attr name="menuSearch" format="reference" />
-    <attr name="menuMedia" format="reference" />
-    <attr name="menuSettings" format="reference" />
-    <attr name="noSearch" format="reference" />
-    <attr name="noInternet" format="reference" />
-
+    <attr name="bottom_navigation_color" format="reference"/>
+    <attr name="bottom_navigation_ripple" format="reference"/>
+    <attr name="toolbar_text_color" format="reference"/>
+    <attr name="general_text_color" format="reference"/>
+    <attr name="expression_text_color" format="reference"/>
+    <attr name="general_background_color" format="reference"/>
+    <attr name="general_icon_color" format="reference"/>
+    <attr name="update_text_color" format="reference"/>
+    <attr name="background_hint_color" format="reference"/>
+    <attr name="hint_icon_text_color" format="reference"/>
+    <attr name="ripple" format="reference"/>
+    <attr name="fab_color" format="reference"/>
+    <attr name="media_player_description_text_color" format="reference"/>
+    <attr name="progressbar_color" format="reference"/>
 
 </resources>

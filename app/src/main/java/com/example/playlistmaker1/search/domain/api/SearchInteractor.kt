@@ -1,21 +1,16 @@
 package com.example.playlistmaker1.search.domain.api
 
 import com.example.playlistmaker1.player.data.TrackDTO
+import com.example.playlistmaker1.search.domain.FetchResult
 import com.example.playlistmaker1.search.domain.Uploader
+import kotlinx.coroutines.flow.Flow
 
 interface SearchInteractor {
 
-    fun getHistory(): ArrayList<TrackDTO>
-
-    fun setHistory(track: ArrayList<TrackDTO>)
-
-    fun removeTrack(trackList: ArrayList<TrackDTO>, track: TrackDTO): ArrayList<TrackDTO>
-
-    fun uploadTracks(text: String,uploader: Uploader)
-
-    fun clear(): ArrayList<TrackDTO> = ArrayList()
-
-    fun trackToJSON(track: TrackDTO) : String?
+    val historyList: ArrayList<TrackDTO>
+    fun getTracksOnQuery(query: String): Flow<FetchResult>
+    fun addTrackToHistoryList(track: TrackDTO)
+    fun historyListCleared()
 
 
 }
