@@ -33,20 +33,20 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             }
 
 
-            _binding!!.share.setOnClickListener {
+            _binding.share.setOnClickListener {
                 val intent = Intent(Intent.ACTION_SEND)
                 intent.type = "text/plain"
                 intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.site))
                 startActivity(intent)
             }
 
-            _binding?.offer?.setOnClickListener {
+            _binding.offer?.setOnClickListener {
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.data = Uri.parse(getString(R.string.url_offer))
                 startActivity(intent)
             }
 
-            _binding!!.support.setOnClickListener {
+            _binding.support.setOnClickListener {
 
                 val intent = Intent(Intent.ACTION_SENDTO)
                 intent.data = Uri.parse("mailto:")
@@ -59,9 +59,4 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         }
     }
 }
-   /* @RequiresApi(Build.VERSION_CODES.R)
-    override fun onResume() {
-        super.onResume()
-        _binding!!.themeSwitcher.isChecked = resources.configuration.isNightModeActive
-    }*/
 

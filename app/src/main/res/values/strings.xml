@@ -29,6 +29,14 @@
     <string name="toast">Вы еще не включали музыку, воспользуйтесь командой Поиск</string>
     <string name="warning">Для данного трека недоступно предпрослушивание</string>
     <string name="mediateka">Медиатека</string>
+    <string name="placeholder_image">placeholder_image</string>
+    <string name="cover">cover</string>
+    <string name="add_button">add_button</string>
+    <string name="play_button">play_button</string>
+    <string name="like_button">like_button</string>
+    <string name="ic_share">ic_share</string>
+    <string name="ic_support">ic_support</string>
+    <string name="ic_arrow_forward">ic_arrow_forward</string>
     <string name="playing_error">Нет интернета, не удалось загрузить трек</string>
     <string name="still_loading">Трек еще загружается...</string>
     <string name="empty_library">Ваша медиатека пуста</string>

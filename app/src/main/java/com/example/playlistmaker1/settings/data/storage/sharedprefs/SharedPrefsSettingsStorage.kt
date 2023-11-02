@@ -1,7 +1,7 @@
-package com.practicum.playlistmaker.settings.data.storage.sharedprefs
+package com.example.playlistmaker1.settings.data.storage.sharedprefs
 
 import android.content.SharedPreferences
-import com.practicum.playlistmaker.settings.data.storage.models.SettingsDto
+import com.example.playlistmaker1.settings.data.storage.models.SettingsDto
 
 class SharedPrefsSettingsStorage(private val sharedPreferences: SharedPreferences) :
     SettingsStorage {

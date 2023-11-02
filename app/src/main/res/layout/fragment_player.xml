@@ -131,7 +131,7 @@
         app:layout_constraintEnd_toEndOf="@id/right_guideline"
         app:layout_constraintStart_toEndOf="@id/play_button"
         app:layout_constraintTop_toTopOf="@id/play_button"
-        tools:ignore="SpeakableTextPresentCheck" />
+        tools:ignore="SpeakableTextPresentCheck,ImageContrastCheck" />
 
     <TextView
         android:id="@+id/excerpt_duration"

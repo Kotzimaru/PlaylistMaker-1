@@ -7,6 +7,6 @@ import retrofit2.http.Query
 
 interface SearchApi {
     @GET("/search?entity=song")
-    suspend fun search(@Query("term") text: String?): Response<SearchResponse>?
+    suspend fun search(@Query("term") text: String): Response<SearchResponse>?
 }
 

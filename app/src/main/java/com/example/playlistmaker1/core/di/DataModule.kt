@@ -1,23 +1,23 @@
 package com.example.playlistmaker1.core.di
 
-import TracksStorage
-import android.content.Context
-import android.content.SharedPreferences
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
+import androidx.room.Room
 import com.example.playlistmaker1.core.app.App
 import com.example.playlistmaker1.player.domain.api.PlayerRepository
 import com.example.playlistmaker1.search.data.network.NetworkClient
 import com.example.playlistmaker1.search.data.network.RetrofitNetworkClient
 import com.example.playlistmaker1.search.data.network.SearchApi
-import com.example.playlistmaker1.search.data.network.SearchSerializator
 import com.example.playlistmaker1.search.data.network.InternetConnectionValidator
-import com.example.playlistmaker1.search.domain.api.Serializator
-import com.example.playlistmaker1.search.data.TrackModelConverter
+import com.example.playlistmaker1.media.data.TrackModelConverter
 import com.example.playlistmaker1.player.data.PlayerRepositoryImpl
-import com.practicum.playlistmaker.settings.data.storage.sharedprefs.SharedPrefsSettingsStorage
+import com.example.playlistmaker1.search.data.storage.sharedprefs.TracksStorage
+import com.example.playlistmaker1.settings.data.storage.sharedprefs.SharedPrefsSettingsStorage
 import com.example.playlistmaker1.search.data.storage.sharedprefs.SharedPrefsTracksStorage
-import com.practicum.playlistmaker.settings.data.storage.sharedprefs.SettingsStorage
+import com.example.playlistmaker1.media.data.database.LocalDatabase
+import com.example.playlistmaker1.settings.data.storage.sharedprefs.SettingsStorage
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
@@ -30,23 +30,37 @@ private const val URL = "https://itunes.apple.com/"
 val dataModule = module {
 
     single<SearchApi> {
-        Retrofit.Builder().baseUrl(URL)
+        val logging = HttpLoggingInterceptor().apply {
+            setLevel(HttpLoggingInterceptor.Level.BODY)
+        }
+        val okHttpClient = OkHttpClient
+            .Builder()
+            .addInterceptor(logging)
+            .build()
+
+        Retrofit
+            .Builder()
+            .baseUrl(URL)
             .addConverterFactory(GsonConverterFactory.create())
-            .build().create(SearchApi::class.java)
+            .client(okHttpClient)
+            .build()
+            .create(SearchApi::class.java)
     }
 
-    factory<Serializator> {
-        SearchSerializator()
+    single {
+        Room
+            .databaseBuilder(androidContext(), LocalDatabase::class.java, "database.db")
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     single {
         androidContext().getSharedPreferences(App.PREFERENCES, AppCompatActivity.MODE_PRIVATE)
     }
-
-    singleOf(::RetrofitNetworkClient).bind<NetworkClient>()
-    singleOf(::MediaPlayer)
-    singleOf(::InternetConnectionValidator)
     singleOf(::TrackModelConverter)
+    singleOf(::InternetConnectionValidator)
+    singleOf(::MediaPlayer)
+    singleOf(::RetrofitNetworkClient).bind<NetworkClient>()
     singleOf(::SharedPrefsTracksStorage).bind<TracksStorage>()
     singleOf(::SharedPrefsSettingsStorage).bind<SettingsStorage>()
     singleOf(::PlayerRepositoryImpl).bind<PlayerRepository>()

@@ -3,14 +3,14 @@ package com.example.playlistmaker1.search.ui
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker1.R
 import com.example.playlistmaker1.databinding.TrackListViewBinding
-import com.example.playlistmaker1.player.data.TrackDTO
+import com.example.playlistmaker1.search.data.TrackDTO
+import com.example.playlistmaker1.search.domain.api.TrackModel
 
 class TrackAdapter(private val clickListener: TrackClickListener) :
     RecyclerView.Adapter<TrackViewHolder>() {
 
-    val trackList = ArrayList<TrackDTO>()
+    val trackList = ArrayList<TrackModel>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = TrackViewHolder(
         TrackListViewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -25,7 +25,7 @@ class TrackAdapter(private val clickListener: TrackClickListener) :
     }
 
     fun interface TrackClickListener {
-        fun onTrackClick(track: TrackDTO)
+        fun onTrackClick(track: TrackModel)
     }
 }
 

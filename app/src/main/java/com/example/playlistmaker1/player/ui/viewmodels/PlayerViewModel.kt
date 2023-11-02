@@ -4,64 +4,85 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker1.player.data.TrackDTO
+import com.example.playlistmaker1.media.domain.api.MediaInteractor
+import com.example.playlistmaker1.search.data.TrackDTO
 import com.example.playlistmaker1.player.domain.PlayerState
 import com.example.playlistmaker1.player.domain.api.PlayerInteractor
 import com.example.playlistmaker1.player.ui.PlayStatus
-import com.example.playlistmaker1.search.domain.api.SearchInteractor
+import com.example.playlistmaker1.search.domain.api.TrackModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PlayerViewModel(
     private val playerInteractor: PlayerInteractor,
-    private val searchInteractor: SearchInteractor,
+    private val mediaInteractor: MediaInteractor,
 ) : ViewModel() {
 
     private val playStatusLiveData = MutableLiveData<PlayStatus>()
+    private val isFavoriteLiveData = MutableLiveData<Boolean>()
     private val playProgress get() = playerInteractor.getPlayerPosition()
     private val playerState get() = playerInteractor.getPlayerState()
 
-    private val trackUrl = getTrack().previewUrl
-
     private var progressTimerJob: Job? = null
     private var preparePlayerJob: Job? = null
-
-    init {
-        preparingPlayer(trackUrl)
-    }
+    private var isFavorite: Boolean = false
 
     override fun onCleared() {
         super.onCleared()
+        progressTimerJob?.cancel()
+        preparePlayerJob?.cancel()
         playerInteractor.stopPlaying()
     }
 
     fun observePlayStatus(): LiveData<PlayStatus> = playStatusLiveData
+    fun observeFavoriteTrack(): LiveData<Boolean> = isFavoriteLiveData
 
-    fun getTrack(): TrackDTO {
-        return searchInteractor.historyList.first()
+    fun isFavorite(id: String) {
+        viewModelScope.launch() {
+            withContext(Dispatchers.IO){
+                mediaInteractor.isFavorite(id).collect {
+                    isFavorite = it
+                    isFavoriteLiveData.postValue(isFavorite)
+                }
+            }
+        }
     }
 
     fun onViewPaused() {
         pausePlaying()
     }
 
-    fun playButtonClicked() {
+    fun toggleFavorite(track: TrackModel) {
+        isFavorite = !isFavorite
+        isFavoriteLiveData.value = isFavorite
+        viewModelScope.launch(Dispatchers.IO) {
+            if (isFavorite) {
+                mediaInteractor.likeTrack(track = track)
+            }
+            else {
+                mediaInteractor.unLikeTrack(track = track)
+            }
+        }
+    }
+
+    fun playButtonClicked(url: String) {
         when (playerState) {
             PlayerState.PLAYING -> pausePlaying()
 
             PlayerState.NOT_PREPARED -> {
-                playStatusLiveData.value =
-                    PlayStatus.Loading()
+                playStatusLiveData.value = PlayStatus.Loading()
             }
 
             PlayerState.READY, PlayerState.PAUSED -> startPlaying()
 
-            PlayerState.NOT_CONNECTED -> preparingPlayer(trackUrl)
+            PlayerState.NOT_CONNECTED -> preparingPlayer(url)
         }
     }
 
-    private fun preparingPlayer(url: String) {
+    fun preparingPlayer(url: String) {
 
         preparePlayerJob = viewModelScope.launch {
             playerInteractor
@@ -94,7 +115,6 @@ class PlayerViewModel(
         }
     }
 
-
     private fun pausePlaying() {
         if (playerState == PlayerState.READY) {
             playStatusLiveData.value = PlayStatus.Paused(playProgress = START_POSITION)
@@ -104,6 +124,8 @@ class PlayerViewModel(
         }
         progressTimerJob?.cancel()
     }
+
+
 
     companion object {
         const val START_POSITION = 0

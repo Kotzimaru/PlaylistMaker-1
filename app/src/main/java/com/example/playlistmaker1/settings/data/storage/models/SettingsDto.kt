@@ -1,4 +1,4 @@
-package com.practicum.playlistmaker.settings.data.storage.models
+package com.example.playlistmaker1.settings.data.storage.models
 
 data class SettingsDto(
     val isDarkTheme: Boolean,

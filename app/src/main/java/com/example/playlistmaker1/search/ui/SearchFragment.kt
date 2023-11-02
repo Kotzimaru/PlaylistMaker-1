@@ -1,6 +1,5 @@
 package com.example.playlistmaker1.search.ui
 
-
 import android.content.Context
 import android.os.Bundle
 import android.view.View
@@ -12,29 +11,24 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker1.*
 import com.example.playlistmaker1.databinding.FragmentSearchBinding
-import com.example.playlistmaker1.player.data.TrackDTO
 import com.example.playlistmaker1.core.ui.HostActivity
 import com.example.playlistmaker1.core.utils.debounce
 import com.example.playlistmaker1.core.utils.viewBinding
+import com.example.playlistmaker1.player.ui.PlayerFragment
 import com.example.playlistmaker1.search.domain.NetworkError
+import com.example.playlistmaker1.search.domain.api.TrackModel
 
 import com.example.playlistmaker1.search.ui.viewmodels.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment(R.layout.fragment_search) {
 
-    private lateinit var onClickDebounce: (TrackDTO) -> Unit
+    private lateinit var onClickDebounce: (TrackModel) -> Unit
 
     private val binding by viewBinding<FragmentSearchBinding>()
     private val viewModel by viewModel<SearchViewModel>()
 
     private var trackAdapter: TrackAdapter? = null
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.onViewResume()
-    }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,10 +36,11 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         onClickDebounce = debounce(delayMillis = CLICK_DEBOUNCE_DELAY,
             coroutineScope = viewLifecycleOwner.lifecycleScope,
             useLastParam = false,
-            action = {
-                viewModel.addTrackToHistoryList(it)
+            action = { track ->
+                viewModel.addTrackToHistoryList(track)
                 findNavController().navigate(
-                    R.id.action_searchFragment_to_playerFragment
+                    R.id.action_searchFragment_to_playerFragment,
+                    PlayerFragment.createArgs(track)
                 )
             })
 
@@ -118,7 +113,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         }
     }
 
-    private fun showSearchList(list: List<TrackDTO>) {
+    private fun showSearchList(list: List<TrackModel>) {
 
         binding.apply {
             placeholderImage.visibility = View.GONE
@@ -136,7 +131,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         }
     }
 
-    private fun showHistoryList(list: List<TrackDTO>) {
+    private fun showHistoryList(list: List<TrackModel>) {
 
         binding.apply {
             placeholderImage.visibility = View.GONE

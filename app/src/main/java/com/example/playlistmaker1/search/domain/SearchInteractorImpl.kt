@@ -1,21 +1,21 @@
 package com.example.playlistmaker1.search.domain
 
-import com.example.playlistmaker1.player.data.TrackDTO
 import com.example.playlistmaker1.search.domain.api.SearchInteractor
 import com.example.playlistmaker1.search.domain.api.SearchRepository
+import com.example.playlistmaker1.search.domain.api.TrackModel
 import kotlinx.coroutines.flow.Flow
 
 class SearchInteractorImpl(private val repository: SearchRepository) : SearchInteractor {
 
-    override val historyList = ArrayList<TrackDTO>(getTracksFromHistory())
+    override val historyList = ArrayList<TrackModel>(getTracksFromHistory())
 
     override fun getTracksOnQuery(query: String): Flow<FetchResult> {
         return repository.loadTracks(query = query)
     }
 
-    override fun addTrackToHistoryList(track: TrackDTO) {
+    override fun addTrackToHistoryList(track: TrackModel) {
         when {
-            historyList.size < 10 -> {
+            historyList.size < 10 || historyList.contains(track) -> {
                 historyList.remove(track)
                 historyList.add(FIRST_INDEX_HISTORY_LIST, track)
             }
@@ -33,11 +33,11 @@ class SearchInteractorImpl(private val repository: SearchRepository) : SearchInt
         saveSearchHistory(historyList)
     }
 
-    private fun saveSearchHistory(trackList: ArrayList<TrackDTO>) {
+    private fun saveSearchHistory(trackList: ArrayList<TrackModel>) {
         repository.saveHistory(trackList)
     }
 
-    private fun getTracksFromHistory(): List<TrackDTO> {
+    private fun getTracksFromHistory(): List<TrackModel> {
         return repository.readHistory()
     }
 
