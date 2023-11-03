@@ -1,8 +1,7 @@
 package com.example.playlistmaker1.search.data.storage.sharedprefs
 
-import TracksStorage
 import android.content.SharedPreferences
-import com.example.playlistmaker1.player.data.TrackDTO
+import com.example.playlistmaker1.search.data.TrackDTO
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 

@@ -12,7 +12,6 @@
         android:id="@+id/navigation_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" >
@@ -32,9 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_16"
         android:layout_marginTop="@dimen/margin_10"
-
         android:background="@drawable/shape_on_search_screen"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/navigation_toolbar" >
@@ -84,10 +81,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_50"
-
         android:text="@string/storySearch"
         android:visibility="visible"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/container" />
@@ -101,18 +96,14 @@
         android:layout_marginEnd="@dimen/margin_24"
         android:visibility="visible"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-
         app:layout_constrainedHeight="true"
         app:layout_constraintVertical_chainStyle="packed"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/you_searched"
         app:layout_constraintBottom_toTopOf="@id/clear_history"
-
         app:layout_constraintVertical_bias="0.0"
         app:layout_goneMarginTop="@dimen/margin_24"
-
         tools:listitem="@layout/track_list_view"
         tools:itemCount="100" />
 
@@ -121,18 +112,15 @@
         android:id="@+id/clear_history"
         style="@style/button_update"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/margin_36"
-        android:text="@string/clearHistory"
-
+        android:layout_height="48dp"
         android:layout_marginTop="@dimen/margin_15"
         android:layout_marginBottom="@dimen/margin_15"
-
+        android:text="@string/clearHistory"
         android:visibility="visible"
-
-        app:layout_constraintTop_toBottomOf="@id/search_list"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/search_list"
 
         />
 

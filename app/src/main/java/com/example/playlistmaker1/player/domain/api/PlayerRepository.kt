@@ -1,6 +1,5 @@
 package com.example.playlistmaker1.player.domain.api
 
-import com.example.playlistmaker1.player.data.TrackDTO
 import com.example.playlistmaker1.player.domain.PlayerState
 import kotlinx.coroutines.flow.Flow
 

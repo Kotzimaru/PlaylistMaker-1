@@ -1,6 +1,5 @@
 package com.example.playlistmaker1.player.domain
 
-import com.example.playlistmaker1.player.data.TrackDTO
 import com.example.playlistmaker1.player.domain.api.PlayerInteractor
 import com.example.playlistmaker1.player.domain.api.PlayerRepository
 import kotlinx.coroutines.flow.Flow
@@ -9,7 +8,6 @@ import kotlinx.coroutines.flow.Flow
 class PlayerInteractorImpl(
     private val player: PlayerRepository
 ) : PlayerInteractor {
-
 
     override fun startPlaying() {
         player.startPlayer()

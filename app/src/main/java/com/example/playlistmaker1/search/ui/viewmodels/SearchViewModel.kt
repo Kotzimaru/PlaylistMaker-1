@@ -4,10 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker1.player.data.TrackDTO
+import com.example.playlistmaker1.search.data.TrackDTO
 import com.example.playlistmaker1.core.utils.debounce
 import com.example.playlistmaker1.search.domain.FetchResult
 import com.example.playlistmaker1.search.domain.api.SearchInteractor
+import com.example.playlistmaker1.search.domain.api.TrackModel
 import com.example.playlistmaker1.search.ui.SearchContentState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -18,9 +19,8 @@ class SearchViewModel(
 
     private val contentStateLiveData = MutableLiveData<SearchContentState>()
     private val clearIconStateLiveData = MutableLiveData<String>()
-    private val searchTextClearClickedLiveData = MutableLiveData(false)
+    private val searchTextClearClickedLiveData = SingleLiveEvent<Boolean>()
 
-    private var latestStateContent = contentStateLiveData.value
     private var latestSearchText: String? = null
 
     private var searchJob: Job? = null
@@ -32,27 +32,21 @@ class SearchViewModel(
 
     init {
         contentStateLiveData.value = SearchContentState.HistoryContent(interactor.historyList)
-        latestStateContent = contentStateLiveData.value
     }
 
     fun observeContentState(): LiveData<SearchContentState> = contentStateLiveData
     fun observeClearIconState(): LiveData<String> = clearIconStateLiveData
     fun observeSearchTextClearClicked(): LiveData<Boolean> = searchTextClearClickedLiveData
 
-    fun onViewResume() {
-        contentStateLiveData.value = latestStateContent!!
-    }
 
     fun onHistoryClearedClicked() {
         interactor.historyListCleared()
         contentStateLiveData.value = SearchContentState.HistoryContent(interactor.historyList)
-        latestStateContent = contentStateLiveData.value
     }
 
     fun searchFocusChanged(hasFocus: Boolean, text: String) {
         if (hasFocus && text.isEmpty()) {
             contentStateLiveData.value = SearchContentState.HistoryContent(interactor.historyList)
-            latestStateContent = contentStateLiveData.value
         }
     }
 
@@ -70,26 +64,19 @@ class SearchViewModel(
                 }
         }
     }
-
     fun searchTextClearClicked() {
         onSearchDebounce("")
         searchJob?.cancel()
         searchTextClearClickedLiveData.value = true
         contentStateLiveData.value = SearchContentState.HistoryContent(interactor.historyList)
-        latestStateContent = contentStateLiveData.value
     }
 
     fun onSearchTextChanged(query: String?) {
-
         clearIconStateLiveData.value = query ?: ""
-
         if (query.isNullOrEmpty()) {
             contentStateLiveData.value = SearchContentState.HistoryContent(interactor.historyList)
-            latestStateContent = contentStateLiveData.value
         } else {
-
             if (latestSearchText == query) return
-
             latestSearchText = query
             onSearchDebounce(query)
         }
@@ -98,17 +85,16 @@ class SearchViewModel(
     private fun processResult(result: FetchResult) {
         when {
             result.error != null -> {
-                contentStateLiveData.postValue(SearchContentState.Error(result.error))
+                contentStateLiveData.value = SearchContentState.Error(result.error)
             }
 
             result.data != null -> {
-                contentStateLiveData.postValue(SearchContentState.SearchContent(result.data))
-                latestStateContent = SearchContentState.SearchContent(result.data)
+                contentStateLiveData.value = SearchContentState.SearchContent(result.data)
             }
         }
     }
 
-    fun addTrackToHistoryList(track: TrackDTO) {
+    fun addTrackToHistoryList(track: TrackModel) {
         interactor.addTrackToHistoryList(track)
     }
 

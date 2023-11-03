@@ -19,29 +19,29 @@ class ViewBindingDelegate<T : ViewBinding>(
     private val viewBindingClass: Class<T>,
 ) {
     private var binding: T? = null
-    
+
     operator fun getValue(thisRef: Any?, property: KProperty<*>): T {
         val viewLifecycleOwner: LifecycleOwner = fragment.viewLifecycleOwner
-        
+
         when {
             viewLifecycleOwner.lifecycle.currentState == Lifecycle.State.DESTROYED -> {
                 throw IllegalStateException(
                     "Called after onDestroyedView()"
                 )
             }
-            
+
             fragment.view != null -> return getOrCreateBinding(viewLifecycleOwner)
             else -> throw IllegalStateException("Called before onViewCreated()")
         }
-        
+
     }
-    
+
     @Suppress("UNCHECKED_CAST")
     private fun getOrCreateBinding(viewLifecycleOwner: LifecycleOwner): T {
         return this.binding ?: let {
             val method: Method = viewBindingClass.getMethod("bind", View::class.java)
             val binding: T = method.invoke(null, fragment.view) as T
-            
+
             viewLifecycleOwner.lifecycle.addObserver(object : DefaultLifecycleObserver {
                 override fun onDestroy(owner: LifecycleOwner) {
                     super.onDestroy(owner)
@@ -51,6 +51,6 @@ class ViewBindingDelegate<T : ViewBinding>(
             this.binding = binding
             binding
         }
-        
+
     }
 }

@@ -1,6 +1,6 @@
-package com.practicum.playlistmaker.settings.data.storage.sharedprefs
+package com.example.playlistmaker1.settings.data.storage.sharedprefs
 
-import com.practicum.playlistmaker.settings.data.storage.models.SettingsDto
+import com.example.playlistmaker1.settings.data.storage.models.SettingsDto
 
 interface SettingsStorage {
      fun getSettings(): SettingsDto
