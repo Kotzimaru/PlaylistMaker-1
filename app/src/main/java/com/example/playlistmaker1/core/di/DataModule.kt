@@ -6,10 +6,11 @@ import androidx.room.Room
 import com.example.playlistmaker1.core.app.App
 import com.example.playlistmaker1.player.domain.api.PlayerRepository
 import com.example.playlistmaker1.search.data.network.NetworkClient
+import com.example.playlistmaker1.media.data.converter.PlaylistModelConverter
 import com.example.playlistmaker1.search.data.network.RetrofitNetworkClient
 import com.example.playlistmaker1.search.data.network.SearchApi
 import com.example.playlistmaker1.search.data.network.InternetConnectionValidator
-import com.example.playlistmaker1.media.data.TrackModelConverter
+import com.example.playlistmaker1.media.data.converter.TrackModelConverter
 import com.example.playlistmaker1.player.data.PlayerRepositoryImpl
 import com.example.playlistmaker1.search.data.storage.sharedprefs.TracksStorage
 import com.example.playlistmaker1.settings.data.storage.sharedprefs.SharedPrefsSettingsStorage
@@ -19,6 +20,7 @@ import com.example.playlistmaker1.settings.data.storage.sharedprefs.SettingsStor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -57,8 +59,9 @@ val dataModule = module {
     single {
         androidContext().getSharedPreferences(App.PREFERENCES, AppCompatActivity.MODE_PRIVATE)
     }
-    singleOf(::TrackModelConverter)
-    singleOf(::InternetConnectionValidator)
+    factoryOf(::TrackModelConverter)
+    factoryOf(::InternetConnectionValidator)
+    factoryOf(::PlaylistModelConverter)
     singleOf(::MediaPlayer)
     singleOf(::RetrofitNetworkClient).bind<NetworkClient>()
     singleOf(::SharedPrefsTracksStorage).bind<TracksStorage>()

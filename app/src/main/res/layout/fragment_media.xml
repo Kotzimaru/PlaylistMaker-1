@@ -30,11 +30,11 @@
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
-            style="@style/TabLayout_library"
+            style="@style/TabLayoutLibrary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabIndicatorFullWidth="true"
-            app:tabTextAppearance="@style/TabLayout_library"
+            app:tabTextAppearance="@style/TabLayoutLibrary"
             >
 
             <com.google.android.material.tabs.TabItem

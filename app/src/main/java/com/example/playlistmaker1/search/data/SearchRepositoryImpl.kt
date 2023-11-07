@@ -1,5 +1,5 @@
 package com.example.playlistmaker1.search.data
-import com.example.playlistmaker1.media.data.TrackModelConverter
+import com.example.playlistmaker1.media.data.converter.TrackModelConverter
 import com.example.playlistmaker1.search.data.network.NetworkClient
 import com.example.playlistmaker1.search.data.network.SearchResponse
 import com.example.playlistmaker1.search.data.storage.sharedprefs.TracksStorage

@@ -5,8 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker1.media.domain.api.MediaInteractor
-import com.example.playlistmaker1.media.ui.FavoriteState
-import com.example.playlistmaker1.search.data.TrackDTO
+import com.example.playlistmaker1.media.ui.models.FavoriteState
 import com.example.playlistmaker1.search.domain.api.TrackModel
 import kotlinx.coroutines.launch
 

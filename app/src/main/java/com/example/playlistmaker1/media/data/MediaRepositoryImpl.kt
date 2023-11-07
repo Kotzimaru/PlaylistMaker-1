@@ -1,5 +1,6 @@
 package com.example.playlistmaker1.media.data
 
+import com.example.playlistmaker1.media.data.converter.TrackModelConverter
 import com.example.playlistmaker1.media.domain.api.MediaRepository
 import com.example.playlistmaker1.search.domain.api.TrackModel
 import com.example.playlistmaker1.media.data.database.LocalDatabase
@@ -13,23 +14,23 @@ class MediaRepositoryImpl(
 ) : MediaRepository {
     override suspend fun saveTrack(track: TrackModel) {
         database
-            .dao()
+            .selectedTracksDao()
             .insertTrack(converter.mapToEntity(track))
     }
 
     override suspend fun deleteTrack(track: TrackModel) {
         database
-            .dao()
+            .selectedTracksDao()
             .deleteTrack(converter.mapToEntity(track))
     }
 
     override fun getSelectedTracks(): Flow<List<TrackModel>> = database
-        .dao()
+        .selectedTracksDao()
         .getFavoriteTracks()
         .map { convertFromTrackEntity(it) }
 
     override fun isFavorite(id: String): Flow<Boolean> = database
-        .dao()
+        .selectedTracksDao()
         .isFavorite(id)
 
 
