@@ -16,73 +16,73 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistsFragment : Fragment(R.layout.fragment_playlists) {
-    
+
     private val binding by viewBinding<FragmentPlaylistsBinding>()
     private val viewModel by viewModel<PlaylistsViewModel>()
 
     private lateinit var playlistsAdapter: PlaylistsAdapter
-    
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        
+
         initAdapter()
-        
-       viewLifecycleOwner.lifecycle.coroutineScope.launch {
+
+        viewLifecycleOwner.lifecycle.coroutineScope.launch {
             viewModel.contentFlow.collect { screenState ->
                 render(screenState)
             }
         }
-       
+
         binding.newPlaylistBtn.setOnClickListener {
             findNavController().navigate(
                 R.id.action_mediaFragment_to_newPlaylistFragment
             )
         }
     }
-    
+
     private fun render(state: PlaylistsScreenState) {
         when (state) {
             is PlaylistsScreenState.Content -> showContent(state.playlists)
             PlaylistsScreenState.Empty -> showPlaceholder()
         }
     }
-    
+
     private fun showPlaceholder() {
         binding.apply {
             placeholdersGroup.visibility = View.VISIBLE
             playlists.visibility = View.GONE
         }
-        
+
     }
-    
+
     private fun showContent(content: List<PlaylistModel>) {
-        
+
         binding.apply {
             placeholdersGroup.visibility = View.GONE
             playlists.visibility = View.VISIBLE
         }
-        
-        
+
+
         playlistsAdapter.apply {
             playlists.clear()
             playlists.addAll(content)
             notifyDataSetChanged()
         }
     }
-    
+
     private fun initAdapter() {
         playlistsAdapter = PlaylistsAdapter { playlist ->
-            
+
             Toast
                 .makeText(requireContext(), "Clicked", Toast.LENGTH_SHORT)
                 .show()
-            
+
         }
-        
+
         binding.playlists.adapter = playlistsAdapter
         binding.playlists.addItemDecoration(PlaylistsOffsetItemDecoration(requireContext()))
     }
-    
+
     companion object {
         fun newInstance() = PlaylistsFragment()
     }

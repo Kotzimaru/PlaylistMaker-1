@@ -14,15 +14,15 @@ import kotlinx.coroutines.launch
 class BottomSheetViewModel(
     private val interactor: PlaylistsInteractor,
 ) : ViewModel() {
-    
+
     private val _contentFlow: MutableStateFlow<BottomSheetState> =
         MutableStateFlow(BottomSheetState.Empty)
     val contentFlow: StateFlow<BottomSheetState> = _contentFlow
-    
+
     init {
         fillData()
     }
-    
+
     fun onPlaylistClicked(playlist: PlaylistModel, track: TrackModel) {
         if (interactor.isTrackAlreadyExists(playlist, track)) {
             _contentFlow.value = BottomSheetState.AddedAlready(playlist)
@@ -33,7 +33,7 @@ class BottomSheetViewModel(
             }
         }
     }
-    
+
     private fun fillData() {
         viewModelScope.launch(Dispatchers.IO) {
             interactor
@@ -42,9 +42,9 @@ class BottomSheetViewModel(
                     processResult(playlists)
                 }
         }
-        
+
     }
-    
+
     private fun processResult(playlists: List<PlaylistModel>) {
         if (playlists.isEmpty()) {
             _contentFlow.value = BottomSheetState.Empty
@@ -52,5 +52,4 @@ class BottomSheetViewModel(
             _contentFlow.value = BottomSheetState.Content(playlists)
         }
     }
-    
 }

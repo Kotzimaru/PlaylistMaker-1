@@ -29,40 +29,40 @@ import kotlinx.serialization.json.Json
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class BottomSheet : BottomSheetDialogFragment(R.layout.bottom_sheet) {
-    
+
     private val binding by viewBinding<BottomSheetBinding>()
     private val viewModel by viewModel<BottomSheetViewModel>()
-    
+
     private lateinit var playlistsAdapter: BottomSheetAdapter
     private lateinit var track: TrackModel
-    
+
     override fun onStart() {
         super.onStart()
-         setupRatio(requireContext(), dialog as BottomSheetDialog, 100)
+        setupRatio(requireContext(), dialog as BottomSheetDialog, 100)
     }
-    
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-    
+
         track = requireArguments()
             .getString(KEY_TRACK)
             ?.let { Json.decodeFromString<TrackModel>(it) } ?: TrackModel.emptyTrack
-    
+
         initAdapter()
         initListeners()
         initObserver()
-    
+
     }
 
     private fun initAdapter() {
         playlistsAdapter = BottomSheetAdapter { playlist ->
-            
+
             viewModel.onPlaylistClicked(playlist, track)
-            
+
         }
         binding.playlistsRecycler.adapter = playlistsAdapter
     }
-    
+
     private fun initListeners() {
         binding.createPlaylistBtn.setOnClickListener {
             findNavController().navigate(
@@ -70,7 +70,7 @@ class BottomSheet : BottomSheetDialogFragment(R.layout.bottom_sheet) {
             )
         }
     }
-    
+
     private fun initObserver() {
         viewLifecycleOwner.lifecycle.coroutineScope.launch {
             viewModel.contentFlow.collect { screenState ->
@@ -78,7 +78,7 @@ class BottomSheet : BottomSheetDialogFragment(R.layout.bottom_sheet) {
             }
         }
     }
-    
+
     private fun render(state: BottomSheetState) {
         when (state) {
             is BottomSheetState.AddedAlready -> {
@@ -88,19 +88,19 @@ class BottomSheet : BottomSheetDialogFragment(R.layout.bottom_sheet) {
                     .makeText(requireContext(), message, Toast.LENGTH_SHORT)
                     .show()
             }
-            
+
             is BottomSheetState.AddedNow -> {
                 val message =
                     getString(R.string.added) + " \"" + state.playlistModel.playlistName + "\" "
-                
+
                 showMessage(message)
                 dialog?.cancel()
             }
-            
+
             else -> showContent(state.content)
         }
     }
-    
+
     private fun showMessage(message: String) {
         Snackbar
             .make(
@@ -114,7 +114,7 @@ class BottomSheet : BottomSheetDialogFragment(R.layout.bottom_sheet) {
             .setDuration(MESSAGE_DURATION)
             .show()
     }
-    
+
     private fun showContent(content: List<PlaylistModel>) {
         binding.playlistsRecycler.visibility = View.VISIBLE
         playlistsAdapter.apply {
@@ -123,38 +123,38 @@ class BottomSheet : BottomSheetDialogFragment(R.layout.bottom_sheet) {
             notifyDataSetChanged()
         }
     }
-    
+
     private fun setupRatio(context: Context, bottomSheetDialog: BottomSheetDialog, percetage: Int) {
-        
+
         val bottomSheet = bottomSheetDialog.findViewById<View>(design_bottom_sheet) as FrameLayout
         val behavior: BottomSheetBehavior<*> = BottomSheetBehavior.from(bottomSheet)
         val layoutParams = bottomSheet.layoutParams
         layoutParams.height = getBottomSheetDialogDefaultHeight(context, percetage)
         bottomSheet.layoutParams = layoutParams
         behavior.state = BottomSheetBehavior.STATE_COLLAPSED
-    
+
     }
-    
+
     private fun getBottomSheetDialogDefaultHeight(context: Context, percetage: Int): Int {
         return getWindowHeight(context) * percetage / 100
     }
-    
+
     private fun getWindowHeight(context: Context): Int {
         val displayMetrics = DisplayMetrics()
-        
+
         @Suppress("DEPRECATION") requireActivity().windowManager.defaultDisplay.getMetrics(
             displayMetrics
         )
-        
+
         return displayMetrics.heightPixels
     }
-    
+
     companion object {
-        
+
         fun createArgs(track: TrackModel): Bundle = bundleOf(
             KEY_TRACK to Json.encodeToString(track)
         )
-        
+
         private const val MESSAGE_DURATION = 2000
     }
 }

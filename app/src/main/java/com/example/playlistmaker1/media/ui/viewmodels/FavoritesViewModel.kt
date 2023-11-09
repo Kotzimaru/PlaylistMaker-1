@@ -7,18 +7,22 @@ import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker1.media.domain.api.MediaInteractor
 import com.example.playlistmaker1.media.ui.models.FavoriteState
 import com.example.playlistmaker1.search.domain.api.TrackModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class FavoritesViewModel(
     private val interactor: MediaInteractor,
 ) : ViewModel() {
+
     init {
         fillData()
     }
+
     private val contentStateLiveData = MutableLiveData<FavoriteState>()
     fun observeContentState(): LiveData<FavoriteState> = contentStateLiveData
+
     private fun fillData() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             interactor
                 .getSelectedTracks()
                 .collect { trackList ->
@@ -26,13 +30,16 @@ class FavoritesViewModel(
                 }
         }
     }
+
     private fun processResult(trackList: List<TrackModel>) {
+
         when {
             trackList.isEmpty() -> {
-                contentStateLiveData.value = FavoriteState.Empty
+                contentStateLiveData.postValue(FavoriteState.Empty)
             }
+
             else -> {
-                contentStateLiveData.value = FavoriteState.SelectedTracks(trackList)
+                contentStateLiveData.postValue(FavoriteState.SelectedTracks(trackList))
             }
         }
     }
