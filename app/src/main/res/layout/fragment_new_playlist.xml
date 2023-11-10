@@ -31,21 +31,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.55" />
+        app:layout_constraintGuide_end="340dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/top_description_guideline"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.56" />
+        app:layout_constraintGuide_percent="0.59" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/bottom_description_guideline"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.8" />
+        app:layout_constraintGuide_begin="585dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/bottom_button"
@@ -63,14 +63,12 @@
         android:contentDescription="@string/cover"
         android:src="@drawable/placeholder_cover"
         app:layout_constrainedWidth="true"
-
         app:layout_constraintBottom_toTopOf="@id/bottom_cover_guideline"
         app:layout_constraintDimensionRatio="р, 1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/navigation_toolbar"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@id/navigation_toolbar" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/playlist_name_container"
@@ -82,9 +80,7 @@
         android:layout_marginEnd="@dimen/margin_16"
         android:layout_marginBottom="@dimen/margin_8"
         android:hint="@string/playlist_name"
-
         app:layout_constraintBottom_toTopOf="@id/playlist_description_container"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/top_description_guideline"
@@ -102,13 +98,11 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/playlist_description_container"
         style="@style/PlaylistEditText"
-
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_16"
         android:layout_marginEnd="@dimen/margin_16"
         android:hint="@string/playlist_description"
-
         app:layout_constraintBottom_toBottomOf="@id/bottom_description_guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

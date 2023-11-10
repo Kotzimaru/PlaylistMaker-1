@@ -7,6 +7,7 @@
     android:layout_gravity="center_horizontal"
     android:elevation="0dp"
     android:outlineSpotShadowColor="@android:color/transparent"
+    app:cardBackgroundColor="?attr/general_background_color"
     android:orientation="vertical"
     app:cardCornerRadius="@dimen/radius_8">
 
