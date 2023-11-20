@@ -1,17 +1,17 @@
 package com.example.playlistmaker1.playlist_creator.ui.models
 
-sealed class ScreenState(
-    val createBtnState: CreateBtnState = CreateBtnState.ENABLED
+sealed class PlaylistCreatorState(
+    val createBtnState: CreateBtnState = CreateBtnState.ENABLED,
 ) {
     class Empty(
         createBtnState: CreateBtnState = CreateBtnState.DISABLED,
-    ) : ScreenState(createBtnState)
-    
+    ) : PlaylistCreatorState(createBtnState)
+
     class HasContent(
         createBtnState: CreateBtnState = CreateBtnState.ENABLED,
-    ) : ScreenState(createBtnState)
-    
-    object NeedsToAsk : ScreenState()
-    
-    object AllowedToGoOut : ScreenState()
+    ) : PlaylistCreatorState(createBtnState)
+
+    object NeedsToAsk : PlaylistCreatorState()
+
+    object AllowedToGoOut : PlaylistCreatorState()
 }

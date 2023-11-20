@@ -1,6 +1,5 @@
 package com.example.playlistmaker1.search.ui
 
-import com.example.playlistmaker1.search.data.TrackDTO
 import com.example.playlistmaker1.search.domain.NetworkError
 import com.example.playlistmaker1.search.domain.api.TrackModel
 

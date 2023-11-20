@@ -17,6 +17,15 @@ fun ImageView.setImage(url: String, placeholder: Int, cornerRadius: Int) {
         .into(this)
 }
 
+fun ImageView.setImage(url: String, placeholder: Int) {
+    Glide
+        .with(this.context)
+        .load(url)
+        .placeholder(placeholder)
+        .transform(CenterCrop())
+        .into(this)
+}
+
 fun ImageView.setImage(uri: Uri, cornerRadius: Int) {
     Glide
         .with(this.context)

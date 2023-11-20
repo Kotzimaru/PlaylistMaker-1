@@ -17,6 +17,8 @@ import com.example.playlistmaker1.settings.data.storage.sharedprefs.SharedPrefsS
 import com.example.playlistmaker1.search.data.storage.sharedprefs.SharedPrefsTracksStorage
 import com.example.playlistmaker1.media.data.database.LocalDatabase
 import com.example.playlistmaker1.settings.data.storage.sharedprefs.SettingsStorage
+import com.example.playlistmaker1.sharing.domain.api.ExternalNavigator
+import com.example.playlistmaker1.sharing.data.ExternalNavigatorImpl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidContext
@@ -59,6 +61,7 @@ val dataModule = module {
     single {
         androidContext().getSharedPreferences(App.PREFERENCES, AppCompatActivity.MODE_PRIVATE)
     }
+
     factoryOf(::TrackModelConverter)
     factoryOf(::InternetConnectionValidator)
     factoryOf(::PlaylistModelConverter)
@@ -67,4 +70,5 @@ val dataModule = module {
     singleOf(::SharedPrefsTracksStorage).bind<TracksStorage>()
     singleOf(::SharedPrefsSettingsStorage).bind<SettingsStorage>()
     singleOf(::PlayerRepositoryImpl).bind<PlayerRepository>()
+    singleOf(::ExternalNavigatorImpl).bind<ExternalNavigator>()
 }

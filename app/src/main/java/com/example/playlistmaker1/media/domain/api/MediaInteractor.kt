@@ -1,6 +1,5 @@
 package com.example.playlistmaker1.media.domain.api
 
-import com.example.playlistmaker1.search.data.TrackDTO
 import com.example.playlistmaker1.search.domain.api.TrackModel
 import kotlinx.coroutines.flow.Flow
 

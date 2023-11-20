@@ -1,36 +1,48 @@
 package com.example.playlistmaker1.settings.ui.viewmodels
 
-import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.playlistmaker1.settings.domain.ThemeSettings
 import com.example.playlistmaker1.settings.domain.api.SettingsInteractor
+import com.example.playlistmaker1.sharing.domain.api.SharingInteractor
 
 class SettingsViewModel(
-    private val settingsInteractor: SettingsInteractor
+    private val settingsInteractor: SettingsInteractor,
+    private val sharingInteractor: SharingInteractor,
 ) : ViewModel() {
 
     private var darkTheme = false
-    private val themeSwitcherStateLiveData = MutableLiveData(darkTheme)
+
+    private val _themeSwitcherState = MutableLiveData(darkTheme)
+    val themeSwitcherState: LiveData<Boolean> = _themeSwitcherState
 
     init {
         darkTheme = settingsInteractor.getThemeSettings().darkTheme
-        themeSwitcherStateLiveData.value = darkTheme
+        _themeSwitcherState.value = darkTheme
     }
-
-    fun observeThemeSwitcherState(): LiveData<Boolean> = themeSwitcherStateLiveData
 
     fun onThemeSwitcherClicked(isChecked: Boolean) {
-        themeSwitcherStateLiveData.value = isChecked
+        _themeSwitcherState.value = isChecked
         settingsInteractor.updateThemeSetting(ThemeSettings(darkTheme = isChecked))
 
-        themeSwitcher(isChecked)
-        Log.d("TEST", "+++ changeTheme = $isChecked +++")
+        switchTheme(isChecked)
     }
 
-    private fun themeSwitcher(darkThemeEnabled: Boolean) {
+    fun onShareAppClicked() {
+        sharingInteractor.share(getShareAppLink())
+    }
+
+    fun onWriteSupportClicked() {
+        sharingInteractor.openSupport()
+    }
+
+    fun termsOfUseClicked() {
+        sharingInteractor.openTerms()
+    }
+
+    private fun switchTheme(darkThemeEnabled: Boolean) {
 
         darkTheme = darkThemeEnabled
 
@@ -41,5 +53,13 @@ class SettingsViewModel(
                 AppCompatDelegate.MODE_NIGHT_NO
             }
         )
+    }
+
+    private fun getShareAppLink(): String {
+        return APP_LINK
+    }
+
+    companion object {
+        private const val APP_LINK = "https://practicum.yandex.ru/android-developer/"
     }
 }

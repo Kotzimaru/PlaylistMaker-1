@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_mediaFragment_to_playerFragment"
             app:destination="@id/playerFragment" />
+        <action
+            android:id="@+id/action_mediaFragment_to_playlistMenuFragment"
+            app:destination="@id/playlistMenuFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -31,11 +34,11 @@
         android:label="SettingsFragment" />
     <fragment
         android:id="@+id/newPlaylistFragment"
-        android:name="com.example.playlistmaker1.playlist_creator.ui.fragment.NewPlaylistFragment"
+        android:name="com.example.playlistmaker1.playlist_creator.ui.fragment.PlaylistCreatorFragment"
         android:label="NewPlaylistFragment" />
     <dialog
-        android:id="@+id/bottomSheet"
-        android:name="com.example.playlistmaker1.media.ui.bottom_sheet.BottomSheet"
+        android:id="@+id/bottomSheetPlaylists"
+        android:name="com.example.playlistmaker1.media.ui.bottom_sheet.BottomSheetPlaylists"
         android:label="BottomSheet" >
         <action
             android:id="@+id/action_bottomSheet_to_newPlaylistFragment"
@@ -48,7 +51,30 @@
         tools:layout="@layout/fragment_player" >
         <action
             android:id="@+id/action_playerFragment_to_bottomSheet"
-            app:destination="@id/bottomSheet" />
+            app:destination="@id/bottomSheetPlaylists" />
     </fragment>
+    <dialog
+        android:id="@+id/bottomSheetMenu"
+        android:name="com.example.playlistmaker1.playlist_menu.ui.bottom_sheet.BottomSheetMenu"
+        android:label="BottomSheetMenu" >
+        <action
+            android:id="@+id/action_bottomSheetMenu_to_playlistRedactorFragment"
+            app:destination="@id/playlistRedactorFragment" />
+    </dialog>
+    <fragment
+        android:id="@+id/playlistMenuFragment"
+        android:name="com.example.playlistmaker1.playlist_menu.ui.fragment.PlaylistMenuFragment"
+        android:label="PlaylistMenuFragment" >
+        <action
+            android:id="@+id/action_playlistMenuFragment_to_playerFragment"
+            app:destination="@id/playerFragment" />
+        <action
+            android:id="@+id/action_playlistMenuFragment_to_bottomSheetMenu"
+            app:destination="@id/bottomSheetMenu" />
+    </fragment>
+    <fragment
+        android:id="@+id/playlistRedactorFragment"
+        android:name="com.example.playlistmaker1.playlist_redactor.ui.fragment.PlaylistRedactorFragment"
+        android:label="PlaylistRedactorFragment" />
 
 </navigation>

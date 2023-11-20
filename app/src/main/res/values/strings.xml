@@ -7,12 +7,14 @@
     <string name="setting">Настройки</string>
     <string name="dark_theme">Темная тема</string>
     <string name="share">Поделиться приложением</string>
+    <string name="ic_share">Поделиться</string>
     <string name="support" translatable="false">Написать в поддержку</string>
     <string name="agreement" translatable="false">Пользовательское соглашение</string>
     <string name="site">https://practicum.yandex.ru/android-developer/</string>
     <string name="url_offer">https://yandex.ru/legal/practicum_offer/</string>
-    <string name="theme_message">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
-    <string name="body_message">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="support_message">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="support_title">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="chooser_title">Выберите приложение:</string>
     <string name="mail">kotzimaru@yandex.ru</string>
     <string name="search_error">Ничего не нашлось</string>
     <string name="refresh">Обновить</string>
@@ -34,7 +36,6 @@
     <string name="add_button">add_button</string>
     <string name="play_button">play_button</string>
     <string name="like_button">like_button</string>
-    <string name="ic_share">ic_share</string>
     <string name="ic_support">ic_support</string>
     <string name="ic_arrow_forward">ic_arrow_forward</string>
     <string name="playing_error">Нет интернета, не удалось загрузить трек</string>
@@ -63,14 +64,31 @@
     <string name="created">создан</string>
     <string name="added">Добавлено в плейлист</string>
     <string name="already_added">Трек уже добавлен в плейлист</string>
+    <string name="ic_more">ic_more</string>
+    <string name="delete_track">Хотите удалить трек?</string>
+    <string name="delete_playlist">Хотите удалить плейлист</string>
+    <string name="no">Нет</string>
+    <string name="yes">Да</string>
+    <string name="nothing_added">Вы еще не добавили ни одного трека</string>
+    <string name="empty_track_list">В этом плейлисте нет списка треков, которым можно поделиться</string>
+    <string name="edit_Information">Редактировать информацию</string>
+    <string name="delete">Удалить плейлист</string>
+    <string name="edit_title">Редактировать</string>
+    <string name="save_playlist">Сохранить</string>
+    <string name="changed">изменен</string>
 
     <plurals name="tracks">
-        <item quantity="zero">нет треков</item>
         <item quantity="one">%1$d трек</item>
-        <item quantity="two">%1$d трека</item>
         <item quantity="few">%1$d трека</item>
         <item quantity="many">%1$d треков</item>
         <item quantity="other">%1$d треков</item>
+    </plurals>
+
+    <plurals name="minutes">
+        <item quantity="one">%1$d минута</item>
+        <item quantity="few">%1$d минуты</item>
+        <item quantity="many">%1$d минут</item>
+        <item quantity="other">%1$d минут</item>
     </plurals>
 
 </resources>

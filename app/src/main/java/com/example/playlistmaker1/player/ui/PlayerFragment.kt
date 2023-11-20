@@ -16,7 +16,7 @@ import com.example.playlistmaker1.player.ui.viewmodels.PlayerViewModel
 import com.example.playlistmaker1.core.utils.millisConverter
 import com.example.playlistmaker1.core.utils.setImage
 import com.example.playlistmaker1.core.utils.viewBinding
-import com.example.playlistmaker1.media.ui.bottom_sheet.BottomSheet
+import com.example.playlistmaker1.media.ui.bottom_sheet.BottomSheetPlaylists
 import com.example.playlistmaker1.search.domain.api.TrackModel
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -170,7 +170,7 @@ class PlayerFragment : Fragment(R.layout.fragment_player) {
             addButton.setOnClickListener { button ->
                 (button as? ImageButton)?.let { startAnimation(it) }
                 findNavController().navigate(
-                    R.id.action_playerFragment_to_bottomSheet, BottomSheet.createArgs(track)
+                    R.id.action_playerFragment_to_bottomSheet, BottomSheetPlaylists.createArgs(track)
                 )
             }
         }

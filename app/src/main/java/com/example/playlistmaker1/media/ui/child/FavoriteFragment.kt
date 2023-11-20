@@ -10,7 +10,7 @@ import com.example.playlistmaker1.core.ui.HostActivity
 import com.example.playlistmaker1.core.utils.debounce
 import com.example.playlistmaker1.core.utils.viewBinding
 import com.example.playlistmaker1.databinding.FragmentFavoriteTracksBinding
-import com.example.playlistmaker1.media.ui.models.FavoriteState
+import com.example.playlistmaker1.media.ui.models.ScreenState
 import com.example.playlistmaker1.media.ui.viewmodels.FavoritesViewModel
 import com.example.playlistmaker1.player.ui.PlayerFragment
 import com.example.playlistmaker1.search.domain.api.TrackModel
@@ -39,44 +39,44 @@ class FavoriteFragment: Fragment(R.layout.fragment_favorite_tracks)  {
                 )
             })
 
-        viewModel
-            .observeContentState()
-            .observe(viewLifecycleOwner) { contentState ->
-                render(contentState)
-            }
+        viewModel.contentState.observe(viewLifecycleOwner) { contentState ->
+            render(contentState)
+        }
 
         initAdapter()
     }
 
     private fun initAdapter() {
-        trackAdapter = TrackAdapter { track ->
-            (activity as HostActivity).animateBottomNavigationView()
-            onClickDebounce?.let { it(track) }
-        }
-        binding.tracksList.adapter = trackAdapter
+        trackAdapter = TrackAdapter(
+            clickListener = (TrackAdapter.TrackClickListener { track ->
+                (activity as HostActivity).animateBottomNavigationView()
+                onClickDebounce?.let { it(track) }
+            }),
+        )
+        binding.rvTrackList.adapter = trackAdapter
     }
 
-    private fun render(state: FavoriteState) {
+    private fun render(state: ScreenState) {
         when (state) {
-            is FavoriteState.SelectedTracks -> {
-                showContent(state.trackList)
+            is ScreenState.Content<*> -> {
+                @Suppress("UNCHECKED_CAST") showContent(state.contentList as List<TrackModel>)
             }
 
-            FavoriteState.Empty -> showMessage()
+            ScreenState.Empty -> showMessage()
         }
     }
 
     private fun showMessage() {
         binding.apply {
             placeholder.visibility = View.VISIBLE
-            tracksList.visibility = View.GONE
+            rvTrackList.visibility = View.GONE
         }
     }
 
     private fun showContent(list: List<TrackModel>) {
         binding.apply {
             placeholder.visibility = View.GONE
-            tracksList.visibility = View.VISIBLE
+            rvTrackList.visibility = View.VISIBLE
         }
         trackAdapter?.apply {
             trackList.clear()
