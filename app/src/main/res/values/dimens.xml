@@ -4,6 +4,7 @@
     <dimen name="bottom_height">220dp</dimen>
     <dimen name="image_size_45">45dp</dimen>
     <dimen name="radius_2">2dp</dimen>
+    <dimen name="radius_4">4dp</dimen>
     <dimen name="radius_8">8dp</dimen>
     <dimen name="radius_16">16dp</dimen>
     <dimen name="radius_24">24dp</dimen>
@@ -20,10 +21,14 @@
     <dimen name="margin_14">14dp</dimen>
     <dimen name="margin_15">15dp</dimen>
     <dimen name="margin_16">16dp</dimen>
+    <dimen name="margin_17">17dp</dimen>
     <dimen name="margin_20">20dp</dimen>
     <dimen name="margin_24">24dp</dimen>
     <dimen name="margin_25">25dp</dimen>
+    <dimen name="margin_26">26dp</dimen>
+    <dimen name="margin_28">28dp</dimen>
     <dimen name="margin_30">30dp</dimen>
+    <dimen name="margin_32">32dp</dimen>
     <dimen name="margin_36">36dp</dimen>
     <dimen name="margin_42">42dp</dimen>
     <dimen name="margin_49">49dp</dimen>
@@ -32,6 +37,9 @@
     <dimen name="margin_109">109dp</dimen>
     <dimen name="margin_113">113dp</dimen>
     <dimen name="margin_148">148dp</dimen>
+    <dimen name="margin_160">160dp</dimen>
+    <dimen name="margin_164">164dp</dimen>
+    <dimen name="margin_180">180dp</dimen>
     <dimen name="size_dp_15">15dp</dimen>
     <dimen name="text_size_32">32sp</dimen>
     <dimen name="text_size_22">22sp</dimen>

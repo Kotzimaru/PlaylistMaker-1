@@ -7,6 +7,7 @@ import com.example.playlistmaker1.core.di.interactorModule
 import com.example.playlistmaker1.core.di.repositoryModule
 import com.example.playlistmaker1.core.di.viewModelModule
 import com.example.playlistmaker1.settings.domain.api.SettingsInteractor
+import com.markodevcic.peko.PermissionRequester
 import org.koin.android.ext.android.getKoin
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -23,6 +24,8 @@ class App : Application() {
             androidContext(this@App)
             modules(dataModule, repositoryModule, interactorModule, viewModelModule)
         }
+
+        PermissionRequester.initialize(applicationContext)
 
         darkTheme = getKoin()
             .get<SettingsInteractor>()
