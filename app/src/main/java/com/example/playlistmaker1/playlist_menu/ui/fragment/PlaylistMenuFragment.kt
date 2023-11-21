@@ -86,7 +86,7 @@ class PlaylistMenuFragment : Fragment(R.layout.fragment_playlist_menu) {
             tvPlaylistDescription.text = playlistModel.playlistDescription
         
             if (playlistModel.playlistDescription.isEmpty()) {
-                tvPlaylistDescription.visibility = View.GONE
+                tvPlaylistDescription.visibility = View.VISIBLE
             }
         }
     }
