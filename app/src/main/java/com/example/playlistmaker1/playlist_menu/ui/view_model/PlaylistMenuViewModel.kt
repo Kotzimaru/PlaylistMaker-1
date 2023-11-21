@@ -20,12 +20,12 @@ class PlaylistMenuViewModel(
     private val playlistsInteractor: PlaylistsInteractor,
     private val sharingInteractor: SharingInteractor,
 ) : ViewModel() {
-    
+
     private val _contentFlow: MutableSharedFlow<PlaylistMenuState> = MutableSharedFlow(replay = 1)
     val contentFlow = _contentFlow.asSharedFlow()
-    
+
     private var playlistModel: PlaylistModel? = null
-    
+
     fun fillData(playlistId: Int) {
         viewModelScope.launch {
             playlistsInteractor
@@ -38,44 +38,42 @@ class PlaylistMenuViewModel(
                 }
         }
     }
-    
+
     fun getPlaylist(): PlaylistModel {
         return playlistModel ?: PlaylistModel.emptyPlaylist
     }
-    
+
     fun getPlaylistDuration(): Int {
         return playlistModel?.let { calculator.getTracksDuration(it.trackList) } ?: EMPTY_VALUE
     }
-    
+
     fun getTracksCount(): Int {
         return playlistModel?.tracksCount ?: EMPTY_VALUE
     }
-    
+
     fun deleteTrack(track: TrackModel) {
         viewModelScope.launch {
             playlistModel?.let { playlistsInteractor.deleteTrack(it, track) }
         }
     }
-    
+
     private fun refreshState(playlistModel: PlaylistModel?) {
         if (playlistModel != null) {
             viewModelScope.launch {
                 if (playlistModel.trackList.isEmpty()) {
-                    _contentFlow.emit(
-                        PlaylistMenuState.Content(
+                    _contentFlow.emit(PlaylistMenuState.Content(
                         content = playlistModel,
                         bottomListState = ScreenState.Empty))
                 }
                 else {
-                    _contentFlow.emit(
-                        PlaylistMenuState.Content(
+                    _contentFlow.emit(PlaylistMenuState.Content(
                         content = playlistModel,
                         bottomListState = ScreenState.Content(playlistModel.trackList)))
                 }
             }
         }
     }
-    
+
     fun shareClicked() {
         viewModelScope.launch {
             if (playlistModel?.trackList.isNullOrEmpty()) {
@@ -85,17 +83,17 @@ class PlaylistMenuViewModel(
             }
         }
     }
-    
+
     fun sharePlaylist(message: String) {
         sharingInteractor.share(message)
     }
-    
+
     fun deletePlaylist(playlist: PlaylistModel) {
         viewModelScope.launch {
             playlistsInteractor.deletePlaylist(playlist)
         }
     }
-    
+
     companion object {
         private const val EMPTY_VALUE = 0
     }

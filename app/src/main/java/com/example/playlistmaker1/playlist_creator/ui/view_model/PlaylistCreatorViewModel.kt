@@ -19,23 +19,23 @@ import java.net.URI
 open class PlaylistCreatorViewModel(
     private val useCase: CreatePlaylistUseCase,
 ) : ViewModel() {
-    
+
     private val _screenStateFlow: MutableSharedFlow<PlaylistCreatorState> = MutableSharedFlow(
         replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
-    
+
     val screenStateFlow = _screenStateFlow.asSharedFlow()
-    
+
     private val _permissionStateFlow = MutableSharedFlow<PermissionResultState>(
         replay = 1, onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
     val permissionStateFlow = _permissionStateFlow.asSharedFlow()
-    
+
     private var coverImageUrl = ""
     private var playlistName = ""
     private var playlistDescription = ""
     private var tracksCount = 0
-    
+
     private val register = PermissionRequester.instance()
 
     fun onPlaylistCoverClicked() {
@@ -63,25 +63,24 @@ open class PlaylistCreatorViewModel(
             }
         }
     }
-    
+
     open fun onPlaylistNameChanged(playlistName: String?) {
-    
+
         if (playlistName != null) {
             this.playlistName = playlistName
         }
-    
+
         if (!playlistName.isNullOrEmpty()) {
             _screenStateFlow.tryEmit(PlaylistCreatorState.HasContent())
-        
+
         } else _screenStateFlow.tryEmit(PlaylistCreatorState.Empty())
     }
-    
+
     open fun onPlaylistDescriptionChanged(playlistDescription: String?) {
-    
+
         if (playlistDescription != null) {
             this.playlistDescription = playlistDescription
         }
-    
     }
 
     fun onCreateBtnClicked() {
@@ -90,19 +89,20 @@ open class PlaylistCreatorViewModel(
             _screenStateFlow.emit(PlaylistCreatorState.AllowedToGoOut)
         }
     }
-    
+
     open fun saveImageUri(uri: URI) {
         coverImageUrl = uri.toString()
     }
-    
+
     fun onBackPressed() {
-        
+
         if (coverImageUrl.isNotEmpty() || playlistName.isNotEmpty() || playlistDescription.isNotEmpty()) {
             _screenStateFlow.tryEmit(PlaylistCreatorState.NeedsToAsk)
         } else {
             _screenStateFlow.tryEmit(PlaylistCreatorState.AllowedToGoOut)
         }
     }
+
     open fun createPlaylist(): PlaylistModel {
         return PlaylistModel(
             id = 0,
