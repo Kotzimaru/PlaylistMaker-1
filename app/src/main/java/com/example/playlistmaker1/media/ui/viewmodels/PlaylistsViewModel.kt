@@ -3,7 +3,7 @@ package com.example.playlistmaker1.media.ui.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker1.media.domain.api.PlaylistsInteractor
-import com.example.playlistmaker1.media.ui.models.PlaylistsScreenState
+import com.example.playlistmaker1.media.ui.models.ScreenState
 import com.example.playlistmaker1.playlist_creator.domain.models.PlaylistModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,8 +14,8 @@ class PlaylistsViewModel(
     private val interactor: PlaylistsInteractor,
 ) : ViewModel() {
 
-    private val _contentFlow: MutableStateFlow<PlaylistsScreenState> = MutableStateFlow(PlaylistsScreenState.Empty)
-    val contentFlow: StateFlow<PlaylistsScreenState> = _contentFlow
+    private val _contentFlow: MutableStateFlow<ScreenState> = MutableStateFlow(ScreenState.Empty)
+    val contentFlow: StateFlow<ScreenState> = _contentFlow
 
     init {
         fillData()
@@ -34,9 +34,9 @@ class PlaylistsViewModel(
 
     private fun processResult(playlists: List<PlaylistModel>) {
         if (playlists.isEmpty()) {
-            _contentFlow.value = (PlaylistsScreenState.Empty)
+            _contentFlow.value = (ScreenState.Empty)
         } else {
-            _contentFlow. value = (PlaylistsScreenState.Content(playlists))
+            _contentFlow. value = (ScreenState.Content(playlists))
         }
     }
 }

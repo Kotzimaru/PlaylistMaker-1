@@ -9,7 +9,7 @@ import com.example.playlistmaker1.media.data.database.entity.PlaylistEntity
 import com.example.playlistmaker1.media.data.database.entity.TrackEntity
 import com.example.playlistmaker1.media.data.database.entity.TypeConverter
 
-@Database(version = 6, entities = [TrackEntity::class, PlaylistEntity::class])
+@Database(version = 8, entities = [TrackEntity::class, PlaylistEntity::class])
 @TypeConverters(TypeConverter::class)
 abstract class LocalDatabase : RoomDatabase() {
 

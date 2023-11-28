@@ -46,7 +46,7 @@
             tools:ignore="ContentDescription" />
 
         <EditText
-            android:id="@+id/input_edit_text"
+            android:id="@+id/etInput"
             style="@style/YSRegular16"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
             tools:ignore="Autofill" />
 
         <ImageView
-            android:id="@+id/clear_icon"
+            android:id="@+id/ivClear"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="end|center_vertical"
@@ -76,7 +76,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/you_searched"
+        android:id="@+id/tvYouSearched"
         style="@style/YSMedium19"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
         app:layout_constraintTop_toBottomOf="@id/container" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/search_list"
+        android:id="@+id/rvTrackList"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_20"
@@ -100,16 +100,16 @@
         app:layout_constraintVertical_chainStyle="packed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/you_searched"
-        app:layout_constraintBottom_toTopOf="@id/clear_history"
+        app:layout_constraintTop_toBottomOf="@id/tvYouSearched"
+        app:layout_constraintBottom_toTopOf="@id/clear_history_btn"
         app:layout_constraintVertical_bias="0.0"
         app:layout_goneMarginTop="@dimen/margin_24"
-        tools:listitem="@layout/track_list_view"
+        tools:listitem="@layout/item_view_track"
         tools:itemCount="100" />
 
 
     <Button
-        android:id="@+id/clear_history"
+        android:id="@+id/clear_history_btn"
         style="@style/SampleButton"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
@@ -120,7 +120,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_list"
+        app:layout_constraintTop_toBottomOf="@id/rvTrackList"
 
         />
 
@@ -146,7 +146,7 @@
 
 
     <ImageView
-        android:id="@+id/placeholder_image"
+        android:id="@+id/ivPlaceholder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -160,7 +160,7 @@
         tools:ignore="ContentDescription" />
 
     <TextView
-        android:id="@+id/placeholder_message"
+        android:id="@+id/tvPlaceholder"
         style="@style/YSMedium19"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -171,7 +171,7 @@
         app:layout_constraintBottom_toTopOf="@id/update_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/placeholder_image"
+        app:layout_constraintTop_toBottomOf="@id/ivPlaceholder"
         tools:text="@string/internet_error" />
 
     <Button
@@ -185,7 +185,7 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/placeholder_message" />
+        app:layout_constraintTop_toBottomOf="@id/tvPlaceholder" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

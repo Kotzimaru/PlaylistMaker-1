@@ -1,21 +1,21 @@
 package com.example.playlistmaker1.media.data.converter
 
 
-import com.example.playlistmaker1.search.data.TrackDTO
+import com.example.playlistmaker1.search.data.TrackModelDto
 import com.example.playlistmaker1.search.domain.api.TrackModel
 import com.example.playlistmaker1.media.data.database.entity.TrackEntity
 import java.util.Date
 
-class TrackModelConverter(
-) {
+class TrackModelConverter {
 
-    fun map(track: TrackDTO): TrackModel =
+    fun map(track: TrackModelDto): TrackModel =
         with(track) {
             TrackModel(
                 trackId = trackId ?: "",
                 trackName = trackName ?: "",
                 artistName = artistName ?: "",
                 trackTimeMillis = trackTimeMillis ?: 0,
+                artworkUrl60 = artworkUrl60 ?: "",
                 artworkUrl100 = artworkUrl100 ?: "",
                 collectionName = collectionName ?: "",
                 country = country ?: "",
@@ -25,13 +25,14 @@ class TrackModelConverter(
             )
         }
 
-    fun map(track: TrackModel): TrackDTO =
+    fun map(track: TrackModel): TrackModelDto =
         with(track) {
-            TrackDTO(
+            TrackModelDto(
                 trackId = trackId,
                 trackName = trackName,
                 artistName = artistName,
                 trackTimeMillis = trackTimeMillis,
+                artworkUrl60 = artworkUrl60,
                 artworkUrl100 = artworkUrl100,
                 collectionName = collectionName,
                 country = country,
@@ -48,6 +49,7 @@ class TrackModelConverter(
                 trackName = trackName,
                 artistName = artistName,
                 trackTimeMillis = trackTimeMillis,
+                artworkUrl60 = artworkUrl60,
                 artworkUrl100 = artworkUrl100,
                 collectionName = collectionName,
                 country = country,
@@ -65,6 +67,7 @@ class TrackModelConverter(
                 trackName = trackName,
                 artistName = artistName,
                 trackTimeMillis = trackTimeMillis,
+                artworkUrl60 = artworkUrl60,
                 artworkUrl100 = artworkUrl100,
                 collectionName = collectionName,
                 country = country,

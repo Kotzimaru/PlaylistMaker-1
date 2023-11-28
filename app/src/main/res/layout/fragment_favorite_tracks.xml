@@ -41,7 +41,7 @@
         app:constraint_referenced_ids="placeholder_image,placeholder_message" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/tracks_list"
+        android:id="@+id/rvTrackList"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_16"
@@ -58,6 +58,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
 
-        tools:listitem="@layout/track_list_view"
+        tools:listitem="@layout/item_view_track"
         tools:itemCount="100"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,5 @@
 package com.example.playlistmaker1.search.data.network
 
-import com.example.playlistmaker1.search.data.TrackDTO
+import com.example.playlistmaker1.search.data.TrackModelDto
 
-class SearchResponse(val results: List<TrackDTO>) : Response()
+class SearchResponse(val results: List<TrackModelDto>) : Response()

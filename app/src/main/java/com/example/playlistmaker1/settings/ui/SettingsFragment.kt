@@ -1,7 +1,5 @@
 package com.example.playlistmaker1.settings.ui
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
@@ -14,48 +12,34 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
 
-    private val _binding by viewBinding<FragmentSettingsBinding>()
+    private val binding by viewBinding<FragmentSettingsBinding>()
     private val viewModel by viewModel<SettingsViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel
-            .observeThemeSwitcherState()
+            .themeSwitcherState
             .observe(viewLifecycleOwner) { isChecked ->
-                _binding.themeSwitcher.isChecked = isChecked
+                binding.themeSwitcher.isChecked = isChecked
             }
 
-
-        _binding.apply {
+        binding.apply {
             themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
                 viewModel.onThemeSwitcherClicked(isChecked)
             }
 
-
-            _binding.share.setOnClickListener {
-                val intent = Intent(Intent.ACTION_SEND)
-                intent.type = "text/plain"
-                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.site))
-                startActivity(intent)
+            share.setOnClickListener {
+                viewModel.onShareAppClicked()
             }
 
-            _binding.offer?.setOnClickListener {
-                val intent = Intent(Intent.ACTION_VIEW)
-                intent.data = Uri.parse(getString(R.string.url_offer))
-                startActivity(intent)
+            support.setOnClickListener {
+                viewModel.onWriteSupportClicked()
             }
 
-            _binding.support.setOnClickListener {
-
-                val intent = Intent(Intent.ACTION_SENDTO)
-                intent.data = Uri.parse("mailto:")
-                intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(R.string.mail))
-                intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.theme_message))
-                intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.body_message))
-                startActivity(Intent.createChooser(intent, "Send Email"))
+            offer.setOnClickListener {
+                viewModel.termsOfUseClicked()
             }
-
         }
     }
 }

@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker1.search.data.TrackDTO
 import com.example.playlistmaker1.core.utils.debounce
 import com.example.playlistmaker1.search.domain.FetchResult
 import com.example.playlistmaker1.search.domain.api.SearchInteractor
